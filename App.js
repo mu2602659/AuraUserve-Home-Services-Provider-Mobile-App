@@ -6,6 +6,7 @@ import HomeScreen from './screens/HomeScreen';
 import WelcomeScreen from './screens/WelcomeScreen';
 import UserScreen from './screens/UserScreen';
 import ServiceProviderScreen from './screens/ServiceProviderScreen';
+import ServicesScreen from './screens/ServicesScreen';
 import LoginScreen from './screens/LoginScreen';
 import SignUpScreen from './screens/SignUpScreen';
 
@@ -20,6 +21,7 @@ export default function App() {
         <Stack.Screen name="Welcome" options={{headerShown: false}} component={WelcomeScreen} />
         <Stack.Screen name="User" options={{headerShown: false}} component={UserScreen} />
         <Stack.Screen name="ServiceProvider" options={{headerShown: false}} component={ServiceProviderScreen} />
+        <Stack.Screen name="Services" options={{headerShown: false}} component={ServicesScreen} />
         <Stack.Screen name="Login" options={{headerShown: false}} component={LoginScreen} />
         <Stack.Screen name="SignUp" options={{headerShown: false}} component={SignUpScreen} />
       </Stack.Navigator>

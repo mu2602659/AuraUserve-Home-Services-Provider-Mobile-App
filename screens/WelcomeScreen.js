@@ -15,6 +15,10 @@ export default function WelcomeScreen() {
         // Navigate to ServiceProviderScreen.js
         navigation.navigate('ServiceProviderScreen');
     };
+    
+    const handleExploreOurServices = () => {
+        navigation.navigate('ServicesScreen');
+    };
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
@@ -50,6 +54,16 @@ export default function WelcomeScreen() {
                             >Service Provider
                             </Text>
                         </TouchableOpacity>
+                        <Text style={{ fontSize: 24, fontWeight: 'bold', textAlign: 'center', color: 'white' }}>OR</Text>
+                        <TouchableOpacity
+                            onPress={() => navigation.navigate('Services')}
+    style={{ paddingVertical: 15, backgroundColor: 'red', marginHorizontal: 20, marginVertical: 8, borderRadius: 10 }}
+>
+    <Text
+        style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', color: 'white' }}
+    >Explore Our Services
+    </Text>
+</TouchableOpacity>
                     </View>
                 </View>
             </ImageBackground>

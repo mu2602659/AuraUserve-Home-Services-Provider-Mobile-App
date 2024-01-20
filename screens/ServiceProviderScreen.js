@@ -2,6 +2,7 @@ import { View, Text, Image, TouchableOpacity, ImageBackground } from 'react-nati
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { themeColors } from '../theme'
+import {ArrowLeftIcon} from 'react-native-heroicons/solid'
 import { useNavigation } from '@react-navigation/native'
 
 export default function ServiceProviderScreen() {
@@ -12,6 +13,17 @@ export default function ServiceProviderScreen() {
                 source={require("../assets/images/background.jpg")} // Specify your background image path
                 style={{ flex: 1, resizeMode: 'cover' }}
             >
+          <View className="flex-row justify-start mt-4">
+    <TouchableOpacity 
+        onPress={() => navigation.goBack()}
+        className="bg-yellow-400 p-2 rounded-tr-2xl rounded-bl-2xl ml-4"
+    >
+        <ArrowLeftIcon size="20" color="black" />
+    </TouchableOpacity>
+</View>
+
+
+        
                 <View style={{ flex: 1, justifyContent: 'space-around', marginVertical: 4 }}>
                     <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 36, textAlign: 'center' }}>
                         Welcome Service Provider!
