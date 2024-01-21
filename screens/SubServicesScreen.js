@@ -17,6 +17,8 @@ const SubServicesScreen = () => {
     { id: '3', name: 'Maintenance', icon: require('../assets/icons/maintenance.png') },
     { id: '4', name: 'Shifting', icon: require('../assets/icons/shifting.png') },
     { id: '5', name: 'Pest Control', icon: require('../assets/icons/pestcontrol.png') },
+    { id: '6', name: 'Solar', icon: require('../assets/icons/solar.png') },
+    { id: '7', name: 'Cleaning', icon: require('../assets/icons/clean.png') },
     // Add more sub-services as needed
   ];
 
