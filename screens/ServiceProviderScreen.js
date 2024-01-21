@@ -4,9 +4,18 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { themeColors } from '../theme'
 import {ArrowLeftIcon} from 'react-native-heroicons/solid'
 import { useNavigation } from '@react-navigation/native'
+import ProviderForm from './ProviderForm'
 
 export default function ServiceProviderScreen() {
     const navigation = useNavigation();
+  
+    const ProviderForm = () => {
+      // Navigate to the ServiceProviderFormScreen when the button is pressed
+      navigation.navigate('ProviderForm');
+    };
+  
+  
+    
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: themeColors.bg }}>
             <ImageBackground
@@ -33,7 +42,7 @@ export default function ServiceProviderScreen() {
                     </View>
                     <View style={{ spaceY: 4 }}>
                         <TouchableOpacity
-                            onPress={() => navigation.navigate('SignUp')}
+                            onPress={ProviderForm}
                             style={{ paddingVertical: 15, backgroundColor: '#FFD700', marginHorizontal: 20, marginVertical: 8, borderRadius: 10 }}
                         >
                             <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', color: '#555555' }}>

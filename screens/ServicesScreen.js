@@ -22,10 +22,12 @@ const ServicesScreen = () => {
     { id: '12', name: 'Washing', icon: require('../assets/icons/washing.png') },
     // Add more services as needed
   ];
- const handleServicePress = (serviceId) => {
-    // Navigate to the new page for the selected service
-    navigation.navigate('ServicesScreen', { serviceId });
+
+  const handleServicePress = (serviceId) => {
+    // Navigate to the SubServicesScreen for the selected service
+    navigation.navigate('SubServicesScreen', { serviceId });
   };
+  
 
   const renderServiceBlock = (service) => (
     <TouchableOpacity
