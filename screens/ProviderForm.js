@@ -103,7 +103,7 @@ const ProviderForm = () => {
               <React.Fragment key={field}>
                 <Text style={{ color: 'white', fontSize: 18, marginBottom: 4 }}>{getFieldLabel(field)}</Text>
                 {field === 'backgroundCheckConsent' ? (
-                  <CheckBox
+                  <Text
                     value={formData[field]}
                     onValueChange={(value) => setFormData({ ...formData, [field]: value })}
                   />
