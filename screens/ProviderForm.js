@@ -1,35 +1,37 @@
 // ServiceProviderFormScreen.js
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image, TextInput, ScrollView, CheckBox } from 'react-native';
+import { View, Text, TouchableOpacity, Image, TextInput, ScrollView, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ArrowLeftIcon } from 'react-native-heroicons/solid';
 import { themeColors } from '../theme';
 import { useNavigation } from '@react-navigation/native';
-import { TouchableHighlight } from 'react-native-web';
+import { Picker } from '@react-native-picker/picker';
+
+
 
 const ProviderForm = () => {
   const navigation = useNavigation();
 
   const [formData, setFormData] = useState({
-    fullName: '', // text string
-    email: '', // email format
-    password: '', // password format
-    address: '', // text string
-    city: '', // text string
-    state: '', // text string
-    zipCode: '', // digits
-    serviceType: '', // text string
-    experienceYears: '', // digits
-    certifications: [], // array to store certification images
-    availability: '', // text string
-    skills: '', // text string
-    specialization: '', // text string
-    idProof: null, // file upload
-    backgroundCheckConsent: false, // checkbox
-    smartphoneType: '', // text string
-    bankAccountDetails: '', // text string
-    profilePicture: null, // file upload
-    skillsProvidedByUs: '', // text string, skills provided by your platform
+    fullName: '',
+    email: '',
+    password: '',
+    address: '',
+    city: '',
+    state: '',
+    zipCode: '',
+    serviceType: '',
+    experienceYears: '',
+    certifications: [],
+    availability: '',
+    skills: '',
+    specialization: '',
+    idProof: null,
+    backgroundCheckConsent: false,
+    smartphoneType: '',
+    bankAccountDetails: '',
+    profilePicture: null,
+    skillsProvidedByUs: '',
   });
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -69,21 +71,41 @@ const ProviderForm = () => {
     // Handle form submission, e.g., send data to server
     console.log('Form submitted:', formData);
     // Display a message that the application is submitted
-    alert('Your application is submitted!');
+    Alert.alert('Success', 'Your application is submitted!');
   };
 
   const handleNextPage = () => {
-    setCurrentPage(currentPage + 1);
+    // Validate if all fields are filled
+    const areAllFieldsFilled = pages[currentPage - 1].fields.every((field) => formData[field].trim() !== '');
+
+    if (areAllFieldsFilled) {
+      setCurrentPage(currentPage + 1);
+    } else {
+      Alert.alert('Incomplete Form', 'Please fill in all fields before proceeding.');
+    }
   };
 
   const handlePreviousPage = () => {
     setCurrentPage(currentPage - 1);
   };
 
+  const handleWrongFormat = () => {
+    Alert.alert('Wrong Format', 'Please enter the correct format for the field.');
+    // Add more specific instructions or guide the user on how to correct the format
+  };
+
+  const ServicesScreen = () => {
+    // Navigate to the ServiceProviderFormScreen when the button is pressed
+    navigation.navigate('ServicesScreen');
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: themeColors.bg }}>
       <ScrollView>
         <View style={{ flex: 1 }}>
+          <View style={{ alignItems: 'center', marginVertical: 20 }}>
+            <Text style={{ color: 'black', fontSize: 24, marginBottom: 10 }}>Main Heading</Text>
+          </View>
           <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginTop: 20, marginLeft: 10 }}>
             <TouchableOpacity
               onPress={() => navigation.goBack()}
@@ -97,15 +119,62 @@ const ProviderForm = () => {
           </View>
           <View style={{ paddingHorizontal: 20 }}>
             <Text style={{ color: 'black', fontSize: 18, marginBottom: 8 }}>{pages[currentPage - 1].title}</Text>
-
-            {/* Add form fields dynamically based on the current page */}
             {pages[currentPage - 1].fields.map((field) => (
               <React.Fragment key={field}>
-                <Text style={{ color: 'white', fontSize: 18, marginBottom: 4 }}>{getFieldLabel(field)}</Text>
-                {field === 'backgroundCheckConsent' ? (
-                  <Text
-                    value={formData[field]}
-                    onValueChange={(value) => setFormData({ ...formData, [field]: value })}
+                <Text style={{ color:'white',fontSize: 18, marginBottom: 4 }}>{getFieldLabel(field)}</Text>
+                {field === 'serviceType' ? (
+                  <Picker
+                    style={{ color: 'black', backgroundColor:'white', fontSize: 18, marginBottom: 8 }}
+                    selectedValue={formData[field]}
+                    onValueChange={(itemValue) => setFormData({ ...formData, [field]: itemValue })}
+                  >
+                    <Picker.Item  style={{ color: 'black', fontSize: 18}}label="Select Service" value="" />
+                    <Picker.Item  style={{ color: 'black', fontSize: 18}}label="catering" value="catering" />
+                    <Picker.Item  style={{ color: 'black', fontSize: 18}}label="Salon" value="Salon" />
+                    {/* Add more service options as needed */}
+                  </Picker>
+                ) : field === 'availability' ? (
+                  <TextInput
+                    style={{
+                      borderWidth: 1,
+                      backgroundColor: 'white',
+                      borderColor: 'gray',
+                      padding: 10,
+                      marginBottom: 16,
+                      borderRadius: 8,
+                      color: 'black',
+                    }}
+                    keyboardType="numeric"
+                    maxLength={2}
+                    onChangeText={(text) => {
+                      const availabilityValue = parseInt(text, 10);
+                      if (!isNaN(availabilityValue) && availabilityValue <= 24) {
+                        setFormData({ ...formData, availability: text });
+                      } else {
+                        handleWrongFormat();
+                      }
+                    }}
+                  />
+                ) : field === 'experienceYears' ? (
+                  <TextInput
+                    style={{
+                      borderWidth: 1,
+                      backgroundColor: 'white',
+                      borderColor: 'gray',
+                      padding: 10,
+                      marginBottom: 16,
+                      borderRadius: 8,
+                      color: 'black',
+                    }}
+                    keyboardType="numeric"
+                    onChangeText={(text) => {
+                      const experienceValue = parseInt(text, 10);
+                      if (!isNaN(experienceValue) && experienceValue > 3) {
+                        setFormData({ ...formData, experienceYears: text });
+                      } else {
+                        handleWrongFormat();
+                      }
+                    }}
                   />
                 ) : (
                   <TextInput
@@ -121,22 +190,19 @@ const ProviderForm = () => {
                     placeholder={`Enter your ${getFieldLabel(field).toLowerCase()}`}
                     value={formData[field]}
                     onChangeText={(text) => setFormData({ ...formData, [field]: text })}
-                    secureTextEntry={field === 'password'} // Secure entry for password
-                    keyboardType={getFieldType(field)} // Set keyboard type based on the field
+                    secureTextEntry={field === 'password'}
+                    keyboardType={getFieldType(field)}
                   />
                 )}
               </React.Fragment>
             ))}
           </View>
-
-          {/* Previous and Next Buttons */}
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 20 }}>
             {currentPage > 1 && (
               <TouchableOpacity onPress={handlePreviousPage} style={{ backgroundColor: '#FFD700', padding: 15, borderRadius: 10 }}>
                 <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'black' }}>Previous</Text>
               </TouchableOpacity>
             )}
-
             {currentPage < pages.length ? (
               <TouchableOpacity onPress={handleNextPage} style={{ backgroundColor: '#FFD700', padding: 15, borderRadius: 10 }}>
                 <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'black' }}>Next</Text>
@@ -147,15 +213,20 @@ const ProviderForm = () => {
               </TouchableOpacity>
             )}
           </View>
+          {currentPage === pages.length && (
+            <TouchableOpacity onPress={() => navigation.navigate('Services')} style={{ backgroundColor: '#FFD700', padding: 10, borderRadius: 10, marginLeft:97 ,marginRight:97 }}>
+              <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'black', textAlign: 'center', marginVertical: 10 }}>
+                Explore Our App
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-// Helper function to get the label for a field
 const getFieldLabel = (field) => {
-  // Define field labels here
   const fieldLabels = {
     fullName: 'Full Name',
     email: 'Email Address',
@@ -177,19 +248,15 @@ const getFieldLabel = (field) => {
     profilePicture: 'Profile Picture',
     skillsProvidedByUs: 'Skills Provided by Us',
   };
-
   return fieldLabels[field] || '';
 };
 
-// Helper function to get the keyboard type for a field
 const getFieldType = (field) => {
-  // Define field types here
   const fieldTypes = {
     email: 'email-address',
     zipCode: 'numeric',
     experienceYears: 'numeric',
   };
-
   return fieldTypes[field] || 'default';
 };
 

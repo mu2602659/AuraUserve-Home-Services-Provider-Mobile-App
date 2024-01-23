@@ -10,6 +10,7 @@ import ServicesScreen from './screens/ServicesScreen';
 import LoginScreen from './screens/LoginScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import SubServicesScreen from './screens/SubServicesScreen';
+import Prov_Requirement from './screens/Prov_Requirement';
 import ProviderForm from './screens/ProviderForm';
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +23,7 @@ export default function App() {
         <Stack.Screen name="Welcome" options={{headerShown: false}} component={WelcomeScreen} />
         <Stack.Screen name="User" options={{headerShown: false}} component={UserScreen} />
         <Stack.Screen name="ServiceProvider" options={{headerShown: false}} component={ServiceProviderScreen} />
+        <Stack.Screen name="Prov_Requirement" options={{headerShown: false}}component={Prov_Requirement} />
         <Stack.Screen name="ProviderForm" options={{ headerShown: false }} component={ProviderForm} />
 
         <Stack.Screen name="Services" options={{headerShown: false}} component={ServicesScreen} />
