@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import {ArrowLeftIcon} from 'react-native-heroicons/solid'
+import { ArrowLeftIcon } from 'react-native-heroicons/solid';
 import { useNavigation } from '@react-navigation/native';
 
 const ServicesScreen = () => {
@@ -23,41 +23,108 @@ const ServicesScreen = () => {
     // Add more services as needed
   ];
 
-  const handleServicePress = (serviceId) => {
-    // Navigate to the SubServicesScreen for the selected service
-    navigation.navigate('SubServicesScreen', { serviceId });
+  const navigateToBeautySaloonScreen = () => {
+    navigation.navigate('BeautySaloonScreen');
   };
-  
 
-  const renderServiceBlock = (service) => (
-    <TouchableOpacity
-      key={service.id}
-      style={styles.serviceBlock}
-      onPress={() => handleServicePress(service.id)}
-    >
-      <Image source={service.icon} style={styles.serviceIcon} />
-      <Text style={styles.serviceName}>{service.name}</Text>
-    </TouchableOpacity>
-  );
+  const navigateToClinicalScreen = () => {
+    navigation.navigate('ClinicalScreen');
+  };
+
+  const navigateToSolarScreen = () => {
+    navigation.navigate('SolarScreen');
+  };
+  const navigateToPestControlScreen = () => {
+    navigation.navigate('PestControlScreen');
+  };
+  const navigateToGardeningScreen = () => {
+    navigation.navigate('GardeningScreen');
+  };
+  const navigateToRenovationScreen = () => {
+    navigation.navigate('RenovationScreen');
+  };
+  const navigateToSecurityScreen = () => {
+    navigation.navigate('SecurityScreen');
+  };
+  const navigateToShiftingScreen = () => {
+    navigation.navigate('ShiftingScreen');
+  };
+  const navigateToWashingScreen = () => {
+    navigation.navigate('WashingScreen');
+  };
+  const navigateToCleaningScreen = () => {
+    navigation.navigate('CleaningScreen');
+  };
+  const navigateToCateringScreen = () => {
+    navigation.navigate('CateringScreen');
+  };
+  const navigateToMaintenanceScreen = () => {
+    navigation.navigate('MaintenanceScreen');
+  };
+  // Add similar functions for other services
+
+  const renderServiceBlock = (service) => {
+    const navigateFunction = getNavigateFunction(service.id);
+    return (
+      <TouchableOpacity
+        key={service.id}
+        style={styles.serviceBlock}
+        onPress={navigateFunction}
+      >
+        <Image source={service.icon} style={styles.serviceIcon} />
+        <Text style={styles.serviceName}>{service.name}</Text>
+      </TouchableOpacity>
+    );
+  };
+
+  const getNavigateFunction = (serviceId) => {
+    switch (serviceId) {
+      case '1':
+        return navigateToBeautySaloonScreen;
+      case '2':
+        return navigateToClinicalScreen;
+      case '3':
+        return navigateToSolarScreen;
+        case '4':
+          return navigateToPestControlScreen;
+          case '5':
+        return navigateToGardeningScreen;
+        case '6':
+        return navigateToRenovationScreen;
+        case '7':
+        return navigateToSecurityScreen;
+        case '8':
+        return navigateToShiftingScreen;
+        case '9':
+        return navigateToWashingScreen;
+        case '10':
+        return navigateToCleaningScreen;
+        case '11':
+        return navigateToCateringScreen;
+        case '12':
+        return navigateToMaintenanceScreen;
+        
+      default:
+        return () => {};
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
-   <View className="flex-row justify-start mt-4">
-    <TouchableOpacity 
-        onPress={() => navigation.goBack()}
-        className="bg-yellow-400 p-2 rounded-tr-2xl rounded-bl-2xl ml-4"
-    >
-        <ArrowLeftIcon size="20" color="black" />
-    </TouchableOpacity>
-</View>
-   <ScrollView>
-          <View style={styles.header}>
-        {/* Your logo image goes here */}
-        <Image
-          source={require("../assets/images/logoo.png")}
-          style={styles.logoImage}
-        />
-      </View><View style={styles.gridContainer}>
+      <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginTop: 4 }}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{ backgroundColor: 'yellow', padding: 10, borderRadius: 20, marginLeft: 10 }}
+        >
+          <ArrowLeftIcon size={20} color="black" />
+        </TouchableOpacity>
+      </View>
+      <ScrollView>
+        <View style={styles.header}>
+          {/* Your logo image goes here */}
+          <Image source={require('../assets/images/logoo.png')} style={styles.logoImage} />
+        </View>
+        <View style={styles.gridContainer}>
           {servicesData.map((service) => renderServiceBlock(service))}
         </View>
       </ScrollView>
@@ -81,7 +148,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 40, // Adjust the value as needed
     borderBottomRightRadius: 40, // Adjust the value as needed
   },
-    gridContainer: {
+  gridContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-around',

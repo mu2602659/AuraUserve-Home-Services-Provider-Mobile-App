@@ -5,13 +5,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ArrowLeftIcon } from 'react-native-heroicons/solid';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
-const SubServicesScreen = () => {
+const BeautySaloonScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { serviceId } = route.params;
+  const { BeautySaloonScreen } = route.params;
 
   // Example sub-services data (you can replace this with your actual sub-services data)
-  const subServicesData = [
+  const BeautySaloonScreenData = [
     { id: '1', name: 'Beauty Saloon', icon: require('../assets/icons/beauty.png') },
     { id: '2', name: 'Clinical', icon: require('../assets/icons/clinical.png') },
     { id: '3', name: 'Maintenance', icon: require('../assets/icons/maintenance.png') },
@@ -22,19 +22,19 @@ const SubServicesScreen = () => {
     // Add more sub-services as needed
   ];
 
-  const handleSubServicePress = (subServiceId) => {
+  const handleBeautySaloonScreenPress = (BeautySaloonScreenId) => {
     // Handle the sub-service press as needed
-    console.log(`Selected sub-service: ${subServiceId}`);
+    console.log(`Selected BeautySaloonScreen: ${BeautySaloonScreenId}`);
     // You may navigate to a detailed page or perform other actions here
   };
 
-  const renderSubServiceBlock = (subService) => (
+  const renderBeautySaloonScreenBlock = (BeautySaloonScreen) => (
     <TouchableOpacity
-      key={subService.id}
-      style={styles.subServiceBlock}
-      onPress={() => handleSubServicePress(subService.id)}
+      key={BeautySaloonScreen.id}
+      style={styles.BeautySaloonScreenBlock}
+      onPress={() => handleBeautySaloonScreenPress(BeautySaloonScreen.id)}
     >
-      <Text style={styles.subServiceName}>{subService.name}</Text>
+      <Text style={styles.BeautySaloonScreenName}>{BeautySaloonScreen.name}</Text>
     </TouchableOpacity>
   );
 
@@ -57,7 +57,7 @@ const SubServicesScreen = () => {
           />
         </View>
         <View style={styles.gridContainer}>
-          {subServicesData.map((subService) => renderSubServiceBlock(subService))}
+          {BeautySaloonScreenData.map((BeautySaloonScreen) => renderBeautySaloonScreenBlock(BeautySaloonScreen))}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     padding: 8,
   },
-  subServiceBlock: {
+  BeautySaloonScreenBlock: {
     width: '40%',
     aspectRatio: 1,
     backgroundColor: '#F5F5F5',
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#000000',
   },
-  subServiceName: {
+  BeautySaloonScreenName: {
     marginTop: 8,
     fontSize: 16,
     fontWeight: 'bold',
@@ -105,4 +105,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SubServicesScreen;
+export default BeautySaloonScreen;
