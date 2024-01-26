@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-const ClinicalScreen = () => {
+const WashingScreen = () => {
   return (
     <View>
       <Text>Clinical Screen Content</Text>
@@ -10,4 +10,4 @@ const ClinicalScreen = () => {
   );
 };
 
-export default ClinicalScreen;
+export default WashingScreen;

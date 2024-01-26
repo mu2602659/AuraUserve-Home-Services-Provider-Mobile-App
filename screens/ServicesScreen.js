@@ -8,117 +8,36 @@ const ServicesScreen = () => {
   const navigation = useNavigation();
 
   const servicesData = [
-    { id: '1', name: 'Beauty Saloon', icon: require('../assets/icons/beauty.png') },
-    { id: '2', name: 'Clinical', icon: require('../assets/icons/clinical.png') },
-    { id: '3', name: 'Maintenance', icon: require('../assets/icons/maintenance.png') },
-    { id: '4', name: 'Shifting', icon: require('../assets/icons/shifting.png') },
-    { id: '5', name: 'Pest Control', icon: require('../assets/icons/pestcontrol.png') },
-    { id: '6', name: 'Solar', icon: require('../assets/icons/solar.png') },
-    { id: '7', name: 'Cleaning', icon: require('../assets/icons/clean.png') },
-    { id: '8', name: 'Catering', icon: require('../assets/icons/catering.png') },
-    { id: '9', name: 'Gardening', icon: require('../assets/icons/garden.png') },
-    { id: '10', name: 'Renovation', icon: require('../assets/icons/renovation.png') },
-    { id: '11', name: 'Security', icon: require('../assets/icons/security.png') },
-    { id: '12', name: 'Washing', icon: require('../assets/icons/washing.png') },
+    { id: '1', name: 'BeautySaloonScreen', displayName: 'Beauty Saloon', icon: require('../assets/icons/beauty.png') },
+    { id: '2', name: 'ClinicalScreen', displayName: 'Clinical', icon: require('../assets/icons/clinical.png') },
+    { id: '3', name: 'MaintenanceScreen', displayName: 'Maintenance', icon: require('../assets/icons/maintenance.png') },
+    { id: '4', name: 'ShiftingScreen', displayName: 'Shifting', icon: require('../assets/icons/shifting.png') },
+    { id: '5', name: 'PestControlScreen', displayName: 'Pest Control', icon: require('../assets/icons/pestcontrol.png') },
+    { id: '6', name: 'SolarScreen', displayName: 'Solar', icon: require('../assets/icons/solar.png') },
+    { id: '7', name: 'CleaningScreen', displayName: 'Cleaning', icon: require('../assets/icons/clean.png') },
+    { id: '8', name: 'CateringScreen', displayName: 'Catering', icon: require('../assets/icons/catering.png') },
+    { id: '9', name: 'GardeningScreen', displayName: 'Gardening', icon: require('../assets/icons/garden.png') },
+    { id: '10', name: 'RenovationScreen', displayName: 'Renovation', icon: require('../assets/icons/renovation.png') },
+    { id: '11', name: 'SecurityScreen', displayName: 'Security', icon: require('../assets/icons/security.png') },
+    { id: '12', name: 'WashingScreen', displayName: 'Washing', icon: require('../assets/icons/washing.png') },
     // Add more services as needed
   ];
-
-  const navigateToBeautySaloonScreen = () => {
-    navigation.navigate('BeautySaloonScreen');
-  };
-
-  const navigateToClinicalScreen = () => {
-    navigation.navigate('ClinicalScreen');
-  };
-
-  const navigateToSolarScreen = () => {
-    navigation.navigate('SolarScreen');
-  };
-  const navigateToPestControlScreen = () => {
-    navigation.navigate('PestControlScreen');
-  };
-  const navigateToGardeningScreen = () => {
-    navigation.navigate('GardeningScreen');
-  };
-  const navigateToRenovationScreen = () => {
-    navigation.navigate('RenovationScreen');
-  };
-  const navigateToSecurityScreen = () => {
-    navigation.navigate('SecurityScreen');
-  };
-  const navigateToShiftingScreen = () => {
-    navigation.navigate('ShiftingScreen');
-  };
-  const navigateToWashingScreen = () => {
-    navigation.navigate('WashingScreen');
-  };
-  const navigateToCleaningScreen = () => {
-    navigation.navigate('CleaningScreen');
-  };
-  const navigateToCateringScreen = () => {
-    navigation.navigate('CateringScreen');
-  };
-  const navigateToMaintenanceScreen = () => {
-    navigation.navigate('MaintenanceScreen');
-  };
-  // Add similar functions for other services
-
-  const renderServiceBlock = (service) => {
-    const navigateFunction = getNavigateFunction(service.id);
-    return (
-      <TouchableOpacity
-        key={service.id}
-        style={styles.serviceBlock}
-        onPress={navigateFunction}
-      >
-        <Image source={service.icon} style={styles.serviceIcon} />
-        <Text style={styles.serviceName}>{service.name}</Text>
-      </TouchableOpacity>
-    );
-  };
-
-  const getNavigateFunction = (serviceId) => {
-    switch (serviceId) {
-      case '1':
-        return navigateToBeautySaloonScreen;
-      case '2':
-        return navigateToClinicalScreen;
-      case '3':
-        return navigateToSolarScreen;
-        case '4':
-          return navigateToPestControlScreen;
-          case '5':
-        return navigateToGardeningScreen;
-        case '6':
-        return navigateToRenovationScreen;
-        case '7':
-        return navigateToSecurityScreen;
-        case '8':
-        return navigateToShiftingScreen;
-        case '9':
-        return navigateToWashingScreen;
-        case '10':
-        return navigateToCleaningScreen;
-        case '11':
-        return navigateToCateringScreen;
-        case '12':
-        return navigateToMaintenanceScreen;
-        
-      default:
-        return () => {};
-    }
-  };
+const renderServiceBlock = (service) => (
+  <TouchableOpacity
+    key={service.id}
+    style={styles.serviceBlock}
+    onPress={() => {
+      console.log(`Navigating to ${service.name}`);
+      navigation.navigate(service.name);
+    }}
+  >
+    <Image source={service.icon} style={styles.serviceIcon} />
+    <Text style={styles.serviceName}>{service.displayName}</Text>
+  </TouchableOpacity>
+);
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginTop: 4 }}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={{ backgroundColor: 'yellow', padding: 10, borderRadius: 20, marginLeft: 10 }}
-        >
-          <ArrowLeftIcon size={20} color="black" />
-        </TouchableOpacity>
-      </View>
       <ScrollView>
         <View style={styles.header}>
           {/* Your logo image goes here */}

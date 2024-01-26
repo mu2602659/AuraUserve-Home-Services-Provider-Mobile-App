@@ -3,9 +3,9 @@ import { View, Text } from 'react-native';
 
 const GardeningScreen = () => {
   return (
-    <View>
-      <Text>Clinical Screen Content</Text>
-      {/* Add your screen content here */}
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Beauty Saloon Screen</Text>
+      {/* Add your content for the Beauty Saloon screen */}
     </View>
   );
 };
