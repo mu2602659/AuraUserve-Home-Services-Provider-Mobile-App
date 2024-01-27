@@ -2,6 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+// Import screens
 import HomeScreen from './screens/HomeScreen';
 import WelcomeScreen from './screens/WelcomeScreen';
 import UserScreen from './screens/UserScreen';
@@ -26,12 +27,14 @@ import ClinicalScreen from './screens/ClinicalScreen';
 import WashingScreen from './screens/WashingScreen';
 import CleaningScreen from './screens/CleaningScreen';
 
+import useAuth from './hooks/useAuth';
+
 const Stack = createNativeStackNavigator();
 const ServicesStack = createNativeStackNavigator();
 
 const ServicesStackNavigator = () => (
   <ServicesStack.Navigator>
-      <ServicesStack.Screen name="ServicesScreen" component={ServicesScreen} />
+    <ServicesStack.Screen name="ServicesScreen" component={ServicesScreen} />
     <ServicesStack.Screen name="BeautySaloonScreen" component={BeautySaloonScreen} />
     <ServicesStack.Screen name="CateringScreen" component={CateringScreen} />
     <ServicesStack.Screen name="MaintenanceScreen" component={MaintenanceScreen} />
@@ -44,23 +47,33 @@ const ServicesStackNavigator = () => (
     <ServicesStack.Screen name="ClinicalScreen" component={ClinicalScreen} />
     <ServicesStack.Screen name="WashingScreen" component={WashingScreen} />
     <ServicesStack.Screen name="CleaningScreen" component={CleaningScreen} />
-    {/* Add more screens for the nested navigation if needed */}
   </ServicesStack.Navigator>
 );
 
 export default function App() {
+  const { user } = useAuth();
+
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Welcome">
-        <Stack.Screen name="Home" options={{ headerShown: false }} component={HomeScreen} />
-        <Stack.Screen name="Welcome" options={{ headerShown: false }} component={WelcomeScreen} />
-        <Stack.Screen name="User" options={{ headerShown: false }} component={UserScreen} />
+      <Stack.Navigator initialRouteName={user ? "Home" : "Welcome"}>
+        {user ? (
+          <>
+            <Stack.Screen name="Home" options={{ headerShown: false }} component={HomeScreen} />
+            {/* Add other screens for authenticated users here */}
+          </>
+        ) : (
+          <>
+            <Stack.Screen name="Welcome" options={{ headerShown: false }} component={WelcomeScreen} />
+            <Stack.Screen name="User" options={{ headerShown: false }} component={UserScreen} />
+            <Stack.Screen name="Login" options={{ headerShown: false }} component={LoginScreen} />
+            <Stack.Screen name="SignUp" options={{ headerShown: false }} component={SignUpScreen} />
+          </>
+        )}
+        {/* Common screens */}
         <Stack.Screen name="ServiceProvider" options={{ headerShown: false }} component={ServiceProviderScreen} />
         <Stack.Screen name="Prov_Requirement" options={{ headerShown: false }} component={Prov_Requirement} />
         <Stack.Screen name="ProviderForm" options={{ headerShown: false }} component={ProviderForm} />
         <Stack.Screen name="Services" options={{ headerShown: false }} component={ServicesStackNavigator} />
-        <Stack.Screen name="Login" options={{ headerShown: false }} component={LoginScreen} />
-        <Stack.Screen name="SignUp" options={{ headerShown: false }} component={SignUpScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
