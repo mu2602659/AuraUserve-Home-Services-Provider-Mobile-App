@@ -5,19 +5,18 @@ import {
   ImageBackground,
   Image,
 } from "react-native";
-import React from 'react'
+import React from "react";
 
-import { signOut } from 'firebase/auth'
-import { auth } from '../config/firebase'
+import { signOut } from "firebase/auth";
+import { auth } from "../config/firebase";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import WelcomeScreen from "./WelcomeScreen";
 
-
 export default function HomeScreen() {
-  const handleLogout = async ()=>{
+  const handleLogout = async () => {
     await signOut(auth);
-  }
+  };
 
   const navigation = useNavigation();
   const handleUser = () => {
@@ -103,14 +102,30 @@ export default function HomeScreen() {
                 Service Provider
               </Text>
             </TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleLogout}
+              style={{
+                paddingVertical: 15,
+                backgroundColor: "#FFD700",
+                marginHorizontal: 160,
+                marginVertical: 35,
+                borderRadius: 10,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: "bold",
+                  textAlign: "center",
+                  color: "#555555",
+                }}
+              >
+                Log out
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
-        <TouchableOpacity onPress={handleLogout} className="p-1 bg-red-400 rounded-lg">
-        <Text className="text-white text-lg font-bold">Logout</Text>
-      </TouchableOpacity>
       </ImageBackground>
-
-      
     </SafeAreaView>
   );
 }
