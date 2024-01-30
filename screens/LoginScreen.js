@@ -8,6 +8,12 @@ import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth'; // Import G
 import { auth } from '../config/firebase';
 import { themeColors } from '../theme';
 
+
+
+
+
+////////////////////////////////////////////////////////////////
+
 export default function LoginScreen() {
     const navigation = useNavigation();
     const [email, setEmail] = useState('');
@@ -101,10 +107,7 @@ export default function LoginScreen() {
                             style={{ width: 24, height: 24, marginRight: 10 }}
                         />
                         <Text
-                            style={{
-                                fontSize: 16,
-                                fontWeight: 'bold',
-                                color: '#555555',
+                            style={{fontSize: 16,fontWeight: 'bold', color: '#555555',
                             }}
                         >
                             Continue with Google
