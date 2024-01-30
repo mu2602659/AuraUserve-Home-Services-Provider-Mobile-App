@@ -8,13 +8,13 @@ import WelcomeScreen from './screens/WelcomeScreen';
 import UserScreen from './screens/UserScreen';
 import ServiceProviderScreen from './screens/ServiceProviderScreen';
 import ServicesScreen from './screens/ServicesScreen';
-import BeautySaloonScreen from './screens/BeautySaloonScreen';
 import LoginScreen from './screens/LoginScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import Prov_Requirement from './screens/Prov_Requirement';
 import ProviderForm from './screens/ProviderForm';
 
-// Import other screens
+// Import other services
+import BeautySaloonScreen from './screens/BeautySaloonScreen';
 import CateringScreen from './screens/CateringScreen';
 import MaintenanceScreen from './screens/MaintenanceScreen';
 import ShiftingScreen from './screens/ShiftingScreen';
@@ -28,6 +28,7 @@ import WashingScreen from './screens/WashingScreen';
 import CleaningScreen from './screens/CleaningScreen';
 
 import useAuth from './hooks/useAuth';
+
 
 const Stack = createNativeStackNavigator();
 const ServicesStack = createNativeStackNavigator();
