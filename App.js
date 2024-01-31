@@ -12,6 +12,7 @@ import LoginScreen from './screens/LoginScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import Prov_Requirement from './screens/Prov_Requirement';
 import ProviderForm from './screens/ProviderForm';
+import BookingScreen from './screens/BookingScreen';
 
 // Import other services
 import BeautySaloonScreen from './screens/BeautySaloonScreen';
@@ -48,6 +49,7 @@ const ServicesStackNavigator = () => (
     <ServicesStack.Screen name="ClinicalScreen" component={ClinicalScreen} />
     <ServicesStack.Screen name="WashingScreen" component={WashingScreen} />
     <ServicesStack.Screen name="CleaningScreen" component={CleaningScreen} />
+    <ServicesStack.Screen name="BookingScreen" options={{ headerShown: false }} component={BookingScreen} />
   </ServicesStack.Navigator>
 );
 

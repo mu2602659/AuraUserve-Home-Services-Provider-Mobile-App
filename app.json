@@ -4,10 +4,10 @@
     "slug": "AuraUserve",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "/assets/icon.png",
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "/assets/splash.png",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "black"
     },
@@ -19,12 +19,18 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "/assets/splash.png",
+        "foregroundImage": "./assets/splash.png",
         "backgroundColor": "black"
-      }
+      },
+      "package": "com.aurauserve.AuraUserve"
     },
     "web": {
-      "favicon": "/assets/splash.png"
+      "favicon": "./assets/splash.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "72bbb6ca-8ac0-4bcf-a579-c0010a6dc997"
+      }
     }
   }
 }
