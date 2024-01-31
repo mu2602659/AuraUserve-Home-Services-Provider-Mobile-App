@@ -7,12 +7,8 @@ import { useNavigation } from '@react-navigation/native';
 const ShiftingScreen = () => {
 
   const ShiftingData = [
-    { id: '1', name: 'BeautySaloonScreen', displayName: 'Local Residential Moving', icon: require('../assets/icons/home shift.png') },
-    { id: '2', name: 'ClinicalScreen', displayName: 'Specialty Item Moving', icon: require('../assets/icons/piano.png') },
-    { id: '3', name: 'MaintenanceScreen', displayName: 'Furniture Rental Services', icon: require('../assets/icons/sofay.png') },
-    { id: '4', name: 'ShiftingScreen', displayName: 'Pet Relocation Services', icon: require('../assets/icons/pet.png') },
-    { id: '5', name: 'PestControlScreen', displayName: 'Vehicle Transport', icon: require('../assets/icons/bycicle (1).png') },
-    { id: '6', name: 'SolarScreen', displayName: 'Long-Distance or Interstate Moving', icon: require('../assets/icons/moving.png') },
+    { id: '1', name: 'BeautySaloonScreen', displayName: 'Local Residential (Town-to-Town)', icon: require('../assets/icons/home shift.png') },
+    { id: '2', name: 'SolarScreen', displayName: 'Long-Distance (City-to-City)', icon: require('../assets/icons/moving.png') },
     // Add more services as needed
   ];
   const renderServiceBlock = (service) => (

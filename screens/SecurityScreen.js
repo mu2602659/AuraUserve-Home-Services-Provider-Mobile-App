@@ -8,11 +8,8 @@ const SecurityScreen = () => {
 
   const SecurityData = [
     { id: '1', name: 'BeautySaloonScreen', displayName: 'Home Security System Installation', icon: require('../assets/icons/home-automation.png') },
-    { id: '2', name: 'ClinicalScreen', displayName: 'Smart Home Integration', icon: require('../assets/icons/smart-home.png') },
-    { id: '3', name: 'MaintenanceScreen', displayName: 'Access Control Systems', icon: require('../assets/icons/access-control.png') },
-    { id: '4', name: 'ShiftingScreen', displayName: 'Video Surveillance', icon: require('../assets/icons/cctv.png') },
-    { id: '5', name: 'PestControlScreen', displayName: 'Alarm Monitoring Services', icon: require('../assets/icons/notification.png') },
-    { id: '6', name: 'SolarScreen', displayName: 'Fire and Smoke Detection', icon: require('../assets/icons/fire-alarm.png') },
+    { id: '2', name: 'ShiftingScreen', displayName: 'CCTV Camera Installation', icon: require('../assets/icons/cctv.png') },
+    { id: '3', name: 'PestControlScreen', displayName: 'Intercom Installation', icon: require('../assets/icons/notification.png') },
     // Add more services as needed
   ];
   const renderServiceBlock = (service) => (

@@ -9,11 +9,10 @@ const SolarScreen = () => {
   const SolarData = [
     { id: '1', name: 'BeautySaloonScreen', displayName: 'Solar Panel Installation', icon: require('../assets/icons/solar.png') },
     { id: '2', name: 'ClinicalScreen', displayName: 'Solar Maintenance and Repairs', icon: require('../assets/icons/panel.png') },
-    { id: '3', name: 'MaintenanceScreen', displayName: 'Energy Audits and Consultations', icon: require('../assets/icons/energy.png') },
     { id: '4', name: 'ShiftingScreen', displayName: 'Solar Battery Storage Solutions', icon: require('../assets/icons/battery.png') },
-    { id: '5', name: 'PestControlScreen', displayName: 'Solar Financing and Leasing', icon: require('../assets/icons/spal.png') },
-    { id: '6', name: 'SolarScreen', displayName: 'Solar Monitoring Systems', icon: require('../assets/icons/monitor.png') },
     // Add more services as needed
+        { id: '6', name: 'SolarScreen', displayName: 'Solar Panel Cleaning', icon: require('../assets/icons/solar.png') },
+
   ];
   const renderServiceBlock = (service) => (
     <TouchableOpacity

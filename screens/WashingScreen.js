@@ -7,12 +7,10 @@ import { useNavigation } from '@react-navigation/native';
 const WashingScreen = () => {
 
   const WashingData = [
+    { id: '1', name: 'BeautySaloonScreen', displayName: 'Car Washing', icon: require('../assets/icons/car-wash.png') },
+    { id: '2', name: 'BeautySaloonScreen', displayName: 'Oil Changing', icon: require('../assets/icons/car-wash.png') },
+    { id: '1', name: 'BeautySaloonScreen', displayName: 'Filtering and Detailing', icon: require('../assets/icons/car-wash.png') },
     { id: '1', name: 'BeautySaloonScreen', displayName: 'Car Washing and Detailing', icon: require('../assets/icons/car-wash.png') },
-    { id: '2', name: 'ClinicalScreen', displayName: 'Laundry Services', icon: require('../assets/icons/washing-machine.png') },
-    { id: '3', name: 'MaintenanceScreen', displayName: 'Window Cleaning', icon: require('../assets/icons/win.png') },
-    { id: '4', name: 'ShiftingScreen', displayName: 'Gutter Cleaning', icon: require('../assets/icons/gutter.png') },
-    { id: '5', name: 'PestControlScreen', displayName: 'Tile and Grout Cleaning', icon: require('../assets/icons/tiles.png') },
-    { id: '6', name: 'SolarScreen', displayName: 'Solar Panel Cleaning', icon: require('../assets/icons/solar.png') },
 
     // Add more services as needed
   ];

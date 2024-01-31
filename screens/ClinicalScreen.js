@@ -7,14 +7,12 @@ import { useNavigation } from '@react-navigation/native';
 const ClinicalScreen = () => {
 
   const ClinicalData = [
-    { id: '1', name: 'BeautySaloonScreen', displayName: 'Primary Care Services', icon: require('../assets/icons/healthcare.png') },
-    { id: '2', name: 'ClinicalScreen', displayName: 'Telemedicine Services', icon: require('../assets/icons/telemedicine.png') },
-    { id: '3', name: 'MaintenanceScreen', displayName: 'Chronic Disease Management', icon: require('../assets/icons/lungs.png') },
-    { id: '4', name: 'ShiftingScreen', displayName: 'Vaccination Clinics', icon: require('../assets/icons/vaccine.png') },
-    { id: '5', name: 'PestControlScreen', displayName: 'Mental Health Services', icon: require('../assets/icons/psychology.png') },
-    { id: '6', name: 'SolarScreen', displayName: 'Pharmacy Services', icon: require('../assets/icons/pharmacy.png') },
-    { id: '7', name: 'CleaningScreen', displayName: 'Corporate Health and Occupational Medicine', icon: require('../assets/icons/medicine.png') },
-    { id: '8', name: 'CateringScreen', displayName: 'Pediatric Clinics', icon: require('../assets/icons/protection.png') },
+    { id: '1', name: 'BeautySaloonScreen', displayName: 'Primary Care', icon: require('../assets/icons/healthcare.png') },
+    { id: '2', name: 'ShiftingScreen', displayName: 'Vaccination', icon: require('../assets/icons/vaccine.png') },
+    { id: '3', name: 'PestControlScreen', displayName: 'Gynecologist', icon: require('../assets/icons/psychology.png') },
+    { id: '4', name: 'SolarScreen', displayName: 'Pharmacy', icon: require('../assets/icons/pharmacy.png') },
+    { id: '5', name: 'CleaningScreen', displayName: 'Homeopathic Specialist', icon: require('../assets/icons/medicine.png') },
+    { id: '6', name: 'CateringScreen', displayName: 'Child Specialist', icon: require('../assets/icons/protection.png') },
    
   ];
   const renderServiceBlock = (service) => (

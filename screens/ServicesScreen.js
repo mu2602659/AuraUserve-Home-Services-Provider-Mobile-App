@@ -12,15 +12,14 @@ const ServicesScreen = () => {
     { id: '2', name: 'ClinicalScreen', displayName: 'Clinical', icon: require('../assets/icons/clinical.png') },
     { id: '3', name: 'MaintenanceScreen', displayName: 'Maintenance', icon: require('../assets/icons/maintenance.png') },
     { id: '4', name: 'ShiftingScreen', displayName: 'Shifting', icon: require('../assets/icons/shifting.png') },
-    { id: '5', name: 'PestControlScreen', displayName: 'Pest Control', icon: require('../assets/icons/pestcontrol.png') },
     { id: '6', name: 'SolarScreen', displayName: 'Solar', icon: require('../assets/icons/solar.png') },
     { id: '7', name: 'CleaningScreen', displayName: 'Cleaning', icon: require('../assets/icons/clean.png') },
-    { id: '8', name: 'CateringScreen', displayName: 'Catering', icon: require('../assets/icons/catering.png') },
+    { id: '8', name: 'CateringScreen', displayName: 'Event Organization', icon: require('../assets/icons/catering.png') },
     { id: '9', name: 'GardeningScreen', displayName: 'Gardening', icon: require('../assets/icons/garden.png') },
-    { id: '10', name: 'RenovationScreen', displayName: 'Renovation', icon: require('../assets/icons/renovation.png') },
     { id: '11', name: 'SecurityScreen', displayName: 'Security', icon: require('../assets/icons/security.png') },
-    { id: '12', name: 'WashingScreen', displayName: 'Washing', icon: require('../assets/icons/washing.png') },
-    // Add more services as needed
+    { id: '12', name: 'WashingScreen', displayName: 'Vehicle Maintenance', icon: require('../assets/icons/washing.png') },
+    { id: '13', name: 'WashingScreen', displayName: 'HomeCare Solutions', icon: require('../assets/icons/washing.png') },
+
   ];
 const renderServiceBlock = (service) => (
   <TouchableOpacity

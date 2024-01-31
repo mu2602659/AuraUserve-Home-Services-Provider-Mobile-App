@@ -7,14 +7,15 @@ import { useNavigation } from '@react-navigation/native';
 const GardeningScreen = () => {
 
   const GardeningData = [
-    { id: '1', name: 'BeautySaloonScreen', displayName: 'Garden Installation and Planting', icon: require('../assets/icons/garden.png') },
-    { id: '2', name: 'ClinicalScreen', displayName: 'Garden Maintenance Services', icon: require('../assets/icons/gardening.png') },
+    { id: '1', name: 'BeautySaloonScreen', displayName: 'Garden Installation', icon: require('../assets/icons/garden.png') },
     { id: '3', name: 'MaintenanceScreen', displayName: 'Mosquito Control', icon: require('../assets/icons/mosquito.png') },
     { id: '4', name: 'ShiftingScreen', displayName: 'Garden Lighting Installation', icon: require('../assets/icons/street-light.png') },
     { id: '5', name: 'PestControlScreen', displayName: 'Wildlife Control', icon: require('../assets/icons/snail.png') },
-    { id: '6', name: 'SolarScreen', displayName: 'Tree Care and Arboriculture', icon: require('../assets/icons/palm-tree.png') },
-    // Add more services as needed
-  ];
+    { id: '6', name: 'SolarScreen', displayName: 'Tree Care and Trimming', icon: require('../assets/icons/palm-tree.png') },
+    { id: '8', name: 'ClinicalScreen', displayName: 'Rodent Control', icon: require('../assets/icons/rat.png') },
+    { id: '10', name: 'ShiftingScreen', displayName: 'Bed Bug Extermination', icon: require('../assets/icons/bed-bug.png') },
+    { id: '12', name: 'SolarScreen', displayName: 'Bee and Wasp Removal', icon: require('../assets/icons/bee.png') },
+      ];
   const renderServiceBlock = (service) => (
     <TouchableOpacity
       key={service.id}

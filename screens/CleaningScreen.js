@@ -8,14 +8,11 @@ const CleaningScreen = () => {
 
   const CleaningData = [
     { id: '1', name: 'BeautySaloonScreen', displayName: 'Residential Cleaning', icon: require('../assets/icons/house (1).png') },
-    { id: '2', name: 'ClinicalScreen', displayName: 'Garden Cleaning', icon: require('../assets/icons/gardener.png') },
-    { id: '3', name: 'MaintenanceScreen', displayName: 'Specialty Floor Care', icon: require('../assets/icons/floor.png') },
     { id: '4', name: 'ShiftingScreen', displayName: 'Water Tank', icon: require('../assets/icons/water-tank.png') },
-    { id: '5', name: 'PestControlScreen', displayName: 'Curtain Cleaning', icon: require('../assets/icons/curtains.png') },
     { id: '6', name: 'SolarScreen', displayName: 'Sofa Cleaning', icon: require('../assets/icons/sofa.png') },
-    { id: '7', name: 'CleaningScreen', displayName: 'Air Duct Cleaning', icon: require('../assets/icons/air duct.png') },
-    { id: '8', name: 'CateringScreen', displayName: 'Odor Removal Services', icon: require('../assets/icons/love.png') },
-   
+    { id: '9', name: 'ClinicalScreen', displayName: 'Laundry Services', icon: require('../assets/icons/washing-machine.png') },
+    { id: '11', name: 'ShiftingScreen', displayName: 'Gutter Cleaning', icon: require('../assets/icons/gutter.png') },
+
   ];
   const renderServiceBlock = (service) => (
     <TouchableOpacity

@@ -3,16 +3,10 @@ import { View, Text, TouchableOpacity, Image, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ArrowLeftIcon } from 'react-native-heroicons/solid';
 import { useNavigation } from '@react-navigation/native';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth'; // Import GoogleAuthProvider
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth'; // Import sendPasswordResetEmail
+import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { auth } from '../config/firebase';
 import { themeColors } from '../theme';
-
-
-
-
-
-////////////////////////////////////////////////////////////////
 
 export default function LoginScreen() {
     const navigation = useNavigation();
@@ -37,6 +31,17 @@ export default function LoginScreen() {
             console.log('Google Sign In Successful!', result.user);
         } catch (error) {
             console.log('Error: ', error.message);
+        }
+    };
+
+    const handleForgotPassword = async () => {
+        if (email) {
+            try {
+                await sendPasswordResetEmail(auth, email);
+                console.log('Password reset email sent successfully!');
+            } catch (error) {
+                console.log('Error: ', error.message);
+            }
         }
     };
 
@@ -74,8 +79,8 @@ export default function LoginScreen() {
                         value={password}
                         onChangeText={value => setPassword(value)}
                     />
-                    <TouchableOpacity className="flex items-end">
-                        <Text className="text-gray-700 mb-5">Forgot Password?</Text>
+                    <TouchableOpacity onPress={handleForgotPassword}>
+                        <Text className="text-gray-700 mb-5 ml-4">Forgot Password?</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={handleSubmit}
@@ -86,7 +91,6 @@ export default function LoginScreen() {
                             Login
                         </Text>
                     </TouchableOpacity>
-
                 </View>
                 <Text className="text-xl text-gray-700 font-bold text-center py-5">Or</Text>
                 <View className="flex-row justify-center space-x-12">
@@ -122,9 +126,7 @@ export default function LoginScreen() {
                         <Text className="font-semibold text-yellow-500"> Sign Up</Text>
                     </TouchableOpacity>
                 </View>
-
             </View>
         </View>
-
-    )
+    );
 }
