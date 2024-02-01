@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 const CleaningScreen = () => {
 
   const CleaningData = [
-    { id: '1', name: 'BeautySaloonScreen', displayName: 'Residential Cleaning', icon: require('../assets/icons/house (1).png') },
+    { id: '1', name: 'BeautySaloonScreen', displayName: 'Residential Cleaning', icon: require('../assets/icons/mansion.png') },
     { id: '4', name: 'ShiftingScreen', displayName: 'Water Tank', icon: require('../assets/icons/water-tank.png') },
     { id: '6', name: 'SolarScreen', displayName: 'Sofa Cleaning', icon: require('../assets/icons/sofa.png') },
     { id: '9', name: 'ClinicalScreen', displayName: 'Laundry Services', icon: require('../assets/icons/washing-machine.png') },

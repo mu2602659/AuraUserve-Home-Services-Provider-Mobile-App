@@ -8,15 +8,15 @@ const MaintenanceScreen = () => {
 
   const MaintenanceData = [
     { id: '1', name: 'BeautySaloonScreen', displayName: 'Electric Services', icon: require('../assets/icons/electrical-service.png') },
-    { id: '3', name: 'MaintenanceScreen', displayName: 'Roofing services', icon: require('../assets/icons/roof.png') },
-    { id: '5', name: 'PestControlScreen', displayName: 'Flooring Services', icon: require('../assets/icons/floor.png') },
-    { id: '7', name: 'CleaningScreen', displayName: 'Appliance Repair', icon: require('../assets/icons/electric-appliance.png') },
-    { id: '8', name: 'CateringScreen', displayName: 'AC Maintenance', icon: require('../assets/icons/air-conditioner.png') },
-    { id: '9', name: 'BeautySaloonScreen', displayName: 'House Renovation', icon: require('../assets/icons/revo.png') },
-    { id: '13', name: 'PestControlScreen', displayName: 'Interior Painting and Wallpapering', icon: require('../assets/icons/wallpaper.png') },
-    { id: '14', name: 'SolarScreen', displayName: 'Windows and Doors Replacement', icon: require('../assets/icons/window.png') },
-    { id: '13', name: 'PestControlScreen', displayName: 'Aluminium, Glass', icon: require('../assets/icons/wallpaper.png') },
-    { id: '14', name: 'SolarScreen', displayName: 'Welding', icon: require('../assets/icons/window.png') },
+    { id: '2', name: 'MaintenanceScreen', displayName: 'Roofing services', icon: require('../assets/icons/roof.png') },
+    { id: '3', name: 'PestControlScreen', displayName: 'Flooring Services', icon: require('../assets/icons/floor.png') },
+    { id: '4', name: 'CleaningScreen', displayName: 'Appliance Repair', icon: require('../assets/icons/electric-appliance.png') },
+    { id: '5', name: 'CateringScreen', displayName: 'AC Maintenance', icon: require('../assets/icons/air-conditioner.png') },
+    { id: '6', name: 'BeautySaloonScreen', displayName: 'House Renovation', icon: require('../assets/icons/revo.png') },
+    { id: '7', name: 'PestControlScreen', displayName: 'Interior Painting and Wallpapering', icon: require('../assets/icons/wallpaper.png') },
+    { id: '8', name: 'SolarScreen', displayName: 'Windows and Doors Replacement', icon: require('../assets/icons/window.png') },
+    { id: '9', name: 'PestControlScreen', displayName: 'Aluminium, Glass', icon: require('../assets/icons/aluminium.png') },
+    { id: '10', name: 'SolarScreen', displayName: 'Welding', icon: require('../assets/icons/welding.png') },
   
   ];
   const renderServiceBlock = (service) => (

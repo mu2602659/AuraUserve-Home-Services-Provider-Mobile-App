@@ -9,9 +9,9 @@ const ClinicalScreen = () => {
   const ClinicalData = [
     { id: '1', name: 'BeautySaloonScreen', displayName: 'Primary Care', icon: require('../assets/icons/healthcare.png') },
     { id: '2', name: 'ShiftingScreen', displayName: 'Vaccination', icon: require('../assets/icons/vaccine.png') },
-    { id: '3', name: 'PestControlScreen', displayName: 'Gynecologist', icon: require('../assets/icons/psychology.png') },
+    { id: '3', name: 'PestControlScreen', displayName: 'Gynecologist', icon: require('../assets/icons/gynecologist.png') },
     { id: '4', name: 'SolarScreen', displayName: 'Pharmacy', icon: require('../assets/icons/pharmacy.png') },
-    { id: '5', name: 'CleaningScreen', displayName: 'Homeopathic Specialist', icon: require('../assets/icons/medicine.png') },
+    { id: '5', name: 'CleaningScreen', displayName: 'Homeopathic Specialist', icon: require('../assets/icons/homeo.png') },
     { id: '6', name: 'CateringScreen', displayName: 'Child Specialist', icon: require('../assets/icons/protection.png') },
    
   ];

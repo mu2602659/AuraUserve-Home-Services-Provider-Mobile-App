@@ -14,11 +14,11 @@ const ServicesScreen = () => {
     { id: '4', name: 'ShiftingScreen', displayName: 'Shifting', icon: require('../assets/icons/shifting.png') },
     { id: '6', name: 'SolarScreen', displayName: 'Solar', icon: require('../assets/icons/solar.png') },
     { id: '7', name: 'CleaningScreen', displayName: 'Cleaning', icon: require('../assets/icons/clean.png') },
-    { id: '8', name: 'CateringScreen', displayName: 'Event Organization', icon: require('../assets/icons/catering.png') },
+    { id: '8', name: 'CateringScreen', displayName: 'Event Organization', icon: require('../assets/icons/wedding.png') },
     { id: '9', name: 'GardeningScreen', displayName: 'Gardening', icon: require('../assets/icons/garden.png') },
     { id: '11', name: 'SecurityScreen', displayName: 'Security', icon: require('../assets/icons/security.png') },
-    { id: '12', name: 'WashingScreen', displayName: 'Vehicle Maintenance', icon: require('../assets/icons/washing.png') },
-    { id: '13', name: 'WashingScreen', displayName: 'HomeCare Solutions', icon: require('../assets/icons/washing.png') },
+    { id: '12', name: 'WashingScreen', displayName: 'Vehicle Maintenance', icon: require('../assets/icons/vechile.png') },
+    { id: '13', name: 'WashingScreen', displayName: 'HomeCare Solutions', icon: require('../assets/icons/shield.png') },
 
   ];
 const renderServiceBlock = (service) => (

@@ -7,10 +7,14 @@ import { useNavigation } from '@react-navigation/native';
 const WashingScreen = () => {
 
   const WashingData = [
-    { id: '1', name: 'BeautySaloonScreen', displayName: 'Car Washing', icon: require('../assets/icons/car-wash.png') },
-    { id: '2', name: 'BeautySaloonScreen', displayName: 'Oil Changing', icon: require('../assets/icons/car-wash.png') },
-    { id: '1', name: 'BeautySaloonScreen', displayName: 'Filtering and Detailing', icon: require('../assets/icons/car-wash.png') },
-    { id: '1', name: 'BeautySaloonScreen', displayName: 'Car Washing and Detailing', icon: require('../assets/icons/car-wash.png') },
+    { id: '1', name: 'BeautySaloonScreen', displayName: 'Headlight Highlight', icon: require('../assets/icons/headlight.png') },
+    { id: '2', name: 'BeautySaloonScreen', displayName: 'Oil Changing', icon: require('../assets/icons/oil.png') },
+     { id: '3', name: 'BeautySaloonScreen', displayName: 'Rapid Bike Revival', icon: require('../assets/icons/motorcy.png') },
+    { id: '4', name: 'BeautySaloonScreen', displayName: 'Wiper Wellness', icon: require('../assets/icons/wiper.png') },
+    { id: '5', name: 'BeautySaloonScreen', displayName: 'Filter Fresh Service', icon: require('../assets/icons/filter.png') },
+    { id: '6', name: 'BeautySaloonScreen', displayName: 'Wheel Wizardry', icon: require('../assets/icons/rim.png') },
+    { id: '7', name: 'BeautySaloonScreen', displayName: 'Battery Boost Service', icon: require('../assets/icons/carbater.png') },
+    { id: '8', name: 'BeautySaloonScreen', displayName: 'Brake Bliss Package', icon: require('../assets/icons/brakes.png') },
 
     // Add more services as needed
   ];
