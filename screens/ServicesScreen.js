@@ -1,13 +1,6 @@
 //ServicesScreen.js
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-} from "react-native";
+import {View,Text,Image,TouchableOpacity,StyleSheet,ScrollView,} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -15,7 +8,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 const ServicesScreen = () => {
   const navigation = useNavigation();
   const Prov_Requirement = () => {
-    // Navigate to the ServiceProviderFormScreen when the button is pressed
+    // Navigate to the ServiceScreenProviderForm when the button is pressed
     navigation.navigate("Prov_Requirement");
   };
   const [profileImage, setProfileImage] = useState(
@@ -23,18 +16,17 @@ const ServicesScreen = () => {
   );
 
   const servicesData = [
-    { id: '1', name: 'BeautySaloonScreen', displayName: 'Beauty Saloon', icon: require('../assets/icons/beauty.png') },
-    { id: '2', name: 'ClinicalScreen', displayName: 'Clinical', icon: require('../assets/icons/clinical.png') },
-    { id: '3', name: 'MaintenanceScreen', displayName: 'Maintenance', icon: require('../assets/icons/maintenance.png') },
-    { id: '4', name: 'ShiftingScreen', displayName: 'Shifting', icon: require('../assets/icons/shifting.png') },
-    { id: '6', name: 'SolarScreen', displayName: 'Solar', icon: require('../assets/icons/solar.png') },
-    { id: '7', name: 'CleaningScreen', displayName: 'Cleaning', icon: require('../assets/icons/clean.png') },
-    { id: '8', name: 'CateringScreen', displayName: 'Event Organization', icon: require('../assets/icons/wedding.png') },
-    { id: '9', name: 'GardeningScreen', displayName: 'Gardening', icon: require('../assets/icons/garden.png') },
-    { id: '11', name: 'SecurityScreen', displayName: 'Security', icon: require('../assets/icons/security.png') },
-    { id: '12', name: 'WashingScreen', displayName: 'Vehicle Maintenance', icon: require('../assets/icons/vechile.png') },
-    { id: '13', name: 'WashingScreen', displayName: 'HomeCare Solutions', icon: require('../assets/icons/shield.png') },
-    // Add more service data as needed
+    { id: '1', name: 'BeautySaloon', displayName: 'Beauty Saloon', icon: require('../assets/icons/beauty.png') },
+    { id: '2', name: 'Clinical', displayName: 'Clinical', icon: require('../assets/icons/clinical.png') },
+    { id: '3', name: 'Maintenance', displayName: 'Maintenance', icon: require('../assets/icons/maintenance.png') },
+    { id: '4', name: 'Shifting', displayName: 'Shifting', icon: require('../assets/icons/shifting.png') },
+    { id: '6', name: 'Solar', displayName: 'Solar', icon: require('../assets/icons/solar.png') },
+    { id: '7', name: 'Cleaning', displayName: 'Cleaning', icon: require('../assets/icons/clean.png') },
+    { id: '8', name: 'Catering', displayName: 'Event Organization', icon: require('../assets/icons/wedding.png') },
+    { id: '9', name: 'Gardening', displayName: 'Gardening', icon: require('../assets/icons/garden.png') },
+    { id: '11', name: 'Security', displayName: 'Security', icon: require('../assets/icons/security.png') },
+    { id: '12', name: 'Washing', displayName: 'Vehicle Maintenance', icon: require('../assets/icons/vechile.png') },
+    { id: '13', name: 'HomeCare', displayName: 'HomeCare Solutions', icon: require('../assets/icons/shield.png') },
   ];
 
   const renderServiceBlock = (service) => (

@@ -27,6 +27,7 @@ import PestControlScreen from './Services/PestControlScreen';
 import GardeningScreen from './Services/GardeningScreen';
 import ClinicalScreen from './Services/ClinicalScreen';
 import WashingScreen from './Services/WashingScreen';
+import HomeCareScreen from './Services/HomeCareScreen'
 import CleaningScreen from './Services/CleaningScreen';
 
 //import Dashboard
@@ -36,25 +37,27 @@ import User_Dashboard from './Dashboards/User_Dashboard';
 import useAuth from './hooks/useAuth';
 
 
+
 const Stack = createNativeStackNavigator();
 const ServicesStack = createNativeStackNavigator();
 
 const ServicesStackNavigator = () => (
   <ServicesStack.Navigator>
     <ServicesStack.Screen name="ServicesScreen" options={{ headerShown: false }} component={ServicesScreen} />
-    <ServicesStack.Screen name="BeautySaloonScreen" component={BeautySaloonScreen} />
-    <ServicesStack.Screen name="CateringScreen" component={CateringScreen} />
-    <ServicesStack.Screen name="MaintenanceScreen" component={MaintenanceScreen} />
-    <ServicesStack.Screen name="ShiftingScreen" component={ShiftingScreen} />
-    <ServicesStack.Screen name="SolarScreen" component={SolarScreen} />
-    <ServicesStack.Screen name="RenovationScreen" component={RenovationScreen} />
-    <ServicesStack.Screen name="SecurityScreen" component={SecurityScreen} />
-    <ServicesStack.Screen name="PestControlScreen" component={PestControlScreen} />
-    <ServicesStack.Screen name="GardeningScreen" component={GardeningScreen} />
-    <ServicesStack.Screen name="ClinicalScreen" component={ClinicalScreen} />
-    <ServicesStack.Screen name="WashingScreen" component={WashingScreen} />
-    <ServicesStack.Screen name="CleaningScreen" component={CleaningScreen} />
-    <ServicesStack.Screen name="BookingScreen" options={{ headerShown: false }} component={BookingScreen} />
+    <ServicesStack.Screen name="BeautySaloon" component={BeautySaloonScreen} />
+    <ServicesStack.Screen name="Catering" component={CateringScreen} />
+    <ServicesStack.Screen name="Maintenance" component={MaintenanceScreen} />
+    <ServicesStack.Screen name="Shifting" component={ShiftingScreen} />
+    <ServicesStack.Screen name="Solar" component={SolarScreen} />
+    <ServicesStack.Screen name="Renovation" component={RenovationScreen} />
+    <ServicesStack.Screen name="Security" component={SecurityScreen} />
+    <ServicesStack.Screen name="PestControl" component={PestControlScreen} />
+    <ServicesStack.Screen name="Gardening" component={GardeningScreen} />
+    <ServicesStack.Screen name="Clinical" component={ClinicalScreen} />
+    <ServicesStack.Screen name="Washing" component={WashingScreen} />
+    <ServicesStack.Screen name="Cleaning" component={CleaningScreen} />
+    <ServicesStack.Screen name="HomeCare" component={HomeCareScreen} />
+    <ServicesStack.Screen name="Booking" options={{ headerShown: false }} component={BookingScreen} />
   </ServicesStack.Navigator>
 );
 
