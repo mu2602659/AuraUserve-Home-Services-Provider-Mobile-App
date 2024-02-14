@@ -4,18 +4,14 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ArrowLeftIcon } from 'react-native-heroicons/solid';
 import { useNavigation } from '@react-navigation/native';
 
-const WashingScreen = () => {
+const HomeCareScreen = () => {
 
-  const WashingData = [
-    { id: '1', name: 'BeautySaloonScreen', displayName: 'Headlight Highlight', icon: require('../assets/icons/headlight.png') },
-    { id: '2', name: 'BeautySaloonScreen', displayName: 'Oil Changing', icon: require('../assets/icons/oil.png') },
-     { id: '3', name: 'BeautySaloonScreen', displayName: 'Rapid Bike Revival', icon: require('../assets/icons/motorcy.png') },
-    { id: '4', name: 'BeautySaloonScreen', displayName: 'Wiper Wellness', icon: require('../assets/icons/wiper.png') },
-    { id: '5', name: 'BeautySaloonScreen', displayName: 'Filter Fresh Service', icon: require('../assets/icons/filter.png') },
-    { id: '6', name: 'BeautySaloonScreen', displayName: 'Wheel Wizardry', icon: require('../assets/icons/rim.png') },
-    { id: '7', name: 'BeautySaloonScreen', displayName: 'Battery Boost Service', icon: require('../assets/icons/carbater.png') },
-    { id: '8', name: 'BeautySaloonScreen', displayName: 'Brake Bliss Package', icon: require('../assets/icons/brakes.png') },
-
+  const HomeCareData = [
+    { id: '1', name: 'BeautySaloonScreen', displayName: 'Tailoring', icon: require('../assets/icons/headlight.png') },
+    { id: '2', name: 'BeautySaloonScreen', displayName: 'Care Taker', icon: require('../assets/icons/oil.png') },
+     { id: '3', name: 'BeautySaloonScreen', displayName: 'Maid', icon: require('../assets/icons/motorcy.png') },
+    { id: '4', name: 'BeautySaloonScreen', displayName: 'Chef', icon: require('../assets/icons/wiper.png') },
+    
     // Add more services as needed
   ];
   const renderServiceBlock = (service) => (
@@ -40,7 +36,7 @@ const WashingScreen = () => {
           <Image source={require('../assets/images/logoo.png')} style={styles.logoImage} />
         </View>
         <View style={styles.gridContainer}>
-          {WashingData.map((service) => renderServiceBlock(service))}
+          {HomeCareData.map((service) => renderServiceBlock(service))}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -92,4 +88,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WashingScreen;
+export default HomeCareScreen;

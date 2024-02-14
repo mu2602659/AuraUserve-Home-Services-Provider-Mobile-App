@@ -18,7 +18,7 @@ const ServicesScreen = () => {
     { id: '9', name: 'GardeningScreen', displayName: 'Gardening', icon: require('../assets/icons/garden.png') },
     { id: '11', name: 'SecurityScreen', displayName: 'Security', icon: require('../assets/icons/security.png') },
     { id: '12', name: 'WashingScreen', displayName: 'Vehicle Maintenance', icon: require('../assets/icons/vechile.png') },
-    { id: '13', name: 'WashingScreen', displayName: 'HomeCare Solutions', icon: require('../assets/icons/shield.png') },
+    { id: '13', name: 'HomeCareScreen', displayName: 'HomeCare Solutions', icon: require('../assets/icons/shield.png') },
 
   ];
 const renderServiceBlock = (service) => (

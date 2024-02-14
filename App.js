@@ -27,6 +27,7 @@ import GardeningScreen from './screens/GardeningScreen';
 import ClinicalScreen from './screens/ClinicalScreen';
 import WashingScreen from './screens/WashingScreen';
 import CleaningScreen from './screens/CleaningScreen';
+import HomeCareScreen from './screens/HomeCareScreen';
 
 import useAuth from './hooks/useAuth';
 
@@ -49,6 +50,8 @@ const ServicesStackNavigator = () => (
     <ServicesStack.Screen name="ClinicalScreen" component={ClinicalScreen} />
     <ServicesStack.Screen name="WashingScreen" component={WashingScreen} />
     <ServicesStack.Screen name="CleaningScreen" component={CleaningScreen} />
+    <ServicesStack.Screen name="HomeCareScreen" component={HomeCareScreen} />
+
     <ServicesStack.Screen name="BookingScreen" options={{ headerShown: false }} component={BookingScreen} />
   </ServicesStack.Navigator>
 );
