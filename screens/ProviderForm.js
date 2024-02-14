@@ -1,4 +1,4 @@
-// ServiceProviderFormScreen.js
+// ProviderForm.js
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Image, TextInput, ScrollView, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -13,6 +13,7 @@ const ProviderForm = () => {
   const navigation = useNavigation();
 
   const [formData, setFormData] = useState({
+    profilePicture: '',
     fullName: '',
     email: '',
     password: '',
@@ -26,17 +27,17 @@ const ProviderForm = () => {
     availability: '',
     skills: '',
     specialization: '',
-    idProof: null,
-    backgroundCheckConsent: false,
     smartphoneType: '',
     bankAccountDetails: '',
-    profilePicture: null,
-    skillsProvidedByUs: '',
   });
 
   const [currentPage, setCurrentPage] = useState(1);
 
   const pages = [
+    {
+      title: 'Profile Picture ',
+      fields: ['profilePicture'],
+    },
     {
       title: 'Personal Information',
       fields: ['fullName', 'email', 'password'],
@@ -54,17 +55,10 @@ const ProviderForm = () => {
       fields: ['availability', 'skills', 'specialization'],
     },
     {
-      title: 'Documents',
-      fields: ['idProof', 'backgroundCheckConsent'],
-    },
-    {
       title: 'Mobile and Payment',
       fields: ['smartphoneType', 'bankAccountDetails'],
     },
-    {
-      title: 'Profile Picture and Skills Provided by Us',
-      fields: ['profilePicture', 'skillsProvidedByUs'],
-    },
+    
   ];
 
   const handleFormSubmit = () => {
@@ -115,7 +109,9 @@ const ProviderForm = () => {
             </TouchableOpacity>
           </View>
           <View style={{ alignItems: 'center', marginVertical: 20 }}>
+           <Text  style={{ fontSize: 18, color:'white' }} >Become A Service Provider</Text>
             <Image source={require('../assets/images/welcome.png')} style={{ width: 150, height: 150 }} />
+            <Text style={{ fontSize: 18, color:'white' }}>Profile picture</Text>
           </View>
           <View style={{ paddingHorizontal: 20 }}>
             <Text style={{ color: 'black', fontSize: 18, marginBottom: 8 }}>{pages[currentPage - 1].title}</Text>
@@ -221,6 +217,21 @@ const ProviderForm = () => {
             </TouchableOpacity>
           )}
         </View>
+
+        {/* Button to navigate to Prvdr_Dashboard */}
+        <TouchableOpacity
+          onPress={() => navigation.navigate('PrvdrDashboard')}
+          style={{
+            backgroundColor: '#FFD700',
+            padding: 15,
+            borderRadius: 10,
+            alignItems: 'center',
+            marginTop: 20,
+          }}
+        >
+          <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'black' }}>Go to Provider Dashboard</Text>
+        </TouchableOpacity>
+        
       </ScrollView>
     </SafeAreaView>
   );
@@ -228,6 +239,7 @@ const ProviderForm = () => {
 
 const getFieldLabel = (field) => {
   const fieldLabels = {
+    profilePicture: 'Profile Picture',
     fullName: 'Full Name',
     email: 'Email Address',
     password: 'Password',
@@ -241,12 +253,9 @@ const getFieldLabel = (field) => {
     availability: 'Availability',
     skills: 'Skills',
     specialization: 'Specialization',
-    idProof: 'ID Proof',
-    backgroundCheckConsent: 'Consent for Background Check',
     smartphoneType: 'Smartphone Type',
     bankAccountDetails: 'Bank Account Details',
-    profilePicture: 'Profile Picture',
-    skillsProvidedByUs: 'Skills Provided by Us',
+    
   };
   return fieldLabels[field] || '';
 };
