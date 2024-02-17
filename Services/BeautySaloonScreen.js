@@ -6,7 +6,6 @@ import { useNavigation } from '@react-navigation/native'; // Import the useNavig
 const BeautySaloonScreen = () => {
   const navigation = useNavigation(); // Use the useNavigation hook to get the navigation object
 
-
   const BeautySaloonData = [
     { id: '1', name: 'BeautySaloonScreen', displayName: 'HairCut', icon: require('../assets/icons/hair-cutting.png') },
     { id: '2', name: 'ClinicalScreen', displayName: 'Beard Setting', icon: require('../assets/icons/beard.png') },
@@ -50,7 +49,7 @@ const BeautySaloonScreen = () => {
         style={{ paddingVertical: 15, backgroundColor: "#FFD700", marginHorizontal: 160, marginVertical: 10, borderRadius: 10 }}
           onPress={() => {
             console.log("Navigating to Booking Page");
-            navigation.navigate('BookingScreen');
+            navigation.navigate('Booking');
           }}
         >
           <Text style={{ fontSize: 18, fontWeight: "bold", textAlign: "center", color: "#555555" }}>Book Now</Text>

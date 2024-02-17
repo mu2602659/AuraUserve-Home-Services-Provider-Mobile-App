@@ -1,4 +1,4 @@
-// BookingScreen.js
+// Booking.js
 
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, TextInput, Alert, ScrollView, Linking } from 'react-native';
@@ -12,7 +12,7 @@ import Geocoder from 'react-native-geocoding';
 // Set your Geocoding API key here
 //Geocoder.init('YOUR_GEOCODING_API_KEY');
 
-const BookingScreen = () => {
+const Booking = () => {
   const navigation = useNavigation();
 
   const [bookingInfo, setBookingInfo] = useState({
@@ -247,10 +247,8 @@ const BookingScreen = () => {
             <Text style={{ fontSize: 16, marginTop: 5, color: 'white' }}>In-App Chat</Text>
             </TouchableOpacity>
           </View>
-
           
         </View>
-
       </ScrollView>
     </SafeAreaView>
   );
@@ -309,4 +307,4 @@ const styles = {
   },
 };
 
-export default BookingScreen;
+export default Booking;
