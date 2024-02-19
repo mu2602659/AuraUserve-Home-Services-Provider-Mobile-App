@@ -97,17 +97,8 @@ const ProviderForm = () => {
     <SafeAreaView style={{ flex: 1, backgroundColor: themeColors.bg }}>
       <ScrollView>
         <View style={{ flex: 1 }}>
-          <View style={{ alignItems: 'center', marginVertical: 20 }}>
-            <Text style={{ color: 'black', fontSize: 24, marginBottom: 10 }}>Main Heading</Text>
-          </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginTop: 20, marginLeft: 10 }}>
-            <TouchableOpacity
-              onPress={() => navigation.goBack()}
-              style={{ backgroundColor: '#FFD700', padding: 10, borderRadius: 10 }}
-            >
-              <ArrowLeftIcon size={20} color="black" />
-            </TouchableOpacity>
-          </View>
+          
+         
           <View style={{ alignItems: 'center', marginVertical: 20 }}>
            <Text  style={{ fontSize: 18, color:'white' }} >Become A Service Provider</Text>
             <Image source={require('../assets/images/welcome.png')} style={{ width: 150, height: 150 }} />

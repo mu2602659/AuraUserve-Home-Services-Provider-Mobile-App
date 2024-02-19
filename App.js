@@ -83,11 +83,11 @@ export default function App() {
         {/* Common screens */}
         <Stack.Screen name="ServiceProvider" options={{ headerShown: false }} component={ServiceProviderScreen} />
         <Stack.Screen name="Prov_Requirement" options={{ headerShown: false }} component={Prov_Requirement} />
-        <Stack.Screen name="ProviderForm" options={{ headerShown: false }} component={ProviderForm} />
+        <Stack.Screen name="ProviderForm"  component={ProviderForm} />
         <Stack.Screen name="Services" options={{ headerShown: false }} component={ServicesStackNavigator} />
 
         <Stack.Screen name="PrvdrDashboard" component={Prvdr_Dashboard} />
-        <Stack.Screen name="UserDashboard" options={{ headerShown: false }} component={User_Dashboard} />
+        <Stack.Screen name="UserDashboard" component={User_Dashboard} />
 
 
        {/* <Stack.Screen name="Services" component={ServicesScreen} />

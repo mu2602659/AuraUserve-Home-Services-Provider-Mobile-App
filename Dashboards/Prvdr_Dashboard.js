@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker'
-import { StatusBar } from 'expo-status-bar';
+
 
  export default function Prvdr_Dashboard(){
 

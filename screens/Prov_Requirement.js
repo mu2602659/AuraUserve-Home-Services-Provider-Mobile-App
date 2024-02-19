@@ -24,14 +24,6 @@ const Prov_Requirement = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-      <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginTop: 20, marginLeft: 10 }}>
-            <TouchableOpacity
-              onPress={() => navigation.goBack()}
-              style={{ backgroundColor: '#FFD700', padding: 10, borderRadius: 10 }}
-            >
-              <ArrowLeftIcon size={20} color="black" />
-            </TouchableOpacity>
-          </View>
         <View style={styles.header}>
           <Text style={styles.heading}>
             Requirement to Become Service Provider

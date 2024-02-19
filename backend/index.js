@@ -16,7 +16,7 @@ const coustomer4 = db.collection("Coustomers").doc("4")
 
 batch.set(coustomer3, { id : "3" , name : "uzair"});
 batch.set(coustomer4, { id : "4" , name : "arsalan"});
-
+batch.set(coustomer4, { id : "466" , name : "aran"});
 batch.commit().then(res => {
   console.log("Data added successfully!");
 });

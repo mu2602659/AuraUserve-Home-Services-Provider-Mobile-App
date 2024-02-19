@@ -51,21 +51,7 @@ const User_Dashboard = () => {
 
   return (
     <>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "flex-start",
-          marginTop: 20,
-          marginLeft: 10,
-        }}
-      >
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={{ backgroundColor: "#FFD700", padding: 10, borderRadius: 10 }}
-        >
-          <ArrowLeftIcon size={20} color="black" />
-        </TouchableOpacity>
-      </View>
+    
 
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Text style={{ fontSize: 24, fontWeight: "bold", marginBottom: 20 }}>
