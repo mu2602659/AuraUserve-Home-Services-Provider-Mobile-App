@@ -1,8 +1,15 @@
 import React, { useState } from "react";
-import {View,Text,Image,TouchableOpacity,StyleSheet,ScrollView,} from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import { ArrowLeftIcon } from 'react-native-heroicons/solid';
+import { ArrowLeftIcon } from "react-native-heroicons/solid";
 
 const Prov_Requirement = () => {
   const navigation = useNavigation();
@@ -22,149 +29,164 @@ const Prov_Requirement = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView>
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.heading}>
-            Requirement to Become Service Provider
-          </Text>
+          <View className="flex-row justify-start mt-1">
+                    <TouchableOpacity
+                        onPress={() => navigation.goBack()}
+                        className="bg-yellow-400 p-2 rounded-tr-2xl rounded-bl-2xl ml-4"
+                    >
+                        <ArrowLeftIcon size="20" color="black" />
+                    </TouchableOpacity>
+          <Text style={styles.heading}>Our Requirements</Text>
+
+                </View>
         </View>
-        <View style={styles.mainContainer}>
-          {/* Requirement 1 */}
-          <View style={styles.leftDiv}>
-            <Image
-              source={require("../assets/icons/age.png")}
-              style={styles.image}
-            />
-          </View>
-          <View style={styles.rightDiv}>
-            <Text style={styles.requirementHeading}>Age</Text>
-            <Text style={styles.description}>
-              You have to be over 18 years of age with a valid CNIC card to
-              register with AuraUserve.
-            </Text>
-          </View>
-
-          {/* Requirement 2 */}
-          <View style={styles.leftDiv}>
-            <Image
-              source={require("../assets/icons/booking.png")}
-              style={styles.image}
-            />
-          </View>
-          <View style={styles.rightDiv}>
-            <Text style={styles.requirementHeading}>Booking</Text>
-            <Text style={styles.description}>
-              You should be able to manage and accept bookings through
-              AuraUserve.
-            </Text>
-          </View>
-
-          {/* Requirement 3 */}
-          <View style={styles.leftDiv}>
-            <Image
-              source={require("../assets/icons/warehouse.png")}
-              style={styles.image}
-            />
-          </View>
-          <View style={styles.rightDiv}>
-            <Text style={styles.requirementHeading}>
-              Registered Business Center Address
-            </Text>
-            <Text style={styles.description}>
-              You should have a registered business center address such as an
-              office, shop, or salon address.
-            </Text>
-          </View>
-
-          {/* Requirement 4 */}
-          <View style={styles.leftDiv}>
-            <Image
-              source={require("../assets/icons/sim-card.png")}
-              style={styles.image}
-            />
-          </View>
-          <View style={styles.rightDiv}>
-            <Text style={styles.requirementHeading}>
-              Registered Mobile Number
-            </Text>
-            <Text style={styles.description}>
-              You should have a registered mobile number where customers can
-              call after booking the job.
-            </Text>
-          </View>
-
-          {/* Requirement 5 */}
-          <View style={styles.leftDiv}>
-            <Image
-              source={require("../assets/icons/background-check.png")}
-              style={styles.image}
-            />
-          </View>
-          <View style={styles.rightDiv}>
-            <Text style={styles.requirementHeading}>Background Check</Text>
-            <Text style={styles.description}>
-              The Background Check process may include drug tests, police
-              reports, credit checks, etc.
-            </Text>
-          </View>
-
-          {/* Requirement 6 */}
-          <View style={styles.leftDiv}>
-            <Image
-              source={require("../assets/icons/best-customer-experience.png")}
-              style={styles.image}
-            />
-          </View>
-          <View style={styles.rightDiv}>
-            <Text style={styles.requirementHeading}>Experience</Text>
-            <Text style={styles.description}>
-              You should have at least 3 years of experience in a relevant field
-              to register with AuraUserve.
-            </Text>
-          </View>
-
-          {/* Add more divs as needed for other requirements */}
-
-
-          {/* Options Section */}
-          <View style={styles.centeredContainer}>
-            <Text style={styles.optionsHeading}>
-              Do you have all these requirements?
-            </Text>
-            <View style={styles.optionsContainer}>
-              <TouchableOpacity
-                style={[
-                  styles.optionButton,
-                  selectedOption === "Yes" && styles.selectedOption,
-                ]}
-                onPress={() => handleOptionSelect("Yes")}
-              >
-                <Text style={styles.optionButtonText}>Yes</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  styles.optionButton,
-                  selectedOption === "No" && styles.selectedOption,
-                ]}
-                onPress={() => handleOptionSelect("No")}
-              >
-                <Text style={styles.optionButtonText}>No</Text>
-              </TouchableOpacity>
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          {/* Content */}
+          <View style={styles.mainContainer}>
+            {/* Requirement 1 */}
+            <View style={styles.leftDiv}>
+              <Image
+                source={require("../assets/icons/age.png")}
+                style={styles.image}
+              />
             </View>
+            <View style={styles.rightDiv}>
+              <Text style={styles.requirementHeading}>Age</Text>
+              <Text style={styles.description}>
+                You have to be over 18 years of age with a valid CNIC card to
+                register with AuraUserve.
+              </Text>
+            </View>
+            <View style={styles.divider} />
 
-            {/* Continue Button */}
-            {selectedOption === "Yes" && (
-              <TouchableOpacity
-                style={styles.continueButton}
-                onPress={handleContinue}
-              >
-                <Text style={styles.continueButtonText}>Continue</Text>
-              </TouchableOpacity>
-            )}
+            {/* Requirement 2 */}
+            <View style={styles.leftDiv}>
+              <Image
+                source={require("../assets/icons/booking.png")}
+                style={styles.image}
+              />
+            </View>
+            <View style={styles.rightDiv}>
+              <Text style={styles.requirementHeading}>Booking</Text>
+              <Text style={styles.description}>
+                You should be able to manage and accept bookings through
+                AuraUserve.
+              </Text>
+            </View>
+            <View style={styles.divider} />
+
+            {/* Requirement 3 */}
+            <View style={styles.leftDiv}>
+              <Image
+                source={require("../assets/icons/warehouse.png")}
+                style={styles.image}
+              />
+            </View>
+            <View style={styles.rightDiv}>
+              <Text style={styles.requirementHeading}>
+                Registered Business Center Address
+              </Text>
+              <Text style={styles.description}>
+                You should have a registered business center address such as an
+                office, shop, or salon address.
+              </Text>
+            </View>
+            <View style={styles.divider} />
+
+            {/* Requirement 4 */}
+            <View style={styles.leftDiv}>
+              <Image
+                source={require("../assets/icons/sim-card.png")}
+                style={styles.image}
+              />
+            </View>
+            <View style={styles.rightDiv}>
+              <Text style={styles.requirementHeading}>
+                Registered Mobile Number
+              </Text>
+              <Text style={styles.description}>
+                You should have a registered mobile number where customers can
+                call after booking the job.
+              </Text>
+            </View>
+            <View style={styles.divider} />
+
+            {/* Requirement 5 */}
+            <View style={styles.leftDiv}>
+              <Image
+                source={require("../assets/icons/background-check.png")}
+                style={styles.image}
+              />
+            </View>
+            <View style={styles.rightDiv}>
+              <Text style={styles.requirementHeading}>Background Check</Text>
+              <Text style={styles.description}>
+                The Background Check process may include drug tests, police
+                reports, credit checks, etc.
+              </Text>
+            </View>
+            <View style={styles.divider} />
+
+            {/* Requirement 6 */}
+            <View style={styles.leftDiv}>
+              <Image
+                source={require("../assets/icons/best-customer-experience.png")}
+                style={styles.image}
+              />
+            </View>
+            <View style={styles.rightDiv}>
+              <Text style={styles.requirementHeading}>Experience</Text>
+              <Text style={styles.description}>
+                You should have at least 3 years of experience in a relevant
+                field to register with AuraUserve.
+              </Text>
+            </View>
+            <View style={styles.divider} />
+
+            {/* Add more divs as needed for other requirements */}
+
+            {/* Options Section */}
+            <View style={styles.centeredContainer}>
+              <Text style={styles.optionsHeading}>
+                Do you have all these requirements?
+              </Text>
+              <View style={styles.optionsContainer}>
+                <TouchableOpacity
+                  style={[
+                    styles.optionButton,
+                    selectedOption === "Yes" && styles.selectedOption,
+                  ]}
+                  onPress={() => handleOptionSelect("Yes")}
+                >
+                  <Text style={styles.optionButtonText}>Yes</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
+                    styles.optionButton,
+                    selectedOption === "No" && styles.selectedOption,
+                  ]}
+                  onPress={() => handleOptionSelect("No")}
+                >
+                  <Text style={styles.optionButtonText}>No</Text>
+                </TouchableOpacity>
+              </View>
+
+              {/* Continue Button */}
+              {selectedOption === "Yes" && (
+                <TouchableOpacity
+                  style={styles.continueButton}
+                  onPress={handleContinue}
+                >
+                  <Text style={styles.continueButtonText}>Continue</Text>
+                </TouchableOpacity>
+              )}
+            </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };
@@ -174,15 +196,37 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FFFFFF",
   },
+  scrollContainer: {
+    flexGrow: 1,
+  },
   header: {
+    flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 5,
+    paddingVertical: 8,
+    backgroundColor: "black",
+    paddingHorizontal: 2,
   },
   heading: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 12,
+    marginBottom: 5,
     textAlign: "center",
+    color: "white",
+    flex: 1,
+  },
+  backButton: {
+    padding: 10,
+  },
+  divider: {
+  borderBottomWidth: 1,
+  borderBottomColor: "#CCCCCC",
+  width: "100%",
+  marginBottom: 10, // Adjust the margin as needed
+},
+  backButtonIcon: {
+    backgroundColor: "#FFD700",
+    padding: 5,
+    borderRadius: 5,
   },
   mainContainer: {
     flexDirection: "row",
@@ -191,15 +235,15 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   leftDiv: {
-    width: "30%", // Adjust as needed
-    alignItems: "center",
+    width: "30%",
+    textAlign: "center",
   },
   rightDiv: {
-    width: "50%", // Adjust as needed
-    alignItems: "center",
+    width: "45%",
+    textAlign: "left",
   },
   centeredContainer: {
-    width: "100%", // Take full width
+    width: "100%",
     alignItems: "center",
   },
   image: {
@@ -218,12 +262,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#666666",
     marginBottom: 16,
-  },
-  servicesHeading: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 8,
-    textAlign: "center",
   },
   optionsHeading: {
     fontSize: 18,
