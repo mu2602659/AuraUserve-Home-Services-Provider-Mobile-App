@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
-import {View,Text,TouchableOpacity,ImageBackground,Image,} from "react-native";
+import {View,Text,TouchableOpacity,StyleSheet,Image,ScrollView,} from "react-native";
 import { signOut } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import WelcomeScreen from "./WelcomeScreen";
-import Icon from "react-native-vector-icons/Ionicons";
+import { FontAwesome5 } from "@expo/vector-icons";
 
-export default function HomeScreen() {
+const ServicesScreen = () => {
   const [userName, setUserName] = useState("");
   const navigation = useNavigation();
 
@@ -34,146 +33,214 @@ export default function HomeScreen() {
   const handleUser = () => {
     navigation.navigate("UserScreen");
   };
-
-  const handleServiceProvider = () => {
-    navigation.navigate("ServiceProviderScreen");
-  };
-
-  const handleExploreOurServices = () => {
-    navigation.navigate("ServicesScreen");
-  };
-
+  
   const Prov_Requirement = () => {
-    // Navigate to the ServiceProviderFormScreen when the button is pressed
+    // Navigate to the ServiceScreenProviderForm when the button is pressed
     navigation.navigate("Prov_Requirement");
   };
+  const [profileImage, setProfileImage] = useState(
+    require("../assets/images/logoo.png")
+  );
+
+  const servicesData = [
+    { id: '1', name: 'BeautySaloon', displayName: 'Beauty Saloon', icon: require('../assets/icons/beauty.png') },
+    { id: '2', name: 'Clinical', displayName: 'Clinical', icon: require('../assets/icons/clinical.png') },
+    { id: '3', name: 'Maintenance', displayName: 'Maintenance', icon: require('../assets/icons/maintenance.png') },
+    { id: '4', name: 'Shifting', displayName: 'Shifting', icon: require('../assets/icons/shifting.png') },
+    { id: '6', name: 'Solar', displayName: 'Solar', icon: require('../assets/icons/solar.png') },
+    { id: '7', name: 'Cleaning', displayName: 'Cleaning', icon: require('../assets/icons/clean.png') },
+    { id: '8', name: 'Catering', displayName: 'Event Organization', icon: require('../assets/icons/wedding.png') },
+    { id: '9', name: 'Gardening', displayName: 'Gardening', icon: require('../assets/icons/garden.png') },
+    { id: '11', name: 'Security', displayName: 'Security', icon: require('../assets/icons/security.png') },
+    { id: '12', name: 'Washing', displayName: 'Vehicle Maintenance', icon: require('../assets/icons/vechile.png') },
+    { id: '13', name: 'HomeCare', displayName: 'HomeCare Solutions', icon: require('../assets/icons/shield.png') },
+  ];
+
+  const renderServiceBlock = (service) => (
+    <TouchableOpacity
+      key={service.id}
+      style={styles.serviceBlock}
+      onPress={() => {
+        console.log(`Navigating to ${service.name}`);
+        navigation.navigate(service.name);
+      }}
+    >
+      <Image source={service.icon} style={styles.serviceIcon} />
+      <Text style={styles.serviceName}>{service.displayName}</Text>
+    </TouchableOpacity>
+  );
+
+  const handleProfileClick = () => {
+    const newProfileImage =
+      profileImage === require("../assets/images/logoo.png")
+        ? require("../assets/images/logoo.png")
+        : require("../assets/images/logoo.png");
+    setProfileImage(newProfileImage);
+  };
+
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          paddingHorizontal: 16,
-          paddingVertical: 8,
-          backgroundColor: "#333333",
-        }}
-      >
-        <Text style={{ color: "white", fontSize: 18 }}>
-          Welcome, {userName}
-        </Text>
-        <TouchableOpacity onPress={handleLogout}>
-          <Text style={{ color: "white", fontSize: 16 }}>Logout</Text>
+      
+      <View style={styles.header}>
+        {/* Hamburger Menu */}
+        <TouchableOpacity
+          style={styles.hamburgerMenu}
+          onPress={() => navigation.openDrawer()}
+        >
+          <FontAwesome5 name="bars" size={24} color="black" />
+        </TouchableOpacity>
+
+        {/* Profile Picture */}
+        <TouchableOpacity onPress={handleProfileClick}>
+          <Image source={profileImage} style={styles.profileImage} />
         </TouchableOpacity>
       </View>
-      <ImageBackground
-        source={require("../assets/images/background.jpg")}
-        style={{ flex: 1, resizeMode: "cover" }}
-      >
-        <View
-          style={{ flex: 1, justifyContent: "space-around", marginVertical: 4 }}
+
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        {/* Your logo image */}
+        <Image
+          source={require("../assets/images/logoo.png")}
+          style={styles.logoImage}
+        />
+        <TouchableOpacity
+          onPress={() => navigation.navigate("UserDashboard")}
+          style={{
+            backgroundColor: "#FFD700",
+            padding: 15,
+            borderRadius: 10,
+            alignItems: "center",
+            marginTop: 20,
+          }}
         >
           <Text
             style={{
-              color: "white",
+              fontSize: 18,
               fontWeight: "bold",
-              fontSize: 36,
               textAlign: "center",
+              color: "#555555",
             }}
           >
-            Welcome!
+            Deals
           </Text>
-          <View style={{ flexDirection: "row", justifyContent: "center" }}>
-            <Image
-              source={require("../assets/images/welcome.png")}
-              style={{ width: 200, height: 200 }}
-            />
-          </View>
-          <View style={{ spaceY: 4 }}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("Services")}
-              style={{
-                paddingVertical: 15,
-                backgroundColor: "#FFD700",
-                marginHorizontal: 20,
-                marginVertical: 8,
-                borderRadius: 10,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: "bold",
-                  textAlign: "center",
-                  color: "#555555",
-                }}
-              >
-                User
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={Prov_Requirement}
-              style={{
-                paddingVertical: 15,
-                backgroundColor: "#FFD700",
-                marginHorizontal: 20,
-                marginVertical: 8,
-                borderRadius: 10,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: "bold",
-                  textAlign: "center",
-                  color: "#555555",
-                }}
-              >
-                Service Provider
-              </Text>
-            </TouchableOpacity>
-          </View>
+        </TouchableOpacity>
+        <View style={styles.gridContainer}>
+          {servicesData.map((service) => renderServiceBlock(service))}
         </View>
-      </ImageBackground>
-      {/* Taskbar */}
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-around",
-          alignItems: "center",
-          backgroundColor: "#333333",
-          paddingVertical: 12,
-        }}
-      >
-        <TouchableOpacity
-          style={{ alignItems: "center" }}
-          onPress={() => navigation.navigate("Home")}
-        >
-          <Icon name="home-outline" size={24} color="white" />
-          <Text style={{ color: "white", fontSize: 14, marginTop: 4 }}>
-            Home
-          </Text>
+      </ScrollView>
+
+      {/* Footer Navigation */}
+      <View style={styles.footer}>
+        <TouchableOpacity style={styles.footerItem}>
+          <FontAwesome5 name="home" size={24} color="black" />
+          <Text style={styles.footerText}>Home</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={{ alignItems: "center" }}
-          onPress={() => navigation.navigate("MyOrders")}
-        >
-          <Icon name="clipboard-outline" size={24} color="white" />
-          <Text style={{ color: "white", fontSize: 14, marginTop: 4 }}>
-            My Orders
-          </Text>
+
+        <TouchableOpacity onPress={Prov_Requirement} style={styles.footerItem}>
+          <FontAwesome5 name="briefcase" size={24} color="black" />
+          <Text style={styles.footerText}>Job Opportunities</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={{ alignItems: "center" }}
-          onPress={() => navigation.navigate("MyProfile")}
-        >
-          <Icon name="person-outline" size={24} color="white" />
-          <Text style={{ color: "white", fontSize: 14, marginTop: 4 }}>
-            My Profile
-          </Text>
+        <TouchableOpacity style={styles.footerItem}>
+          <FontAwesome5 name="user" size={24} color="black" />
+          <Text style={styles.footerText}>My Profile</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.footerItem}>
+          <FontAwesome5 name="book" size={24} color="black" />
+          <Text style={styles.footerText}>Bookings</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleLogout} style={styles.footerItem}>
+          <FontAwesome5 name="sign-out-alt" size={24} color="black" />
+          <Text style={styles.footerText}>Logout</Text>
         </TouchableOpacity>
       </View>
+              
+      
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  scrollViewContent: {
+    flexGrow: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  logoImage: {
+    width: 160,
+    height: 100,
+    resizeMode: "contain",
+    alignItems: "center",
+    borderTopLeftRadius: 20,
+    borderBottomRightRadius: 20,
+  },
+  gridContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 8,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+  },
+  container: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 16,
+  },
+  profileImage: {
+    width: 40,
+    height: 40,
+    resizeMode: "cover",
+    borderRadius: 20,
+  },
+  serviceBlock: {
+    width: "40%",
+    aspectRatio: 1,
+    backgroundColor: "#F5F5F5",
+    borderRadius: 10,
+    margin: 8,
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 2,
+    borderColor: "#000000",
+  },
+  serviceIcon: {
+    width: "50%",
+    height: "50%",
+    resizeMode: "contain",
+  },
+  serviceName: {
+    marginTop: 8,
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  hamburgerMenu: {
+    padding: 5,
+  },
+  footer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    paddingVertical: 10,
+    backgroundColor: "#F5F5F5",
+  },
+  footerItem: {
+    alignItems: "center",
+  },
+  footerText: {
+    marginTop: 5,
+    fontSize: 12,
+  },
+});
+export default ServicesScreen;

@@ -7,8 +7,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './screens/HomeScreen';
 import WelcomeScreen from './screens/WelcomeScreen';
 import UserScreen from './screens/UserScreen';
-import ServiceProviderScreen from './screens/--ServiceProviderScreen';
-import ServicesScreen from './screens/ServicesScreen';
 import LoginScreen from './screens/LoginScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import Prov_Requirement from './screens/Prov_Requirement';
@@ -81,27 +79,16 @@ export default function App() {
           </>
         )}
         {/* Common screens */}
-        <Stack.Screen name="ServiceProvider" options={{ headerShown: false }} component={ServiceProviderScreen} />
         <Stack.Screen name="Prov_Requirement" options={{ headerShown: false }} component={Prov_Requirement} />
         <Stack.Screen name="ProviderForm"  component={ProviderForm} />
         <Stack.Screen name="Services" options={{ headerShown: false }} component={ServicesStackNavigator} />
 
         <Stack.Screen name="PrvdrDashboard" component={Prvdr_Dashboard} />
         <Stack.Screen name="UserDashboard" component={User_Dashboard} />
-
-
-       {/* <Stack.Screen name="Services" component={ServicesScreen} />
-        <Stack.Screen name="MyBookings" component={MyBookingsScreen} />
-        <Stack.Screen name="MyPreviousDeals" component={MyPreviousDealsScreen} />
-        <Stack.Screen name="JobOpportunities" component={JobOpportunitiesScreen} />
-        <Stack.Screen name="MyOrders" component={MyOrdersScreen} />
-        <Stack.Screen name="Logout" component={LogoutScreen} />*/}
       </Stack.Navigator>
 
 
        
-
-
     </NavigationContainer>
   );
 }
