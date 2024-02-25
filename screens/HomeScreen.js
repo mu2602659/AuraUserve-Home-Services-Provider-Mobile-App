@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import {View,Text,TouchableOpacity,StyleSheet,Image,ScrollView,} from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Image, ScrollView } from "react-native";
 import { signOut } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome5 } from "@expo/vector-icons";
+import WelcomeScreen from "./WelcomeScreen";
+import ServicesScreen from "./ServicesScreen";
 
-const ServicesScreen = () => {
+const HomeScreen = () => {
   const [userName, setUserName] = useState("");
   const navigation = useNavigation();
 
@@ -33,11 +35,18 @@ const ServicesScreen = () => {
   const handleUser = () => {
     navigation.navigate("UserScreen");
   };
-  
+const handleServiceProvider = () => {
+    navigation.navigate("ServiceProviderScreen");
+  };
+
   const Prov_Requirement = () => {
     // Navigate to the ServiceScreenProviderForm when the button is pressed
     navigation.navigate("Prov_Requirement");
   };
+const handleExploreOurServices = () => {
+    navigation.navigate("ServicesScreen");
+  };
+
   const [profileImage, setProfileImage] = useState(
     require("../assets/images/logoo.png")
   );
@@ -47,28 +56,14 @@ const ServicesScreen = () => {
     { id: '2', name: 'Clinical', displayName: 'Clinical', icon: require('../assets/icons/clinical.png') },
     { id: '3', name: 'Maintenance', displayName: 'Maintenance', icon: require('../assets/icons/maintenance.png') },
     { id: '4', name: 'Shifting', displayName: 'Shifting', icon: require('../assets/icons/shifting.png') },
-    { id: '6', name: 'Solar', displayName: 'Solar', icon: require('../assets/icons/solar.png') },
-    { id: '7', name: 'Cleaning', displayName: 'Cleaning', icon: require('../assets/icons/clean.png') },
-    { id: '8', name: 'Catering', displayName: 'Event Organization', icon: require('../assets/icons/wedding.png') },
-    { id: '9', name: 'Gardening', displayName: 'Gardening', icon: require('../assets/icons/garden.png') },
-    { id: '11', name: 'Security', displayName: 'Security', icon: require('../assets/icons/security.png') },
-    { id: '12', name: 'Washing', displayName: 'Vehicle Maintenance', icon: require('../assets/icons/vechile.png') },
-    { id: '13', name: 'HomeCare', displayName: 'HomeCare Solutions', icon: require('../assets/icons/shield.png') },
+    { id: '5', name: 'Solar', displayName: 'Solar', icon: require('../assets/icons/solar.png') },
+    { id: '6', name: 'Cleaning', displayName: 'Cleaning', icon: require('../assets/icons/clean.png') },
+    { id: '7', name: 'Catering', displayName: 'Event Organization', icon: require('../assets/icons/wedding.png') },
+    { id: '8', name: 'Gardening', displayName: 'Gardening', icon: require('../assets/icons/garden.png') },
+    { id: '9', name: 'Security', displayName: 'Security', icon: require('../assets/icons/security.png') },
+    { id: '10', name: 'Washing', displayName: 'Vehicle Maintenance', icon: require('../assets/icons/vechile.png') },
+    { id: '11', name: 'HomeCare', displayName: 'HomeCare Solutions', icon: require('../assets/icons/shield.png') },
   ];
-
-  const renderServiceBlock = (service) => (
-    <TouchableOpacity
-      key={service.id}
-      style={styles.serviceBlock}
-      onPress={() => {
-        console.log(`Navigating to ${service.name}`);
-        navigation.navigate(service.name);
-      }}
-    >
-      <Image source={service.icon} style={styles.serviceIcon} />
-      <Text style={styles.serviceName}>{service.displayName}</Text>
-    </TouchableOpacity>
-  );
 
   const handleProfileClick = () => {
     const newProfileImage =
@@ -78,56 +73,61 @@ const ServicesScreen = () => {
     setProfileImage(newProfileImage);
   };
 
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      
-      <View style={styles.header}>
-        {/* Hamburger Menu */}
-        <TouchableOpacity
-          style={styles.hamburgerMenu}
-          onPress={() => navigation.openDrawer()}
-        >
-          <FontAwesome5 name="bars" size={24} color="black" />
-        </TouchableOpacity>
+      <View style={styles.container}>
+        {/* Header section */}
+        <View style={styles.header}>
+          {/* Welcome Message with User Name */}
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            {/* Profile Picture */}
+            <TouchableOpacity onPress={handleProfileClick}>
+              <Image source={profileImage} style={styles.profileImage} />
+            </TouchableOpacity>
+            <Text style={{ fontSize: 16, marginLeft: 8 }}>Welcome, {userName}</Text>
+          </View>
 
-        {/* Profile Picture */}
-        <TouchableOpacity onPress={handleProfileClick}>
-          <Image source={profileImage} style={styles.profileImage} />
-        </TouchableOpacity>
-      </View>
+          {/* Cart Icon */}
+          <TouchableOpacity onPress={() => {/* Add your cart functionality */}}>
+            <FontAwesome5 name="shopping-cart" size={24} color="black" />
+          </TouchableOpacity>
 
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
-        {/* Your logo image */}
-        <Image
-          source={require("../assets/images/logoo.png")}
-          style={styles.logoImage}
-        />
-        <TouchableOpacity
-          onPress={() => navigation.navigate("UserDashboard")}
-          style={{
-            backgroundColor: "#FFD700",
-            padding: 15,
-            borderRadius: 10,
-            alignItems: "center",
-            marginTop: 20,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 18,
-              fontWeight: "bold",
-              textAlign: "center",
-              color: "#555555",
-            }}
+          {/* Hamburger Menu */}
+          <TouchableOpacity
+            style={styles.hamburgerMenu}
+            onPress={() => navigation.openDrawer()}
           >
-            Deals
-          </Text>
-        </TouchableOpacity>
-        <View style={styles.gridContainer}>
-          {servicesData.map((service) => renderServiceBlock(service))}
+            <FontAwesome5 name="bars" size={24} color="black" />
+          </TouchableOpacity>
         </View>
-      </ScrollView>
+
+        {/* Our Services and See All Link */}
+        <View style={styles.servicesHeader}>
+          <Text style={styles.ourServicesText}>Our Services</Text>
+          <TouchableOpacity
+            style={styles.seeAllLink}
+            onPress={() => navigation.navigate("Services")}
+          >
+            <Text style={styles.seeAllText}>See All</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.servicesContainer}>
+          <ScrollView horizontal contentContainerStyle={styles.scrollViewContent}>
+            {/* Services */}
+            {servicesData.map((service) => (
+              <TouchableOpacity
+                key={service.id}
+                style={styles.serviceBlock}
+                onPress={() => handleServicesClick(service)}
+              >
+                <Image source={service.icon} style={styles.serviceIcon} />
+                <Text style={styles.serviceName}>{service.displayName}</Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
+      </View>
 
       {/* Footer Navigation */}
       <View style={styles.footer}>
@@ -140,53 +140,25 @@ const ServicesScreen = () => {
           <FontAwesome5 name="briefcase" size={24} color="black" />
           <Text style={styles.footerText}>Job Opportunities</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.footerItem}>
-          <FontAwesome5 name="user" size={24} color="black" />
-          <Text style={styles.footerText}>My Profile</Text>
-        </TouchableOpacity>
+        
         <TouchableOpacity style={styles.footerItem}>
           <FontAwesome5 name="book" size={24} color="black" />
           <Text style={styles.footerText}>Bookings</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.footerItem}>
+          <FontAwesome5 name="user" size={24} color="black" />
+          <Text style={styles.footerText}>My Profile</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={handleLogout} style={styles.footerItem}>
           <FontAwesome5 name="sign-out-alt" size={24} color="black" />
           <Text style={styles.footerText}>Logout</Text>
         </TouchableOpacity>
       </View>
-              
-      
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#FFFFFF",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  scrollViewContent: {
-    flexGrow: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  logoImage: {
-    width: 160,
-    height: 100,
-    resizeMode: "contain",
-    alignItems: "center",
-    borderTopLeftRadius: 20,
-    borderBottomRightRadius: 20,
-  },
-  gridContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 8,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-around",
-  },
   container: {
     flex: 1,
     backgroundColor: "#FFFFFF",
@@ -203,30 +175,52 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     borderRadius: 20,
   },
-  serviceBlock: {
-    width: "40%",
-    aspectRatio: 1,
-    backgroundColor: "#F5F5F5",
+  seeAllLink: {
+    paddingHorizontal: 12,
+    paddingVertical: 8,
     borderRadius: 10,
-    margin: 8,
-    justifyContent: "center",
+    backgroundColor: "#F5F5F5",
+  },
+  seeAllText: {
+    fontSize: 14,
+    fontWeight: "bold",
+    color: "#555555",
+  },
+  servicesHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
-    borderWidth: 2,
-    borderColor: "#000000",
+    paddingHorizontal: 16,
+    marginTop: 16,
+  },
+  ourServicesText: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  servicesContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+  },
+  serviceBlock: {
+    alignItems: "center",
+    marginHorizontal: 8,
+    marginVertical: 16,
   },
   serviceIcon: {
-    width: "50%",
-    height: "50%",
+    width: 50,
+    height: 50,
     resizeMode: "contain",
   },
   serviceName: {
     marginTop: 8,
-    fontSize: 16,
+    fontSize: 12,
     fontWeight: "bold",
     textAlign: "center",
   },
   hamburgerMenu: {
     padding: 5,
+    marginLeft: -103,
   },
   footer: {
     flexDirection: "row",
@@ -243,4 +237,5 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
 });
-export default ServicesScreen;
+
+export default HomeScreen;

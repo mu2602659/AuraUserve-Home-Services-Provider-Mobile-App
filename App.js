@@ -12,6 +12,7 @@ import SignUpScreen from './screens/SignUpScreen';
 import Prov_Requirement from './screens/Prov_Requirement';
 import ProviderForm from './screens/ProviderForm';
 import BookingScreen from './screens/BookingScreen';
+import ServicesScreen from './screens/ServicesScreen';
 
 // Import other services
 import BeautySaloonScreen from './Services/BeautySaloonScreen';
@@ -41,6 +42,7 @@ const ServicesStack = createNativeStackNavigator();
 
 const ServicesStackNavigator = () => (
   <ServicesStack.Navigator>
+
     <ServicesStack.Screen name="ServicesScreen" options={{ headerShown: false }} component={ServicesScreen} />
     <ServicesStack.Screen name="BeautySaloon" component={BeautySaloonScreen} />
     <ServicesStack.Screen name="Catering" component={CateringScreen} />
@@ -79,6 +81,7 @@ export default function App() {
           </>
         )}
         {/* Common screens */}
+
         <Stack.Screen name="Prov_Requirement" options={{ headerShown: false }} component={Prov_Requirement} />
         <Stack.Screen name="ProviderForm"  component={ProviderForm} />
         <Stack.Screen name="Services" options={{ headerShown: false }} component={ServicesStackNavigator} />
