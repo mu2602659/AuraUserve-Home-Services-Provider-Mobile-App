@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, Image, StyleSheet, ScrollView } from "react-native";
 import { signOut } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome5 } from "@expo/vector-icons";
-import WelcomeScreen from "./WelcomeScreen";
-import ServicesScreen from "./ServicesScreen";
+import HeaderComponent from "./HeaderComponent";
+import FooterComponent from "./FooterComponent";
 
 const HomeScreen = () => {
   const [userName, setUserName] = useState("");
+  const [profileImage, setProfileImage] = useState(require("../assets/images/logoo.png"));
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -32,25 +33,20 @@ const HomeScreen = () => {
     await signOut(auth);
   };
 
-  const handleUser = () => {
-    navigation.navigate("UserScreen");
-  };
-const handleServiceProvider = () => {
-    navigation.navigate("ServiceProviderScreen");
+  const handleProfileClick = () => {
+    const newProfileImage =
+      profileImage === require("../assets/images/logoo.png")
+        ? require("../assets/images/logoo.png")
+        : require("../assets/images/logoo.png");
+    setProfileImage(newProfileImage);
   };
 
   const Prov_Requirement = () => {
     // Navigate to the ServiceScreenProviderForm when the button is pressed
     navigation.navigate("Prov_Requirement");
   };
-const handleExploreOurServices = () => {
-    navigation.navigate("ServicesScreen");
-  };
 
-  const [profileImage, setProfileImage] = useState(
-    require("../assets/images/logoo.png")
-  );
-
+  // Services Data
   const servicesData = [
     { id: '1', name: 'BeautySaloon', displayName: 'Beauty Saloon', icon: require('../assets/icons/beauty.png') },
     { id: '2', name: 'Clinical', displayName: 'Clinical', icon: require('../assets/icons/clinical.png') },
@@ -65,61 +61,35 @@ const handleExploreOurServices = () => {
     { id: '11', name: 'HomeCare', displayName: 'HomeCare Solutions', icon: require('../assets/icons/shield.png') },
   ];
 
-  const handleProfileClick = () => {
-    const newProfileImage =
-      profileImage === require("../assets/images/logoo.png")
-        ? require("../assets/images/logoo.png")
-        : require("../assets/images/logoo.png");
-    setProfileImage(newProfileImage);
-  };
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
-        {/* Header section */}
-        <View style={styles.header}>
-          {/* Welcome Message with User Name */}
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            {/* Profile Picture */}
-            <TouchableOpacity onPress={handleProfileClick}>
-              <Image source={profileImage} style={styles.profileImage} />
-            </TouchableOpacity>
-            <Text style={{ fontSize: 16, marginLeft: 8 }}>Welcome, {userName}</Text>
-          </View>
-
-          {/* Cart Icon */}
-          <TouchableOpacity onPress={() => {/* Add your cart functionality */}}>
-            <FontAwesome5 name="shopping-cart" size={24} color="black" />
-          </TouchableOpacity>
-
-          {/* Hamburger Menu */}
-          <TouchableOpacity
-            style={styles.hamburgerMenu}
-            onPress={() => navigation.openDrawer()}
-          >
-            <FontAwesome5 name="bars" size={24} color="black" />
-          </TouchableOpacity>
-        </View>
+        <HeaderComponent 
+          userName={userName} 
+          profileImage={profileImage} 
+          handleProfileClick={handleProfileClick} // Pass handleProfileClick function to HeaderComponent
+          navigation={navigation} 
+        />
 
         {/* Our Services and See All Link */}
-        <View style={styles.servicesHeader}>
-          <Text style={styles.ourServicesText}>Our Services</Text>
-          <TouchableOpacity
-            style={styles.seeAllLink}
-            onPress={() => navigation.navigate("Services")}
-          >
-            <Text style={styles.seeAllText}>See All</Text>
-          </TouchableOpacity>
-        </View>
+        <View style={styles.content}>
+          <View style={styles.servicesHeader}>
+            <Text style={styles.ourServicesText}>Our Services</Text>
+            <TouchableOpacity
+              style={styles.seeAllLink}
+              onPress={() => navigation.navigate("Services")}
+            >
+              <Text style={styles.seeAllText}>See All</Text>
+            </TouchableOpacity>
+          </View>
 
-        <View style={styles.servicesContainer}>
           <ScrollView horizontal contentContainerStyle={styles.scrollViewContent}>
             {/* Services */}
             {servicesData.map((service) => (
               <TouchableOpacity
                 key={service.id}
                 style={styles.serviceBlock}
-                onPress={() => handleServicesClick(service)}
+                onPress={() => navigation.navigate(service.name)} // Navigate to service screen
               >
                 <Image source={service.icon} style={styles.serviceIcon} />
                 <Text style={styles.serviceName}>{service.displayName}</Text>
@@ -127,32 +97,8 @@ const handleExploreOurServices = () => {
             ))}
           </ScrollView>
         </View>
-      </View>
 
-      {/* Footer Navigation */}
-      <View style={styles.footer}>
-        <TouchableOpacity style={styles.footerItem}>
-          <FontAwesome5 name="home" size={24} color="black" />
-          <Text style={styles.footerText}>Home</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={Prov_Requirement} style={styles.footerItem}>
-          <FontAwesome5 name="briefcase" size={24} color="black" />
-          <Text style={styles.footerText}>Job Opportunities</Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity style={styles.footerItem}>
-          <FontAwesome5 name="book" size={24} color="black" />
-          <Text style={styles.footerText}>Bookings</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.footerItem}>
-          <FontAwesome5 name="user" size={24} color="black" />
-          <Text style={styles.footerText}>My Profile</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleLogout} style={styles.footerItem}>
-          <FontAwesome5 name="sign-out-alt" size={24} color="black" />
-          <Text style={styles.footerText}>Logout</Text>
-        </TouchableOpacity>
+        <FooterComponent Prov_Requirement={Prov_Requirement} handleLogout={handleLogout} />
       </View>
     </SafeAreaView>
   );
@@ -163,17 +109,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FFFFFF",
   },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: 16,
-  },
-  profileImage: {
-    width: 40,
-    height: 40,
-    resizeMode: "cover",
-    borderRadius: 20,
+  content: {
+    flex: 1,
   },
   seeAllLink: {
     paddingHorizontal: 12,
@@ -217,24 +154,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "bold",
     textAlign: "center",
-  },
-  hamburgerMenu: {
-    padding: 5,
-    marginLeft: -103,
-  },
-  footer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    paddingVertical: 10,
-    backgroundColor: "#F5F5F5",
-  },
-  footerItem: {
-    alignItems: "center",
-  },
-  footerText: {
-    marginTop: 5,
-    fontSize: 12,
   },
 });
 
