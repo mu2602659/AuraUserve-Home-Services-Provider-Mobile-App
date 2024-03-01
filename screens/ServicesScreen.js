@@ -1,14 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome5 } from "@expo/vector-icons";
-import HeaderComponent from "./HeaderComponent";
-import FooterComponent from "./FooterComponent";
 
 const ServicesScreen = () => {
   const navigation = useNavigation();
-  const [profileImage, setProfileImage] = useState(require("../assets/images/logoo.png"));
   const servicesData = [
     { id: '1', name: 'BeautySaloon', displayName: 'Beauty Saloon', icon: require('../assets/icons/beauty.png') },
     { id: '2', name: 'Clinical', displayName: 'Clinical', icon: require('../assets/icons/clinical.png') },
@@ -22,7 +19,6 @@ const ServicesScreen = () => {
     { id: '10', name: 'Washing', displayName: 'Vehicle Maintenance', icon: require('../assets/icons/vechile.png') },
     { id: '11', name: 'HomeCare', displayName: 'HomeCare Solutions', icon: require('../assets/icons/shield.png') },
   ];
-
   const renderServiceBlock = (service) => (
     <TouchableOpacity
       key={service.id}
@@ -37,24 +33,21 @@ const ServicesScreen = () => {
     </TouchableOpacity>
   );
 
-  const handleProfileClick = () => {
-    const newProfileImage =
-      profileImage === require("../assets/images/logoo.png")
-        ? require("../assets/images/logoo.png")
-        : require("../assets/images/logoo.png");
-    setProfileImage(newProfileImage);
-  };
-
   return (
     <SafeAreaView style={styles.container}>
-      <HeaderComponent />
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <FontAwesome5 name="arrow-left" size={24} color="black" />
+        </TouchableOpacity>
+        <Text style={styles.headerText}>Services</Text>
+        <View style={{ width: 24 }} />
+      </View>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <Image source={require("../assets/images/logoo.png")} style={styles.logoImage} />
         <View style={styles.gridContainer}>
           {servicesData.map((service) => renderServiceBlock(service))}
         </View>
       </ScrollView>
-      <FooterComponent />
     </SafeAreaView>
   );
 };
@@ -63,6 +56,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#FFFFFF",
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 16,
+  },
+  headerText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
   },
   scrollViewContent: {
     flexGrow: 1,

@@ -20,9 +20,7 @@ import CateringScreen from './Services/CateringScreen';
 import MaintenanceScreen from './Services/MaintenanceScreen';
 import ShiftingScreen from './Services/ShiftingScreen';
 import SolarScreen from './Services/SolarScreen';
-import RenovationScreen from './Services/RenovationScreen';
 import SecurityScreen from './Services/SecurityScreen';
-import PestControlScreen from './Services/PestControlScreen';
 import GardeningScreen from './Services/GardeningScreen';
 import ClinicalScreen from './Services/ClinicalScreen';
 import WashingScreen from './Services/WashingScreen';
@@ -49,9 +47,7 @@ const ServicesStackNavigator = () => (
     <ServicesStack.Screen name="Maintenance" component={MaintenanceScreen} />
     <ServicesStack.Screen name="Shifting" component={ShiftingScreen} />
     <ServicesStack.Screen name="Solar" component={SolarScreen} />
-    <ServicesStack.Screen name="Renovation" component={RenovationScreen} />
     <ServicesStack.Screen name="Security" component={SecurityScreen} />
-    <ServicesStack.Screen name="PestControl" component={PestControlScreen} />
     <ServicesStack.Screen name="Gardening" component={GardeningScreen} />
     <ServicesStack.Screen name="Clinical" component={ClinicalScreen} />
     <ServicesStack.Screen name="Washing" component={WashingScreen} />
