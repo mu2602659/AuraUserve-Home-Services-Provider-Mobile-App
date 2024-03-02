@@ -1,23 +1,46 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native'; // Import ScrollView
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ArrowLeftIcon } from 'react-native-heroicons/solid';
 import { useNavigation } from '@react-navigation/native';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { createUserWithEmailAndPassword, sendEmailVerification, onAuthStateChanged } from 'firebase/auth'; // Changed import to include onAuthStateChanged
+import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth'; // Import for Google sign-in
 import { auth } from '../config/firebase';
 import { themeColors } from '../theme';
+import VerificationComponent from './VerificationComponent';
+
 
 export default function SignUpScreen() {
     const navigation = useNavigation();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [emailError, setEmailError] = useState(''); // State to hold email error message
+    const [isEmailVerified, setIsEmailVerified] = useState(false); // State to track email verification status
+
+    // Check if the user is already signed in and verified
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user && user.emailVerified) {
+                setIsEmailVerified(true);
+            }
+        });
+
+        return () => unsubscribe();
+    }, []);
 
     const handleSignUp = async () => {
         if (email && password) {
+            if (!validateEmail(email)) {
+                setEmailError('Invalid email address');
+                return;
+            }
             try {
-                await createUserWithEmailAndPassword(auth, email, password);
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                // Send verification email
+                await sendEmailVerification(auth.currentUser); // Added to send verification email
+                console.log('Verification email sent.');
+                // Optionally, you can redirect the user to a screen indicating that the verification email has been sent.
             } catch (error) {
                 console.log('Error: ', error.message);
             }
@@ -34,18 +57,32 @@ export default function SignUpScreen() {
         }
     };
 
+    // Function to validate email format
+    const validateEmail = (email) => {
+        // Regular expression for validating email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
+
+    // Redirect user to the next screen if email is verified
+    useEffect(() => {
+        if (isEmailVerified) {
+            navigation.navigate('HomeScreen'); // Replace 'NextScreen' with the name of your next screen
+        }
+    }, [isEmailVerified]);
+
     return (
         <ScrollView style={{ flex: 1 }}>
             <View style={{ flex: 1, backgroundColor: themeColors.bg }}>
                 <SafeAreaView style={{ flex: 1 }}>
                     <View className="flex-row justify-start mt-4">
-                    <TouchableOpacity
-                        onPress={() => navigation.goBack()}
-                        className="bg-yellow-400 p-2 rounded-tr-2xl rounded-bl-2xl ml-4"
-                    >
-                        <ArrowLeftIcon size="20" color="black" />
-                    </TouchableOpacity>
-                </View>
+                        <TouchableOpacity
+                            onPress={() => navigation.goBack()}
+                            className="bg-yellow-400 p-2 rounded-tr-2xl rounded-bl-2xl ml-4"
+                        >
+                            <ArrowLeftIcon size="20" color="black" />
+                        </TouchableOpacity>
+                    </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                         <Image source={require('../assets/images/welcome.png')} style={{ width: 150, height: 150 }} />
                     </View>
@@ -67,27 +104,31 @@ export default function SignUpScreen() {
                             onChangeText={value => setEmail(value)}
                             placeholder='Enter Email'
                         />
+                        {emailError ? <Text style={{ color: 'red', marginLeft: 20 }}>{emailError}</Text> : null}
+
                         <Text style={{ color: 'gray', marginLeft: 20 }}>Password</Text>
                         <TextInput
-                            style={{ backgroundColor: '#F3F4F6', padding: 20, borderRadius: 20, marginBottom: 20 }}
+                            style={{ backgroundColor: '#F3F4F6', padding: 20, borderRadius: 20, marginBottom: 10 }}
                             secureTextEntry
                             value={password}
                             onChangeText={value => setPassword(value)}
                             placeholder='Enter Password'
                         />
+
                         <TouchableOpacity
                             style={{ backgroundColor: '#FFD700', paddingVertical: 15, borderRadius: 20 }}
                             onPress={handleSignUp}
                         >
                             <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center', color: '#4B5563' }}>Sign Up</Text>
                         </TouchableOpacity>
+
                         <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 20 }}>
                             <Text style={{ color: 'gray', fontWeight: 'bold' }}>Already have an account?</Text>
                             <TouchableOpacity onPress={() => navigation.navigate('Login')}>
                                 <Text style={{ fontWeight: 'bold', color: '#FFD700' }}> Login</Text>
                             </TouchableOpacity>
                         </View>
-                    
+
                     <Text style={{ fontSize: 20, color: 'gray', fontWeight: 'bold', textAlign: 'center', marginTop: 20 }}>Or</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 20 }}>
                         <TouchableOpacity 
@@ -107,7 +148,6 @@ export default function SignUpScreen() {
                         </TouchableOpacity>
                     </View>
                     </View>
-                    
                 </View>
             </View>
         </ScrollView>

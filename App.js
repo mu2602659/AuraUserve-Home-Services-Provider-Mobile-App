@@ -2,12 +2,12 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-
 // Import screens
 import HomeScreen from './screens/HomeScreen';
 import WelcomeScreen from './screens/WelcomeScreen';
 import UserScreen from './screens/UserScreen';
 import LoginScreen from './screens/LoginScreen';
+import VerificationComponent from './screens/VerificationComponent';
 import SignUpScreen from './screens/SignUpScreen';
 import Prov_Requirement from './screens/Prov_Requirement';
 import ProviderForm from './screens/ProviderForm';
@@ -73,6 +73,7 @@ export default function App() {
             <Stack.Screen name="Welcome" options={{ headerShown: false }} component={WelcomeScreen} />
             <Stack.Screen name="User" options={{ headerShown: false }} component={UserScreen} />
             <Stack.Screen name="Login" options={{ headerShown: false }} component={LoginScreen} />
+            <Stack.Screen name="VerificationComponent" options={{ headerShown: false }} component={VerificationComponent} />
             <Stack.Screen name="SignUp" options={{ headerShown: false }} component={SignUpScreen} />
           </>
         )}
