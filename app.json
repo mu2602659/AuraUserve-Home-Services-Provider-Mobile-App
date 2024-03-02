@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "AuraUserve",
-    "slug": "AuraUserve",
+    "slug": "aurauserve",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -9,7 +9,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "black"
+      "backgroundColor": "#434343"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -21,7 +21,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/splash.png",
-        "backgroundColor": "black"
+        "backgroundColor": "#434343"
       },
       "package": "com.aurauserve.AuraUserve"
     },
@@ -30,8 +30,9 @@
     },
     "extra": {
       "eas": {
-        "projectId": "72bbb6ca-8ac0-4bcf-a579-c0010a6dc997"
+        "projectId": "d4f7841c-263b-489e-bd78-66bc204016d7"
       }
-    }
+    },
+    "owner": "aurauserve"
   }
 }
