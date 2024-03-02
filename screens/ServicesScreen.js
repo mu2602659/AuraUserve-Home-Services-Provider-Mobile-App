@@ -77,6 +77,18 @@ const ServicesScreen = () => {
           style={styles.logoImage}
         />
         <TouchableOpacity
+          onPress={() => navigation.navigate('PrvdrDashboard')}
+          style={{
+            backgroundColor: '#FFD700',
+            padding: 15,
+            borderRadius: 10,
+            alignItems: 'center',
+            marginTop: 20,
+          }}
+        >
+          <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'black' }}>Go to Provider Dashboard</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
           onPress={() => navigation.navigate("UserDashboard")}
           style={{
             backgroundColor: "#FFD700",
