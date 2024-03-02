@@ -2,12 +2,12 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-
 // Import screens
 import HomeScreen from './screens/HomeScreen';
 import WelcomeScreen from './screens/WelcomeScreen';
 import UserScreen from './screens/UserScreen';
 import LoginScreen from './screens/LoginScreen';
+import VerificationComponent from './screens/VerificationComponent';
 import SignUpScreen from './screens/SignUpScreen';
 import Prov_Requirement from './screens/Prov_Requirement';
 import ProviderForm from './screens/ProviderForm';
@@ -20,9 +20,7 @@ import CateringScreen from './Services/CateringScreen';
 import MaintenanceScreen from './Services/MaintenanceScreen';
 import ShiftingScreen from './Services/ShiftingScreen';
 import SolarScreen from './Services/SolarScreen';
-import RenovationScreen from './Services/RenovationScreen';
 import SecurityScreen from './Services/SecurityScreen';
-import PestControlScreen from './Services/PestControlScreen';
 import GardeningScreen from './Services/GardeningScreen';
 import ClinicalScreen from './Services/ClinicalScreen';
 import WashingScreen from './Services/WashingScreen';
@@ -49,9 +47,7 @@ const ServicesStackNavigator = () => (
     <ServicesStack.Screen name="Maintenance" component={MaintenanceScreen} />
     <ServicesStack.Screen name="Shifting" component={ShiftingScreen} />
     <ServicesStack.Screen name="Solar" component={SolarScreen} />
-    <ServicesStack.Screen name="Renovation" component={RenovationScreen} />
     <ServicesStack.Screen name="Security" component={SecurityScreen} />
-    <ServicesStack.Screen name="PestControl" component={PestControlScreen} />
     <ServicesStack.Screen name="Gardening" component={GardeningScreen} />
     <ServicesStack.Screen name="Clinical" component={ClinicalScreen} />
     <ServicesStack.Screen name="Washing" component={WashingScreen} />
@@ -77,6 +73,7 @@ export default function App() {
             <Stack.Screen name="Welcome" options={{ headerShown: false }} component={WelcomeScreen} />
             <Stack.Screen name="User" options={{ headerShown: false }} component={UserScreen} />
             <Stack.Screen name="Login" options={{ headerShown: false }} component={LoginScreen} />
+            <Stack.Screen name="VerificationComponent" options={{ headerShown: false }} component={VerificationComponent} />
             <Stack.Screen name="SignUp" options={{ headerShown: false }} component={SignUpScreen} />
           </>
         )}

@@ -7,35 +7,33 @@ import { useNavigation } from '@react-navigation/native';
 const ClinicalScreen = () => {
 
   const ClinicalData = [
-    { id: '1', name: 'BeautySaloonScreen', displayName: 'Primary Care', icon: require('../assets/icons/healthcare.png') },
-    { id: '2', name: 'ShiftingScreen', displayName: 'Vaccination', icon: require('../assets/icons/vaccine.png') },
-    { id: '3', name: 'PestControlScreen', displayName: 'Gynecologist', icon: require('../assets/icons/gynecologist.png') },
-    { id: '4', name: 'SolarScreen', displayName: 'Pharmacy', icon: require('../assets/icons/pharmacy.png') },
-    { id: '5', name: 'CleaningScreen', displayName: 'Homeopathic Specialist', icon: require('../assets/icons/homeo.png') },
-    { id: '6', name: 'CateringScreen', displayName: 'Child Specialist', icon: require('../assets/icons/protection.png') },
+    { id: '1', name: 'PrimaryCareScreen', displayName: 'Primary Care', icon: require('../assets/icons/healthcare.png') },
+    { id: '2', name: 'VaccinationScreen', displayName: 'Vaccination', icon: require('../assets/icons/vaccine.png') },
+    { id: '3', name: 'GynecologistScreen', displayName: 'Gynecologist', icon: require('../assets/icons/gynecologist.png') },
+    { id: '4', name: 'PharmacyScreen', displayName: 'Pharmacy', icon: require('../assets/icons/pharmacy.png') },
+    { id: '5', name: 'HomeopathicSpecialistScreen', displayName: 'Homeopathic Specialist', icon: require('../assets/icons/homeo.png') },
+    { id: '6', name: 'ChildSpecialistScreen', displayName: 'Child Specialist', icon: require('../assets/icons/protection.png') },
    
   ];
-  const renderServiceBlock = (service) => (
-    <TouchableOpacity
-      key={service.id}
-      style={styles.serviceBlock}
-      onPress={() => {
-        console.log(`Navigating to ${service.name}`);
-        navigation.navigate(service.name);
-      }}
-    >
+ const renderServiceBlock = (service) => (
+  <TouchableOpacity
+    key={service.id}
+    style={styles.serviceBlock}
+    onPress={() => {
+      console.log(`Navigating to ${service.name}`);
+      navigation.navigate(service.name);
+    }}
+  >
+    <View style={styles.serviceContent}>
       <Image source={service.icon} style={styles.serviceIcon} />
       <Text style={styles.serviceName}>{service.displayName}</Text>
-    </TouchableOpacity>
-  );
-
+    </View>
+  </TouchableOpacity>
+);
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-        <View style={styles.header}>
-          {/* Your logo image goes here */}
-          <Image source={require('../assets/images/logoo.png')} style={styles.logoImage} />
-        </View>
+       
         <View style={styles.gridContainer}>
           {ClinicalData.map((service) => renderServiceBlock(service))}
         </View>
@@ -52,40 +50,39 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
   },
-  logoImage: {
-    width: 190,
-    height: 120,
-    resizeMode: 'contain',
-    borderTopLeftRadius: 40, // Adjust the value as needed
-    borderBottomRightRadius: 40, // Adjust the value as needed
-  },
+ 
   gridContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
     justifyContent: 'space-around',
     padding: 8,
   },
   serviceBlock: {
-    width: '40%',
-    aspectRatio: 1,
+    width: '100%',
+    aspectRatio: 12/3,
     backgroundColor: '#F5F5F5',
     borderRadius: 10,
-    margin: 8,
+    marginVertical: 8, // Adjust vertical margin as needed
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 2,
     borderColor: '#000000',
   },
-  serviceIcon: {
-    width: '50%',
-    height: '50%',
-    resizeMode: 'contain',
+  serviceContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
+ serviceIcon: {
+  width: 50, // Example width value in pixels
+  height: 50, // Example height value in pixels
+  resizeMode: 'contain',
+  marginLeft: 30,
+},
+
   serviceName: {
-    marginTop: 8,
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
+    flex: 1,
   },
 });
 

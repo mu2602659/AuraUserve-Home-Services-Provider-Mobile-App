@@ -7,34 +7,33 @@ import { useNavigation } from '@react-navigation/native';
 const HomeCareScreen = () => {
 
   const HomeCareData = [
-    { id: '1', name: 'BeautySaloonScreen', displayName: 'Tailoring', icon: require('../assets/icons/headlight.png') },
-    { id: '2', name: 'BeautySaloonScreen', displayName: 'Care Taker', icon: require('../assets/icons/oil.png') },
-     { id: '3', name: 'BeautySaloonScreen', displayName: 'Maid', icon: require('../assets/icons/motorcy.png') },
-    { id: '4', name: 'BeautySaloonScreen', displayName: 'Chef', icon: require('../assets/icons/wiper.png') },
+    { id: '1', name: 'TailoringScreen', displayName: 'Tailoring', icon: require('../assets/icons/headlight.png') },
+    { id: '2', name: 'CareTakerScreen', displayName: 'Care Taker', icon: require('../assets/icons/oil.png') },
+     { id: '3', name: 'MaidScreen', displayName: 'Maid', icon: require('../assets/icons/motorcy.png') },
+    { id: '4', name: 'ChefScreen', displayName: 'Chef', icon: require('../assets/icons/wiper.png') },
     
     // Add more services as needed
   ];
-  const renderServiceBlock = (service) => (
-    <TouchableOpacity
-      key={service.id}
-      style={styles.serviceBlock}
-      onPress={() => {
-        console.log(`Navigating to ${service.name}`);
-        navigation.navigate(service.name);
-      }}
-    >
+ const renderServiceBlock = (service) => (
+  <TouchableOpacity
+    key={service.id}
+    style={styles.serviceBlock}
+    onPress={() => {
+      console.log(`Navigating to ${service.name}`);
+      navigation.navigate(service.name);
+    }}
+  >
+    <View style={styles.serviceContent}>
       <Image source={service.icon} style={styles.serviceIcon} />
       <Text style={styles.serviceName}>{service.displayName}</Text>
-    </TouchableOpacity>
-  );
+    </View>
+  </TouchableOpacity>
+);
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-        <View style={styles.header}>
-          {/* Your logo image goes here */}
-          <Image source={require('../assets/images/logoo.png')} style={styles.logoImage} />
-        </View>
+       
         <View style={styles.gridContainer}>
           {HomeCareData.map((service) => renderServiceBlock(service))}
         </View>
@@ -51,41 +50,38 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
   },
-  logoImage: {
-    width: 190,
-    height: 120,
-    resizeMode: 'contain',
-    borderTopLeftRadius: 40, // Adjust the value as needed
-    borderBottomRightRadius: 40, // Adjust the value as needed
-  },
   gridContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
     justifyContent: 'space-around',
     padding: 8,
   },
   serviceBlock: {
-    width: '40%',
-    aspectRatio: 1,
+    width: '100%',
+    aspectRatio: 12/3,
     backgroundColor: '#F5F5F5',
     borderRadius: 10,
-    margin: 8,
+    marginVertical: 8, // Adjust vertical margin as needed
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 2,
     borderColor: '#000000',
   },
-  serviceIcon: {
-    width: '50%',
-    height: '50%',
-    resizeMode: 'contain',
+  serviceContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
+ serviceIcon: {
+  width: 50, // Example width value in pixels
+  height: 50, // Example height value in pixels
+  resizeMode: 'contain',
+  marginLeft: 30,
+},
+
   serviceName: {
-    marginTop: 8,
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
+    flex: 1,
   },
 });
-
 export default HomeCareScreen;

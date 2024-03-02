@@ -7,39 +7,37 @@ import { useNavigation } from '@react-navigation/native';
 const MaintenanceScreen = () => {
 
   const MaintenanceData = [
-    { id: '1', name: 'BeautySaloonScreen', displayName: 'Electric Services', icon: require('../assets/icons/electrical-service.png') },
-    { id: '2', name: 'MaintenanceScreen', displayName: 'Roofing services', icon: require('../assets/icons/roof.png') },
-    { id: '3', name: 'PestControlScreen', displayName: 'Flooring Services', icon: require('../assets/icons/floor.png') },
-    { id: '4', name: 'CleaningScreen', displayName: 'Appliance Repair', icon: require('../assets/icons/electric-appliance.png') },
-    { id: '5', name: 'CateringScreen', displayName: 'AC Maintenance', icon: require('../assets/icons/air-conditioner.png') },
-    { id: '6', name: 'BeautySaloonScreen', displayName: 'House Renovation', icon: require('../assets/icons/revo.png') },
-    { id: '7', name: 'PestControlScreen', displayName: 'Interior Painting and Wallpapering', icon: require('../assets/icons/wallpaper.png') },
-    { id: '8', name: 'SolarScreen', displayName: 'Windows and Doors Replacement', icon: require('../assets/icons/window.png') },
-    { id: '9', name: 'PestControlScreen', displayName: 'Aluminium, Glass', icon: require('../assets/icons/aluminium.png') },
-    { id: '10', name: 'SolarScreen', displayName: 'Welding', icon: require('../assets/icons/welding.png') },
+    { id: '1', name: 'ElectricServicesScreen', displayName: 'Electric Services', icon: require('../assets/icons/electrical-service.png') },
+    { id: '2', name: 'RoofingServicesScreen', displayName: 'Roofing services', icon: require('../assets/icons/roof.png') },
+    { id: '3', name: 'FlooringServicesScreen', displayName: 'Flooring Services', icon: require('../assets/icons/floor.png') },
+    { id: '4', name: 'ApplianceRepairScreen', displayName: 'Appliance Repair', icon: require('../assets/icons/electric-appliance.png') },
+    { id: '5', name: 'ACMaintenanceScreen', displayName: 'AC Maintenance', icon: require('../assets/icons/air-conditioner.png') },
+    { id: '6', name: 'HouseRenovationScreen', displayName: 'House Renovation', icon: require('../assets/icons/revo.png') },
+    { id: '7', name: 'IPWScreen', displayName: 'Interior Painting and Wallpapering', icon: require('../assets/icons/wallpaper.png') },
+    { id: '8', name: 'WDRScreen', displayName: 'Windows and Doors Replacement', icon: require('../assets/icons/window.png') },
+    { id: '9', name: 'AluminiumGlassScreen', displayName: 'Aluminium, Glass', icon: require('../assets/icons/aluminium.png') },
+    { id: '10', name: 'WeldingScreen', displayName: 'Welding', icon: require('../assets/icons/welding.png') },
   
   ];
   const renderServiceBlock = (service) => (
-    <TouchableOpacity
-      key={service.id}
-      style={styles.serviceBlock}
-      onPress={() => {
-        console.log(`Navigating to ${service.name}`);
-        navigation.navigate(service.name);
-      }}
-    >
+  <TouchableOpacity
+    key={service.id}
+    style={styles.serviceBlock}
+    onPress={() => {
+      console.log(`Navigating to ${service.name}`);
+      navigation.navigate(service.name);
+    }}
+  >
+    <View style={styles.serviceContent}>
       <Image source={service.icon} style={styles.serviceIcon} />
       <Text style={styles.serviceName}>{service.displayName}</Text>
-    </TouchableOpacity>
-  );
-
+    </View>
+  </TouchableOpacity>
+);
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-        <View style={styles.header}>
-          {/* Your logo image goes here */}
-          <Image source={require('../assets/images/logoo.png')} style={styles.logoImage} />
-        </View>
+       
         <View style={styles.gridContainer}>
           {MaintenanceData.map((service) => renderServiceBlock(service))}
         </View>
@@ -56,40 +54,38 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
   },
-  logoImage: {
-    width: 190,
-    height: 120,
-    resizeMode: 'contain',
-    borderTopLeftRadius: 40, // Adjust the value as needed
-    borderBottomRightRadius: 40, // Adjust the value as needed
-  },
   gridContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
     justifyContent: 'space-around',
     padding: 8,
   },
   serviceBlock: {
-    width: '40%',
-    aspectRatio: 1,
+    width: '100%',
+    aspectRatio: 12/3,
     backgroundColor: '#F5F5F5',
     borderRadius: 10,
-    margin: 8,
+    marginVertical: 8, // Adjust vertical margin as needed
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 2,
     borderColor: '#000000',
   },
-  serviceIcon: {
-    width: '50%',
-    height: '50%',
-    resizeMode: 'contain',
+  serviceContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
+ serviceIcon: {
+  width: 50, // Example width value in pixels
+  height: 50, // Example height value in pixels
+  resizeMode: 'contain',
+  marginLeft: 30,
+},
+
   serviceName: {
-    marginTop: 8,
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
+    flex: 1,
   },
 });
 
