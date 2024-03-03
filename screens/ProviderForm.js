@@ -1,17 +1,21 @@
-// ProviderForm.js
+// Importing necessary modules from React Native and other libraries
+import 'firebase/auth';
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image, TextInput, ScrollView, Alert } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { ArrowLeftIcon } from 'react-native-heroicons/solid';
 import { themeColors } from '../theme';
-import { useNavigation } from '@react-navigation/native';
+import { fr } from '../config/firebase'; 
 import { Picker } from '@react-native-picker/picker';
+import { useNavigation } from '@react-navigation/native';
+import { collection, addDoc } from 'firebase/firestore';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, Text, TouchableOpacity, Image, TextInput, ScrollView, Alert } from 'react-native';
 
 
-
+// Define the ProviderForm component
 const ProviderForm = () => {
+  // Using useNavigation hook from React Navigation
   const navigation = useNavigation();
 
+  // State to manage form data
   const [formData, setFormData] = useState({
     profilePicture: '',
     fullName: '',
@@ -31,11 +35,13 @@ const ProviderForm = () => {
     bankAccountDetails: '',
   });
 
+  // State to manage current page of the form
   const [currentPage, setCurrentPage] = useState(1);
 
+  // Define form pages and their respective fields
   const pages = [
     {
-      title: 'Profile Picture ',
+      title: 'Profile Picture',
       fields: ['profilePicture'],
     },
     {
@@ -58,20 +64,23 @@ const ProviderForm = () => {
       title: 'Mobile and Payment',
       fields: ['smartphoneType', 'bankAccountDetails'],
     },
-    
   ];
 
-  const handleFormSubmit = () => {
-    // Handle form submission, e.g., send data to server
-    console.log('Form submitted:', formData);
-    // Display a message that the application is submitted
-    Alert.alert('Success', 'Your application is submitted!');
+  const handleFormSubmit = async () => {
+    try {
+      const docRef = await addDoc(collection(fr, 'providerForms'), formData); // using fr for Firestore instance
+      console.log('Document written with ID: ', docRef.id);
+      Alert.alert('Success', 'Your application is submitted!');
+    } catch (error) {
+      console.error('Error adding document: ', error);
+      Alert.alert('Error', 'Failed to submit application. Please try again later.');
+    }
   };
+  
 
+  // Function to handle moving to the next page of the form
   const handleNextPage = () => {
-    // Validate if all fields are filled
     const areAllFieldsFilled = pages[currentPage - 1].fields.every((field) => formData[field].trim() !== '');
-
     if (areAllFieldsFilled) {
       setCurrentPage(currentPage + 1);
     } else {
@@ -79,45 +88,45 @@ const ProviderForm = () => {
     }
   };
 
+  // Function to handle moving to the previous page of the form
   const handlePreviousPage = () => {
     setCurrentPage(currentPage - 1);
   };
 
+  // Function to handle displaying an alert for wrong format of input
   const handleWrongFormat = () => {
     Alert.alert('Wrong Format', 'Please enter the correct format for the field.');
     // Add more specific instructions or guide the user on how to correct the format
-  };
-
-  const ServicesScreen = () => {
-    // Navigate to the ServiceProviderFormScreen when the button is pressed
-    navigation.navigate('ServicesScreen');
   };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: themeColors.bg }}>
       <ScrollView>
         <View style={{ flex: 1 }}>
-          
-         
+          {/* Header */}
           <View style={{ alignItems: 'center', marginVertical: 20 }}>
-           <Text  style={{ fontSize: 18, color:'white' }} >Become A Service Provider</Text>
+            <Text style={{ fontSize: 18, color: 'white' }}>Become A Service Provider</Text>
             <Image source={require('../assets/images/welcome.png')} style={{ width: 150, height: 150 }} />
-            <Text style={{ fontSize: 18, color:'white' }}>Profile picture</Text>
+            <Text style={{ fontSize: 18, color: 'white' }}>Profile picture</Text>
           </View>
+
+          {/* Form */}
           <View style={{ paddingHorizontal: 20 }}>
             <Text style={{ color: 'black', fontSize: 18, marginBottom: 8 }}>{pages[currentPage - 1].title}</Text>
             {pages[currentPage - 1].fields.map((field) => (
               <React.Fragment key={field}>
-                <Text style={{ color:'white',fontSize: 18, marginBottom: 4 }}>{getFieldLabel(field)}</Text>
+                <Text style={{ color: 'white', fontSize: 18, marginBottom: 4 }}>{getFieldLabel(field)}</Text>
+                {/* Render input fields based on field type */}
                 {field === 'serviceType' ? (
                   <Picker
-                    style={{ color: 'black', backgroundColor:'white', fontSize: 18, marginBottom: 8 }}
+                    style={{ color: 'black', backgroundColor: 'white', fontSize: 18, marginBottom: 8 }}
                     selectedValue={formData[field]}
                     onValueChange={(itemValue) => setFormData({ ...formData, [field]: itemValue })}
                   >
-                    <Picker.Item  style={{ color: 'black', fontSize: 18}}label="Select Service" value="" />
-                    <Picker.Item  style={{ color: 'black', fontSize: 18}}label="catering" value="catering" />
-                    <Picker.Item  style={{ color: 'black', fontSize: 18}}label="Salon" value="Salon" />
+                    {/* Picker options */}
+                    <Picker.Item label="Select Service" value="" />
+                    <Picker.Item label="catering" value="catering" />
+                    <Picker.Item label="Salon" value="Salon" />
                     {/* Add more service options as needed */}
                   </Picker>
                 ) : field === 'availability' ? (
@@ -131,8 +140,9 @@ const ProviderForm = () => {
                       borderRadius: 8,
                       color: 'black',
                     }}
-                    keyboardType="numeric"
                     maxLength={2}
+                    placeholder={`${ field === 'availability' ? 'how many hours you available from 24 hours' : ''}`} 
+                    keyboardType={getFieldType(field)}
                     onChangeText={(text) => {
                       const availabilityValue = parseInt(text, 10);
                       if (!isNaN(availabilityValue) && availabilityValue <= 24) {
@@ -153,7 +163,8 @@ const ProviderForm = () => {
                       borderRadius: 8,
                       color: 'black',
                     }}
-                    keyboardType="numeric"
+                    placeholder={`${ field === 'experienceYears' ? 'minimum 3 years' : ''}`} 
+                    keyboardType={getFieldType(field)}
                     onChangeText={(text) => {
                       const experienceValue = parseInt(text, 10);
                       if (!isNaN(experienceValue) && experienceValue > 3) {
@@ -184,6 +195,7 @@ const ProviderForm = () => {
               </React.Fragment>
             ))}
           </View>
+          {/* Navigation Buttons */}
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 20 }}>
             {currentPage > 1 && (
               <TouchableOpacity onPress={handlePreviousPage} style={{ backgroundColor: '#FFD700', padding: 15, borderRadius: 10 }}>
@@ -200,16 +212,8 @@ const ProviderForm = () => {
               </TouchableOpacity>
             )}
           </View>
-          {currentPage === pages.length && (
-            <TouchableOpacity onPress={() => navigation.navigate('Services')} style={{ backgroundColor: '#FFD700', padding: 10, borderRadius: 10, marginLeft:97 ,marginRight:97 }}>
-              <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'black', textAlign: 'center', marginVertical: 10 }}>
-                Explore Our App
-              </Text>
-            </TouchableOpacity>
-          )}
         </View>
-
-        {/* Button to navigate to Prvdr_Dashboard */}
+        {/* Button to navigate to Provider Dashboard */}
         <TouchableOpacity
           onPress={() => navigation.navigate('PrvdrDashboard')}
           style={{
@@ -222,12 +226,12 @@ const ProviderForm = () => {
         >
           <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'black' }}>Go to Provider Dashboard</Text>
         </TouchableOpacity>
-        
       </ScrollView>
     </SafeAreaView>
   );
 };
 
+// Function to get the label of a field
 const getFieldLabel = (field) => {
   const fieldLabels = {
     profilePicture: 'Profile Picture',
@@ -246,16 +250,17 @@ const getFieldLabel = (field) => {
     specialization: 'Specialization',
     smartphoneType: 'Smartphone Type',
     bankAccountDetails: 'Bank Account Details',
-    
   };
   return fieldLabels[field] || '';
 };
 
+// Function to get the type of keyboard for a field
 const getFieldType = (field) => {
   const fieldTypes = {
     email: 'email-address',
     zipCode: 'numeric',
     experienceYears: 'numeric',
+    availability:'numeric',
   };
   return fieldTypes[field] || 'default';
 };

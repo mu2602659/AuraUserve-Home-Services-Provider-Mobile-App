@@ -13,6 +13,7 @@ import Prov_Requirement from './screens/Prov_Requirement';
 import ProviderForm from './screens/ProviderForm';
 import BookingScreen from './screens/BookingScreen';
 import ServicesScreen from './screens/ServicesScreen';
+import ChatScreen from './screens/Chat';
 
 // Import other services
 import BeautySaloonScreen from './Services/BeautySaloonScreen';
@@ -85,6 +86,8 @@ export default function App() {
 
         <Stack.Screen name="PrvdrDashboard" component={Prvdr_Dashboard} />
         <Stack.Screen name="UserDashboard" component={User_Dashboard} />
+
+        <Stack.Screen name="Chat" component={ChatScreen} options={{ title: 'Chat Conversation' }} />
       </Stack.Navigator>
 
 

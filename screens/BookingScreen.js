@@ -9,6 +9,9 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import MapView, { Marker } from 'react-native-maps';
 import Geocoder from 'react-native-geocoding';
 
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { fr } from '../config/firebase'; // Import your Firebase configuration
+
 // Set your Geocoding API key here
 //Geocoder.init('YOUR_GEOCODING_API_KEY');
 
@@ -56,9 +59,14 @@ const Booking = () => {
     }
   }, []);
 
-  const openInAppChat = () => {
+/*{ const openInAppChat = () => {
     // Replace 'your_in_app_chat_url' with the actual URL for in-app chat
     Linking.openURL('your_in_app_chat_url');
+  };}*/
+
+  const openInAppChat = () => {
+    // Navigate to the ChatScreen when the button is pressed
+    navigation.navigate('Chat');
   };
 
   const openWhatsAppChat = () => {
@@ -90,12 +98,26 @@ const Booking = () => {
       .catch((error) => console.warn(error));
   };
 
-  const handleBookingSubmit = () => {
-    console.log('Booking submitted:', bookingInfo);
-    Alert.alert('Success', 'Your booking is submitted!');
-    // You can add logic to send the booking information to the server
+  const handleBookingSubmit = async () => {
+    try {
+      // Add a timestamp to the booking information
+      const bookingData = {
+        ...bookingInfo,
+        timestamp: serverTimestamp(),
+      };
+  
+      // Add the booking information to Firestore
+      const docRef = await addDoc(collection(fr, 'bookings'), bookingData);
+      console.log('Booking submitted:', bookingData);
+      console.log('Booking stored in Firestore with ID:', docRef.id);
+  
+      Alert.alert('Success', 'Your booking is submitted!');
+    } catch (error) {
+      console.error('Error submitting booking:', error);
+      Alert.alert('Error', 'Failed to submit booking. Please try again later.');
+    }
   };
-
+  
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView>
