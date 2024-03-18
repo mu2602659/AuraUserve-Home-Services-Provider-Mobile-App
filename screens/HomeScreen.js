@@ -61,18 +61,35 @@ const HomeScreen = () => {
     { id: '11', name: 'HomeCare', displayName: 'HomeCare Solutions', icon: require('../assets/icons/shield.png') },
   ];
 
+  // Ads Data
+  const adsData = [
+    { id: '1', image: require('../assets/images/salon-ad.jpg'), description: 'Get salon services at the comfort of your home.', screen: 'BeautySaloonScreen' },
+    { id: '2', image: require('../assets/images/doctor-ad.jpg'), description: 'Experienced doctors available for home consultations.', screen: 'ClinicalScreen' },
+    // Add more ads as needed
+  ];
+
+  // Customer Reviews Data
+  const customerReviews = [
+    { id: '1', name: 'John Doe', review: 'Amazing service! Highly recommended.' },
+    { id: '2', name: 'Jane Smith', review: 'Excellent experience. Will use again.' },
+    // Add more reviews as needed
+  ];
+
+  const navigateToScreen = (screenName) => {
+    navigation.navigate(screenName);
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <HeaderComponent 
           userName={userName} 
           profileImage={profileImage} 
-          handleProfileClick={handleProfileClick} // Pass handleProfileClick function to HeaderComponent
+          handleProfileClick={handleProfileClick}
           navigation={navigation} 
         />
 
-        {/* Our Services and See All Link */}
-        <View style={styles.content}>
+        <ScrollView style={styles.content}>
           <View style={styles.servicesHeader}>
             <Text style={styles.ourServicesText}>Our Services</Text>
             <TouchableOpacity
@@ -84,19 +101,53 @@ const HomeScreen = () => {
           </View>
 
           <ScrollView horizontal contentContainerStyle={styles.scrollViewContent}>
-            {/* Services */}
             {servicesData.map((service) => (
               <TouchableOpacity
                 key={service.id}
                 style={styles.serviceBlock}
-                onPress={() => navigation.navigate(service.name)} // Navigate to service screen
+                onPress={() => navigation.navigate(service.name)}
               >
                 <Image source={service.icon} style={styles.serviceIcon} />
                 <Text style={styles.serviceName}>{service.displayName}</Text>
               </TouchableOpacity>
             ))}
           </ScrollView>
-        </View>
+
+          <Text style={styles.specialOffersText}>Special Offers</Text>
+
+          <ScrollView horizontal contentContainerStyle={styles.adsScrollView}>
+            {adsData.map((ad) => (
+              <TouchableOpacity
+                key={ad.id}
+                style={styles.adBlock}
+                onPress={() => navigateToScreen(ad.screen)}
+              >
+                <Image source={ad.image} style={styles.adImage} />
+                <Text style={styles.adDescription}>{ad.description}</Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+
+          {/* Poster Section */}
+          <View style={styles.posterContainer}>
+            <TouchableOpacity style={styles.posterBlock}>
+              <Image source={require('../assets/images/poster.png')} style={styles.posterImage} />
+            </TouchableOpacity>
+          </View>
+
+          {/* Customer Reviews Slider */}
+          <View style={styles.customerReviewsContainer}>
+            <Text style={styles.customerReviewsHeader}>Customer Reviews</Text>
+            <ScrollView horizontal>
+              {customerReviews.map((review) => (
+                <View key={review.id} style={styles.reviewBlock}>
+                  <Text style={styles.reviewText}>{review.review}</Text>
+                  <Text style={styles.reviewName}>- {review.name}</Text>
+                </View>
+              ))}
+            </ScrollView>
+          </View>
+        </ScrollView>
 
         <FooterComponent Prov_Requirement={Prov_Requirement} handleLogout={handleLogout} />
       </View>
@@ -154,6 +205,80 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "bold",
     textAlign: "center",
+  },
+  adsScrollView: {
+    paddingHorizontal: 17,
+  },
+  adBlock: {
+    width: 300,
+    height: 210,
+    marginRight: 10,
+    borderRadius: 10,
+    overflow: 'hidden',
+    backgroundColor: '#F5F5F5',
+    borderWidth: 1,
+    borderColor: 'black',
+  },
+  adImage: {
+    width: '100%',
+    height: 150,
+    resizeMode: 'cover',
+  },
+  adDescription: {
+    padding: 10,
+    fontSize: 14,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  specialOffersText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "left",
+    marginBottom: 12,
+    marginLeft: 17,
+    color: "black",
+  },
+   posterContainer: {
+    marginHorizontal: 20,
+    marginBottom: 20,
+  },
+  posterBlock: {
+    width: '100%',
+    height: 226,
+    borderRadius: 10,
+    overflow: 'hidden',
+    marginTop: 20,
+  },
+  posterImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
+  customerReviewsContainer: {
+    marginTop: 20,
+    paddingHorizontal: 20,
+  },
+  customerReviewsHeader: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+    marginTop: -20,
+  },
+  reviewBlock: {
+    backgroundColor: "#F5F5F5",
+    borderRadius: 10,
+    padding: 15,
+    marginRight: 10,
+    marginBottom: 10,
+  },
+  reviewText: {
+    fontSize: 14,
+    marginBottom: 5,
+  },
+  reviewName: {
+    fontSize: 12,
+    fontWeight: "bold",
+    textAlign: "right",
   },
 });
 
