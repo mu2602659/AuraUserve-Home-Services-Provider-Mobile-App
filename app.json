@@ -9,7 +9,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#2C3E50"
+      "backgroundColor": "#2D3436"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -21,7 +21,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/splash.png",
-        "backgroundColor": "#2C3E50"
+        "backgroundColor": "#2D3436"
       },
       "package": "com.aurauserve.AuraUserve"
     },
