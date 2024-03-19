@@ -1,6 +1,11 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import useAuth from './hooks/useAuth';
+// Import Dashboards
+import Prvdr_Dashboard from './Dashboards/Prvdr_Dashboard';
+import User_Dashboard from './Dashboards/User_Dashboard';
+
 
 // Import screens
 import HomeScreen from './screens/HomeScreen';
@@ -16,6 +21,21 @@ import ServicesScreen from './screens/ServicesScreen';
 import ChatScreen from './screens/Chat';
 import myProfileScreen from './screens/myProfileScreen';
 
+
+// Import Service Provider Signup
+import ProviderSignup from './service_prvdr/ProviderSignup';
+import BeautySalon from './service_prvdr/BeautySalon';
+import Clinical from './service_prvdr/Clinical';
+import Catering from './service_prvdr/Catering';
+import Maintenance from './service_prvdr/Maintenance';
+import Shifting from './service_prvdr/Shifting';
+import Solar from './service_prvdr/Solar';
+import Security from './service_prvdr/Security';
+import Gardening from './service_prvdr/Gardening';
+import Washing from './service_prvdr/Washing';
+import HomeCare from './service_prvdr/HomeCare';
+import Cleaning from './service_prvdr/Cleaning';
+
 // Import other services
 import BeautySaloonScreen from './Services/BeautySaloonScreen';
 import CateringScreen from './Services/CateringScreen';
@@ -26,23 +46,14 @@ import SecurityScreen from './Services/SecurityScreen';
 import GardeningScreen from './Services/GardeningScreen';
 import ClinicalScreen from './Services/ClinicalScreen';
 import WashingScreen from './Services/WashingScreen';
-import HomeCareScreen from './Services/HomeCareScreen'
+import HomeCareScreen from './Services/HomeCareScreen';
 import CleaningScreen from './Services/CleaningScreen';
-
-//import Dashboard
-import Prvdr_Dashboard from './Dashboards/Prvdr_Dashboard';
-import User_Dashboard from './Dashboards/User_Dashboard';
-
-import useAuth from './hooks/useAuth';
-
-
 
 const Stack = createNativeStackNavigator();
 const ServicesStack = createNativeStackNavigator();
 
 const ServicesStackNavigator = () => (
   <ServicesStack.Navigator>
-
     <ServicesStack.Screen name="ServicesScreen" options={{ headerShown: false }} component={ServicesScreen} />
     <ServicesStack.Screen name="BeautySaloon" component={BeautySaloonScreen} />
     <ServicesStack.Screen name="Catering" component={CateringScreen} />
@@ -58,7 +69,6 @@ const ServicesStackNavigator = () => (
     <ServicesStack.Screen name="Booking" options={{ headerShown: false }} component={BookingScreen} />
   </ServicesStack.Navigator>
 );
-
 export default function App() {
   const { user } = useAuth();
 
@@ -71,29 +81,37 @@ export default function App() {
             {/* Add other screens for authenticated users here */}
           </>
         ) : (
-          <>
-            <Stack.Screen name="Welcome" options={{ headerShown: false }} component={WelcomeScreen} />
-            <Stack.Screen name="User" options={{ headerShown: false }} component={UserScreen} />
-            <Stack.Screen name="Login" options={{ headerShown: false }} component={LoginScreen} />
-            <Stack.Screen name="VerificationComponent" options={{ headerShown: false }} component={VerificationComponent} />
-            <Stack.Screen name="SignUp" options={{ headerShown: false }} component={SignUpScreen} />
-          </>
+        <>
+        <Stack.Screen name="Welcome" options={{ headerShown: false }} component={WelcomeScreen} />
+        <Stack.Screen name="User" options={{ headerShown: false }} component={UserScreen} />
+        <Stack.Screen name="Login" options={{ headerShown: false }} component={LoginScreen} />
+        <Stack.Screen name="VerificationComponent" options={{ headerShown: false }} component={VerificationComponent} />
+        <Stack.Screen name="SignUp" options={{ headerShown: false }} component={SignUpScreen} />
+        </>
         )}
         {/* Common screens */}
-
         <Stack.Screen name="Prov_Requirement" options={{ headerShown: false }} component={Prov_Requirement} />
         <Stack.Screen name="ProviderForm"  component={ProviderForm} />
         <Stack.Screen name="Services" options={{ headerShown: false }} component={ServicesStackNavigator} />
-
         <Stack.Screen name="PrvdrDashboard" component={Prvdr_Dashboard} />
         <Stack.Screen name="UserDashboard" component={User_Dashboard} />
         <Stack.Screen name="myProfile" component={myProfileScreen} options={{ title: 'myProfile' }} />
-
         <Stack.Screen name="Chat" component={ChatScreen} options={{ title: 'Chat Conversation' }} />
+
+        {/* Add ProviderSignup screen */}
+        <Stack.Screen name="ProviderSignup" component={ProviderSignup} options={{ headerShown: false }} />
+        <Stack.Screen name="BeautySalon" component={BeautySalon} options={{ title: 'Beauty Salon' }} />
+        <Stack.Screen name="Catering" component={Catering} options={{ title: 'Catering' }} />
+        <Stack.Screen name="Maintenance" component={Maintenance} options={{ title: 'Maintenance' }} />
+        <Stack.Screen name="Shifting" component={Shifting} options={{ title: 'Shifting' }} />
+        <Stack.Screen name="Solar" component={Solar} options={{ title: 'Solar' }} />
+        <Stack.Screen name="Security" component={Security} options={{ title: 'Security' }} />
+        <Stack.Screen name="Gardening" component={Gardening} options={{ title: 'Gardening' }} />
+        <Stack.Screen name="Clinical" component={Clinical} options={{ title: 'Clinical' }} />
+        <Stack.Screen name="Washing" component={Washing} options={{ title: 'Washing' }} />
+        <Stack.Screen name="HomeCare" component={HomeCare} options={{ title: 'Home Care' }} />
+        <Stack.Screen name="Cleaning" component={Cleaning} options={{ title: 'Cleaning' }} />
       </Stack.Navigator>
-
-
-       
     </NavigationContainer>
   );
 }
