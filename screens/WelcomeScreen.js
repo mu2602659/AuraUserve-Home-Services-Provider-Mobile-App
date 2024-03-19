@@ -10,6 +10,10 @@ export default function WelcomeScreen() {
     // Navigate to the ServiceProviderFormScreen when the button is pressed
     navigation.navigate("Prov_Requirement");
   };
+  const navigateToProviderSignup = () => {
+    // Navigate to the ProviderSignup screen when the button is pressed
+    navigation.navigate("ProviderSignup");
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -86,6 +90,22 @@ export default function WelcomeScreen() {
                 Service Provider
               </Text>
             </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={navigateToProviderSignup}
+              style={{
+                paddingVertical: 15,
+                backgroundColor: "#FFD700",
+                marginHorizontal: 20,
+                marginVertical: 8,
+                borderRadius: 10,
+              }}
+            >
+              <Text style={{ fontSize: 18, fontWeight: "bold", textAlign: "center", color: "#555555" }}>
+                Provider Sign up
+              </Text>
+            </TouchableOpacity>
+
           </View>
         </View>
       </ImageBackground>
