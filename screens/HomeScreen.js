@@ -4,24 +4,23 @@ import { signOut } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import { FontAwesome5 } from "@expo/vector-icons";
 import HeaderComponent from "./HeaderComponent";
 import FooterComponent from "./FooterComponent";
 
 const HomeScreen = () => {
   const [userName, setUserName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
   const [profileImage, setProfileImage] = useState(require("../assets/images/logoo.png"));
   const navigation = useNavigation();
 
   useEffect(() => {
-    // Fetch user's name from authentication state
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        // User is signed in.
-        setUserName(user.displayName);
+        setUserName(user.displayName || "Unknown");
+        setUserEmail(user.email || "Unknown");
       } else {
-        // No user is signed in.
         setUserName("");
+        setUserEmail("");
       }
     });
 
@@ -84,6 +83,7 @@ const HomeScreen = () => {
       <View style={styles.container}>
         <HeaderComponent 
           userName={userName} 
+          userEmail={userEmail} 
           profileImage={profileImage} 
           handleProfileClick={handleProfileClick}
           navigation={navigation} 

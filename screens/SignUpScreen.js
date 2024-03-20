@@ -28,7 +28,6 @@ export default function SignUpScreen() {
 
         return () => unsubscribe();
     }, []);
-
     const handleSignUp = async () => {
         if (email && password) {
             if (!validateEmail(email)) {
@@ -37,8 +36,13 @@ export default function SignUpScreen() {
             }
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                // Update user's display name and email
+                const user = userCredential.user;
+                await user.updateProfile({
+                    displayName: name,
+                });
                 // Send verification email
-                await sendEmailVerification(auth.currentUser); // Added to send verification email
+                await sendEmailVerification(auth.currentUser);
                 console.log('Verification email sent.');
                 // Optionally, you can redirect the user to a screen indicating that the verification email has been sent.
             } catch (error) {
@@ -46,7 +50,6 @@ export default function SignUpScreen() {
             }
         }
     };
-
     const handleGoogleSignUp = async () => {
         try {
             const provider = new GoogleAuthProvider();
