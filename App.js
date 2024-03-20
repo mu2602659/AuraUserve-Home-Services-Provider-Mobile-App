@@ -24,17 +24,7 @@ import myProfileScreen from './screens/myProfileScreen';
 
 // Import Service Provider Signup
 import ProviderSignup from './service_prvdr/ProviderSignup';
-import BeautySalon from './service_prvdr/BeautySalon';
-import Clinical from './service_prvdr/Clinical';
-import Catering from './service_prvdr/Catering';
-import Maintenance from './service_prvdr/Maintenance';
-import Shifting from './service_prvdr/Shifting';
-import Solar from './service_prvdr/Solar';
-import Security from './service_prvdr/Security';
-import Gardening from './service_prvdr/Gardening';
-import Washing from './service_prvdr/Washing';
-import HomeCare from './service_prvdr/HomeCare';
-import Cleaning from './service_prvdr/Cleaning';
+import NextScreen from './service_prvdr/NextScreen';
 
 // Import other services
 import BeautySaloonScreen from './Services/BeautySaloonScreen';
@@ -100,17 +90,9 @@ export default function App() {
 
         {/* Add ProviderSignup screen */}
         <Stack.Screen name="ProviderSignup" component={ProviderSignup} options={{ headerShown: false }} />
-        <Stack.Screen name="BeautySalon" component={BeautySalon} options={{ title: 'Beauty Salon' }} />
-        <Stack.Screen name="Catering" component={Catering} options={{ title: 'Catering' }} />
-        <Stack.Screen name="Maintenance" component={Maintenance} options={{ title: 'Maintenance' }} />
-        <Stack.Screen name="Shifting" component={Shifting} options={{ title: 'Shifting' }} />
-        <Stack.Screen name="Solar" component={Solar} options={{ title: 'Solar' }} />
-        <Stack.Screen name="Security" component={Security} options={{ title: 'Security' }} />
-        <Stack.Screen name="Gardening" component={Gardening} options={{ title: 'Gardening' }} />
-        <Stack.Screen name="Clinical" component={Clinical} options={{ title: 'Clinical' }} />
-        <Stack.Screen name="Washing" component={Washing} options={{ title: 'Washing' }} />
-        <Stack.Screen name="HomeCare" component={HomeCare} options={{ title: 'Home Care' }} />
-        <Stack.Screen name="Cleaning" component={Cleaning} options={{ title: 'Cleaning' }} />
+        <Stack.Screen name="NextScreen" component={NextScreen} options={{ title: 'Next Screen' }} />
+
+       
       </Stack.Navigator>
     </NavigationContainer>
   );
