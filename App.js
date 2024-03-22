@@ -68,7 +68,7 @@ export default function App() {
         {user ? (
           <>
             <Stack.Screen name="Home" options={{ headerShown: false }} component={HomeScreen} />
-            {/* Add other screens for authenticated users here */}
+            <Stack.Screen name="BeautySaloon" options={{ headerShown: false }} component={BeautySaloonScreen} />
           </>
         ) : (
           <>
