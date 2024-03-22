@@ -15,13 +15,17 @@ export default function LoginScreen() {
 
     const handleSubmit = async () => {
         if (email && password) {
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-            } catch (error) {
-                console.log('Error: ', error.message);
-            }
+        try {
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            // Update user's display name and email
+            const user = userCredential.user;
+            setUserDisplayName(user.displayName); // Assuming you have a state variable for user's display name
+            setUserEmail(user.email); // Assuming you have a state variable for user's email
+        } catch (error) {
+            console.log('Error: ', error.message);
         }
-    };
+    }
+};
 
     const handleGoogleSignIn = async () => {
         try {

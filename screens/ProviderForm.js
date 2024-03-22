@@ -124,9 +124,18 @@ const ProviderForm = () => {
                     onValueChange={(itemValue) => setFormData({ ...formData, [field]: itemValue })}
                   >
                     {/* Picker options */}
-                    <Picker.Item label="Select Service" value="" />
-                    <Picker.Item label="catering" value="catering" />
-                    <Picker.Item label="Salon" value="Salon" />
+                    <Picker.Item label="                       -------- (Select Services) -------" value="" />
+                    <Picker.Item label="BeautySaloon" value="BeautySaloon" />
+                    <Picker.Item label="Catering" value="Catering" />
+                    <Picker.Item label="Cleaning" value="Cleaning" />
+                    <Picker.Item label="Clinical" value="Clinical" />
+                    <Picker.Item label="Gardening" value="Gardening" />
+                    <Picker.Item label="HomeCare" value="HomeCare" />
+                    <Picker.Item label="Maintenance" value="Maintenance" />
+                    <Picker.Item label="Security" value="Security" />
+                    <Picker.Item label="Shifting" value="Shifting" />
+                    <Picker.Item label="Solar" value="Solar" />
+                    <Picker.Item label="Washing" value="Washing" />
                     {/* Add more service options as needed */}
                   </Picker>
                 ) : field === 'availability' ? (

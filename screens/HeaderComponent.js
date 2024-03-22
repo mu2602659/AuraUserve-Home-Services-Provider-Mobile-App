@@ -2,16 +2,15 @@ import React from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 
-const HeaderComponent = ({ userName, profileImage, handleProfileClick, navigation }) => {
+const HeaderComponent = ({ userName, userEmail, profileImage, handleProfileClick, navigation }) => {
   return (
     <View style={styles.header}>
-      {/* Welcome Message with User Name */}
       <View style={{ flexDirection: "row", alignItems: "center" }}>
-        {/* Profile Picture */}
         <TouchableOpacity onPress={handleProfileClick}>
           <Image source={profileImage} style={styles.profileImage} />
         </TouchableOpacity>
-        <Text style={{ fontSize: 16, marginLeft: 8 }}>Welcome, {userName}</Text>
+        <Text style={{ fontSize: 16, marginLeft: 8 }}>{userName}</Text>
+        <Text style={{ fontSize: 14, marginLeft: 8 }}>{userEmail}</Text>
       </View>
 
       {/* Cart Icon */}
