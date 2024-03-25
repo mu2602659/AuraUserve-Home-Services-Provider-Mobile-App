@@ -7,11 +7,14 @@ import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/aut
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { auth } from '../config/firebase';
 import { themeColors } from '../theme';
+import { Feather } from '@expo/vector-icons'; 
+
 
 export default function LoginScreen() {
     const navigation = useNavigation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [secureTextEntry, setSecureTextEntry] = useState(true); // State to manage password visibility
 
     const handleSubmit = async () => {
         if (email && password) {
@@ -71,18 +74,23 @@ export default function LoginScreen() {
                     <Text className="text-gray-700 ml-4">Email Address</Text>
                     <TextInput
                         className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-3"
-                        placeholder="email"
+                        placeholder="Enter Email"
                         value={email}
                         onChangeText={value => setEmail(value)}
                     />
-                    <Text className="text-gray-700 ml-4">Password</Text>
-                    <TextInput
-                        className="p-4 bg-gray-100 text-gray-700 rounded-2xl"
-                        secureTextEntry
-                        placeholder="password"
-                        value={password}
-                        onChangeText={value => setPassword(value)}
-                    />
+                    <View style={{ position: 'relative' }}>
+                        <TextInput
+                            style={{ backgroundColor: '#F3F4F6', padding: 20, borderRadius: 20, marginBottom: 10 }}
+                            secureTextEntry={secureTextEntry}
+                            keyboardType='numeric'
+                            placeholder="Enter Password"
+                            value={password}
+                            onChangeText={value => setPassword(value)}
+                        />
+                        <TouchableOpacity onPress={() => setSecureTextEntry(!secureTextEntry)} style={{ position: 'absolute', right: 20, top: 20 }}>
+                            <Feather name={secureTextEntry ? 'eye' : 'eye-off'} size={24} color='black' />
+                        </TouchableOpacity>
+                    </View>
                     <TouchableOpacity onPress={handleForgotPassword}>
                         <Text className="text-gray-700 mb-5 ml-4">Forgot Password?</Text>
                     </TouchableOpacity>

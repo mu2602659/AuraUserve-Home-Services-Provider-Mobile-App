@@ -7,8 +7,8 @@ import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 import { collection, addDoc } from 'firebase/firestore';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { View, Text, TouchableOpacity, Image, TextInput, ScrollView, Alert } from 'react-native';
-
+import { View, Text, TouchableOpacity, StyleSheet, Platform, Image, TextInput, ScrollView, Alert } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 
 // Define the ProviderForm component
 const ProviderForm = () => {
@@ -17,7 +17,6 @@ const ProviderForm = () => {
 
   // State to manage form data
   const [formData, setFormData] = useState({
-    profilePicture: '',
     fullName: '',
     email: '',
     password: '',
@@ -29,42 +28,33 @@ const ProviderForm = () => {
     experienceYears: '',
     certifications: [],
     availability: '',
-    skills: '',
     specialization: '',
     smartphoneType: '',
-    bankAccountDetails: '',
   });
 
-  // State to manage current page of the form
-  const [currentPage, setCurrentPage] = useState(1);
+  const [profileImage, setProfileImage] = useState(null);
 
-  // Define form pages and their respective fields
-  const pages = [
-    {
-      title: 'Profile Picture',
-      fields: ['profilePicture'],
-    },
-    {
-      title: 'Personal Information',
-      fields: ['fullName', 'email', 'password'],
-    },
-    {
-      title: 'Location',
-      fields: ['address', 'city', 'state', 'zipCode'],
-    },
-    {
-      title: 'Service Details',
-      fields: ['serviceType', 'experienceYears', 'certifications'],
-    },
-    {
-      title: 'Availability and Skills',
-      fields: ['availability', 'skills', 'specialization'],
-    },
-    {
-      title: 'Mobile and Payment',
-      fields: ['smartphoneType', 'bankAccountDetails'],
-    },
-  ];
+  // Function to handle image selection
+  const handleImageSelect = async () => {
+    if (Platform.OS !== 'web') {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permission denied', 'Sorry, we need camera roll permissions to make this work!');
+        return;
+      }
+    }
+    
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      setProfileImage(result.uri);
+    }
+  };
 
   const handleFormSubmit = async () => {
     try {
@@ -76,22 +66,6 @@ const ProviderForm = () => {
       Alert.alert('Error', 'Failed to submit application. Please try again later.');
     }
   };
-  
-
-  // Function to handle moving to the next page of the form
-  const handleNextPage = () => {
-    const areAllFieldsFilled = pages[currentPage - 1].fields.every((field) => formData[field].trim() !== '');
-    if (areAllFieldsFilled) {
-      setCurrentPage(currentPage + 1);
-    } else {
-      Alert.alert('Incomplete Form', 'Please fill in all fields before proceeding.');
-    }
-  };
-
-  // Function to handle moving to the previous page of the form
-  const handlePreviousPage = () => {
-    setCurrentPage(currentPage - 1);
-  };
 
   // Function to handle displaying an alert for wrong format of input
   const handleWrongFormat = () => {
@@ -100,23 +74,26 @@ const ProviderForm = () => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: themeColors.bg }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
       <ScrollView>
         <View style={{ flex: 1 }}>
-          {/* Header */}
           <View style={{ alignItems: 'center', marginVertical: 20 }}>
-            <Text style={{ fontSize: 18, color: 'white' }}>Become A Service Provider</Text>
-            <Image source={require('../assets/images/welcome.png')} style={{ width: 150, height: 150 }} />
-            <Text style={{ fontSize: 18, color: 'white' }}>Profile picture</Text>
+            <TouchableOpacity onPress={handleImageSelect} style={styles.profileContainer}>
+              {profileImage ? (
+                <Image source={{ uri: profileImage }} style={styles.profileImage} />
+              ) : (
+                <View style={styles.profilePlaceholder}>
+                  <Text style={styles.profilePlaceholderText}>Add Profile Picture</Text>
+                </View>
+              )}
+            </TouchableOpacity>
           </View>
 
           {/* Form */}
           <View style={{ paddingHorizontal: 20 }}>
-            <Text style={{ color: 'black', fontSize: 18, marginBottom: 8 }}>{pages[currentPage - 1].title}</Text>
-            {pages[currentPage - 1].fields.map((field) => (
+            {Object.keys(formData).map(field => (
               <React.Fragment key={field}>
-                <Text style={{ color: 'white', fontSize: 18, marginBottom: 4 }}>{getFieldLabel(field)}</Text>
-                {/* Render input fields based on field type */}
+                <Text style={{ color: 'black', fontSize: 18, marginBottom: 4 }}>{getFieldLabel(field)}</Text>
                 {field === 'serviceType' ? (
                   <Picker
                     style={{ color: 'black', backgroundColor: 'white', fontSize: 18, marginBottom: 8 }}
@@ -124,7 +101,7 @@ const ProviderForm = () => {
                     onValueChange={(itemValue) => setFormData({ ...formData, [field]: itemValue })}
                   >
                     {/* Picker options */}
-                    <Picker.Item label="                       -------- (Select Services) -------" value="" />
+                    <Picker.Item label="Select Services" value="" />
                     <Picker.Item label="BeautySaloon" value="BeautySaloon" />
                     <Picker.Item label="Catering" value="Catering" />
                     <Picker.Item label="Cleaning" value="Cleaning" />
@@ -138,7 +115,7 @@ const ProviderForm = () => {
                     <Picker.Item label="Washing" value="Washing" />
                     {/* Add more service options as needed */}
                   </Picker>
-                ) : field === 'availability' ? (
+                ) : field === 'availability' || field === 'experienceYears' ? (
                   <TextInput
                     style={{
                       borderWidth: 1,
@@ -149,39 +126,17 @@ const ProviderForm = () => {
                       borderRadius: 8,
                       color: 'black',
                     }}
-                    maxLength={2}
-                    placeholder={`${ field === 'availability' ? 'how many hours you available from 24 hours' : ''}`} 
-                    keyboardType={getFieldType(field)}
+                    placeholder={`Enter your ${getFieldLabel(field).toLowerCase()}`}
+                    value={formData[field]}
                     onChangeText={(text) => {
-                      const availabilityValue = parseInt(text, 10);
-                      if (!isNaN(availabilityValue) && availabilityValue <= 24) {
-                        setFormData({ ...formData, availability: text });
+                      const value = parseInt(text, 10);
+                      if (!isNaN(value)) {
+                        setFormData({ ...formData, [field]: text });
                       } else {
                         handleWrongFormat();
                       }
                     }}
-                  />
-                ) : field === 'experienceYears' ? (
-                  <TextInput
-                    style={{
-                      borderWidth: 1,
-                      backgroundColor: 'white',
-                      borderColor: 'gray',
-                      padding: 10,
-                      marginBottom: 16,
-                      borderRadius: 8,
-                      color: 'black',
-                    }}
-                    placeholder={`${ field === 'experienceYears' ? 'minimum 3 years' : ''}`} 
-                    keyboardType={getFieldType(field)}
-                    onChangeText={(text) => {
-                      const experienceValue = parseInt(text, 10);
-                      if (!isNaN(experienceValue) && experienceValue > 3) {
-                        setFormData({ ...formData, experienceYears: text });
-                      } else {
-                        handleWrongFormat();
-                      }
-                    }}
+                    keyboardType="numeric"
                   />
                 ) : (
                   <TextInput
@@ -204,37 +159,11 @@ const ProviderForm = () => {
               </React.Fragment>
             ))}
           </View>
-          {/* Navigation Buttons */}
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 20 }}>
-            {currentPage > 1 && (
-              <TouchableOpacity onPress={handlePreviousPage} style={{ backgroundColor: '#FFD700', padding: 15, borderRadius: 10 }}>
-                <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'black' }}>Previous</Text>
-              </TouchableOpacity>
-            )}
-            {currentPage < pages.length ? (
-              <TouchableOpacity onPress={handleNextPage} style={{ backgroundColor: '#FFD700', padding: 15, borderRadius: 10 }}>
-                <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'black' }}>Next</Text>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity onPress={handleFormSubmit} style={{ backgroundColor: '#FFD700', padding: 15, borderRadius: 10 }}>
-                <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'black' }}>Submit</Text>
-              </TouchableOpacity>
-            )}
-          </View>
+          {/* Submit Button */}
+          <TouchableOpacity onPress={handleFormSubmit} style={styles.submitButton}>
+            <Text style={styles.submitButtonText}>Submit</Text>
+          </TouchableOpacity>
         </View>
-        {/* Button to navigate to Provider Dashboard */}
-        <TouchableOpacity
-          onPress={() => navigation.navigate('PrvdrDashboard')}
-          style={{
-            backgroundColor: '#FFD700',
-            padding: 15,
-            borderRadius: 10,
-            alignItems: 'center',
-            marginTop: 20,
-          }}
-        >
-          <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'black' }}>Go to Provider Dashboard</Text>
-        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
@@ -243,7 +172,6 @@ const ProviderForm = () => {
 // Function to get the label of a field
 const getFieldLabel = (field) => {
   const fieldLabels = {
-    profilePicture: 'Profile Picture',
     fullName: 'Full Name',
     email: 'Email Address',
     password: 'Password',
@@ -255,10 +183,8 @@ const getFieldLabel = (field) => {
     experienceYears: 'Years of Experience',
     certifications: 'Certifications',
     availability: 'Availability',
-    skills: 'Skills',
     specialization: 'Specialization',
     smartphoneType: 'Smartphone Type',
-    bankAccountDetails: 'Bank Account Details',
   };
   return fieldLabels[field] || '';
 };
@@ -268,10 +194,67 @@ const getFieldType = (field) => {
   const fieldTypes = {
     email: 'email-address',
     zipCode: 'numeric',
+   
+
+    email: 'email-address',
+    zipCode: 'numeric',
     experienceYears: 'numeric',
     availability:'numeric',
   };
   return fieldTypes[field] || 'default';
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+    backgroundColor: 'white', // Setting background color to white
+    position: 'relative',
+  },
+  profileContainer: {
+    marginBottom: 20,
+  },
+  profileImage: {
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+  },
+  profilePlaceholder: {
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    backgroundColor: 'lightgray',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  profilePlaceholderText: {
+    fontSize: 16,
+    color: '#555',
+  },
+  submitButton: {
+    backgroundColor: '#FFD700',
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  submitButtonText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'black', // Setting text color to black
+  },
+  title: {
+    fontSize: 24,
+    marginBottom: 20,
+    color: 'white', // Setting text color to white
+  },
+  text: {
+    fontSize: 18,
+    marginBottom: 20,
+    color: 'white', // Setting text color to white
+  },
+});
 
 export default ProviderForm;

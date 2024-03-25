@@ -14,17 +14,17 @@ import UserScreen from './screens/UserScreen';
 import LoginScreen from './screens/LoginScreen';
 import VerificationComponent from './screens/VerificationComponent';
 import SignUpScreen from './screens/SignUpScreen';
-import Prov_Requirement from './screens/Prov_Requirement';
-import ProviderForm from './screens/ProviderForm';
-import BookingScreen from './screens/BookingScreen';
 import ServicesScreen from './screens/ServicesScreen';
-import ChatScreen from './screens/Chat';
 import myProfileScreen from './screens/myProfileScreen';
 
 
 // Import Service Provider Signup
 import ProviderSignup from './service_prvdr/ProviderSignup';
 import NextScreen from './service_prvdr/NextScreen';
+import Prov_Requirement from './service_prvdr/Prov_Requirement';
+import ProviderForm from './service_prvdr/ProviderForm';
+import ChatScreen from './service_prvdr/Chat';
+import BookingScreen from './service_prvdr/BookingScreen';
 
 // Import other services
 import BeautySaloonScreen from './Services/BeautySaloonScreen';

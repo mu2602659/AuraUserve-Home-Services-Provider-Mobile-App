@@ -7,10 +7,12 @@ import { createUserWithEmailAndPassword, sendEmailVerification, onAuthStateChang
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth'; // Import for Google sign-in
 import { auth } from '../config/firebase';
 import { themeColors } from '../theme';
+import { Feather } from '@expo/vector-icons'; 
 import VerificationComponent from './VerificationComponent';
 
 
 export default function SignUpScreen() {
+    const [secureTextEntry, setSecureTextEntry] = useState(true); // State to manage password visibility
     const navigation = useNavigation();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -109,14 +111,20 @@ export default function SignUpScreen() {
                         />
                         {emailError ? <Text style={{ color: 'red', marginLeft: 20 }}>{emailError}</Text> : null}
 
-                        <Text style={{ color: 'gray', marginLeft: 20 }}>Password</Text>
+                    <View style={{ position: 'relative' }}>
                         <TextInput
                             style={{ backgroundColor: '#F3F4F6', padding: 20, borderRadius: 20, marginBottom: 10 }}
-                            secureTextEntry
+                            secureTextEntry={secureTextEntry}
+                            keyboardType='numeric'
+                            placeholder="Enter Password"
                             value={password}
                             onChangeText={value => setPassword(value)}
-                            placeholder='Enter Password'
                         />
+                        <TouchableOpacity onPress={() => setSecureTextEntry(!secureTextEntry)} style={{ position: 'absolute', right: 20, top: 20 }}>
+                            <Feather name={secureTextEntry ? 'eye' : 'eye-off'} size={24} color='black' />
+                        </TouchableOpacity>
+                    </View>
+
 
                         <TouchableOpacity
                             style={{ backgroundColor: '#FFD700', paddingVertical: 15, borderRadius: 20 }}
