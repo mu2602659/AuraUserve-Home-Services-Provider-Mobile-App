@@ -2,7 +2,6 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import useAuth from './hooks/useAuth';
-
 // Import Dashboards
 import Prvdr_Dashboard from './Dashboards/Prvdr_Dashboard';
 import User_Dashboard from './Dashboards/User_Dashboard';
@@ -17,7 +16,6 @@ import VerificationComponent from './screens/VerificationComponent';
 import SignUpScreen from './screens/SignUpScreen';
 import ServicesScreen from './screens/ServicesScreen';
 import myProfileScreen from './screens/myProfileScreen';
-
 
 
 // Import Service Provider Signup
@@ -40,8 +38,6 @@ import ClinicalScreen from './Services/ClinicalScreen';
 import WashingScreen from './Services/WashingScreen';
 import HomeCareScreen from './Services/HomeCareScreen';
 import CleaningScreen from './Services/CleaningScreen';
-import { View } from 'react-native';
-import { SimpleLineIcons } from '@expo/vector-icons';
 
 const Stack = createNativeStackNavigator();
 const ServicesStack = createNativeStackNavigator();
@@ -73,16 +69,6 @@ export default function App() {
           <>
             <Stack.Screen name="Home" options={{ headerShown: false }} component={HomeScreen} />
             <Stack.Screen name="BeautySaloon" options={{ headerShown: false }} component={BeautySaloonScreen} />
-            <Stack.Screen name="Clinical" options={{ headerShown: false }} component={ClinicalScreen} />
-            <Stack.Screen name="Shifting" options={{ headerShown: false }} component={ShiftingScreen} />
-            <Stack.Screen name="Maintenance" options={{ headerShown: false }} component={MaintenanceScreen} />
-            <Stack.Screen name="Solar" options={{ headerShown: false }} component={SolarScreen} />
-            <Stack.Screen name="Cleaning" options={{ headerShown: false }} component={CleaningScreen} />
-            <Stack.Screen name="Catering" options={{ headerShown: false }} component={CateringScreen} />
-            <Stack.Screen name="Gardening" options={{ headerShown: false }} component={GardeningScreen} />
-            <Stack.Screen name="Security" options={{ headerShown: false }} component={SecurityScreen} />
-            <Stack.Screen name="HomeCare" options={{ headerShown: false }} component={HomeCareScreen} />
-            <Stack.Screen name="Washing" options={{ headerShown: false }} component={WashingScreen} />
           </>
         ) : (
         <>
@@ -109,5 +95,5 @@ export default function App() {
        
       </Stack.Navigator>
     </NavigationContainer>
-  );
+  );
 }
