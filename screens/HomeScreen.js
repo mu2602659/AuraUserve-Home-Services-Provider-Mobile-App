@@ -4,8 +4,10 @@ import { signOut } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
+import { FontAwesome5 } from "@expo/vector-icons";
 import HeaderComponent from "./HeaderComponent";
 import FooterComponent from "./FooterComponent";
+import ServicesScreen from "./ServicesScreen";
 
 const HomeScreen = () => {
   const [userName, setUserName] = useState("");
@@ -23,7 +25,6 @@ const HomeScreen = () => {
         setUserEmail("");
       }
     });
-
     // Unsubscribe when component unmounts
     return () => unsubscribe();
   }, []);
@@ -46,21 +47,25 @@ const HomeScreen = () => {
   };
 
   // Services Data
-  const servicesData = [
-  { id: '1', name: 'BeautySaloon', displayName: 'Beauty Saloon', icon: require('../assets/icons/beauty.png'), screen: 'BeautySaloonScreen' },
-  { id: '2', name: 'Clinical', displayName: 'Clinical', icon: require('../assets/icons/clinical.png'), screen: 'ClinicalScreen' },
-  { id: '3', name: 'Maintenance', displayName: 'Maintenance', icon: require('../assets/icons/maintenance.png'), screen: 'MaintenanceScreen' },
-  { id: '4', name: 'Shifting', displayName: 'Shifting', icon: require('../assets/icons/shifting.png'), screen: 'ShiftingScreen' },
-  { id: '5', name: 'Solar', displayName: 'Solar', icon: require('../assets/icons/solar.png'), screen: 'SolarScreen' },
-  { id: '6', name: 'Cleaning', displayName: 'Cleaning', icon: require('../assets/icons/clean.png'), screen: 'CleaningScreen' },
-  { id: '7', name: 'Catering', displayName: 'Event Organization', icon: require('../assets/icons/wedding.png'), screen: 'CateringScreen' },
-  { id: '8', name: 'Gardening', displayName: 'Gardening', icon: require('../assets/icons/garden.png'), screen: 'GardeningScreen' },
-  { id: '9', name: 'Security', displayName: 'Security', icon: require('../assets/icons/security.png'), screen: 'SecurityScreen' },
-  { id: '10', name: 'Washing', displayName: 'Vehicle Maintenance', icon: require('../assets/icons/vechile.png'), screen: 'WashingScreen' },
-  { id: '11', name: 'HomeCare', displayName: 'HomeCare Solutions', icon: require('../assets/icons/shield.png'), screen: 'HomeCareScreen' },
-];
+  const services = [
+    { id: '1', name: 'BeautySaloon', displayName: 'Beauty Saloon', icon: require('../assets/icons/beauty.png') },
+    { id: '2', name: 'Clinical', displayName: 'Clinical', icon: require('../assets/icons/clinical.png') },
+    { id: '3', name: 'Maintenance', displayName: 'Maintenance', icon: require('../assets/icons/maintenance.png') },
+    { id: '4', name: 'Shifting', displayName: 'Shifting', icon: require('../assets/icons/shifting.png') },
+    { id: '5', name: 'Solar', displayName: 'Solar', icon: require('../assets/icons/solar.png') },
+    { id: '6', name: 'Cleaning', displayName: 'Cleaning', icon: require('../assets/icons/clean.png') },
+    { id: '7', name: 'Catering', displayName: 'Event Organization', icon: require('../assets/icons/wedding.png') },
+    { id: '8', name: 'Gardening', displayName: 'Gardening', icon: require('../assets/icons/garden.png') },
+    { id: '9', name: 'Security', displayName: 'Security', icon: require('../assets/icons/security.png') },
+    { id: '10', name: 'Washing', displayName: 'Vehicle Maintenance', icon: require('../assets/icons/vechile.png') },
+    { id: '11', name: 'HomeCare', displayName: 'HomeCare Solutions', icon: require('../assets/icons/shield.png') },
+  ]; 
 
-
+  const navigateToService = (serviceName) => {
+    console.log(`Navigating to ${serviceName}`);
+    navigation.navigate(serviceName);
+  };
+  
   // Ads Data
   const adsData = [
     { id: '1', image: require('../assets/images/salon-ad.jpg'), description: 'Get salon services at the comfort of your home.', screen: 'BeautySaloonScreen' },
@@ -75,10 +80,9 @@ const HomeScreen = () => {
     // Add more reviews as needed
   ];
 
-const navigateToScreen = (screenName) => {
-  navigation.navigate(screenName);
-};
-
+  const navigateToScreen = (screenName) => {
+    navigation.navigate(screenName);
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -94,6 +98,7 @@ const navigateToScreen = (screenName) => {
         <ScrollView style={styles.content}>
           <View style={styles.servicesHeader}>
             <Text style={styles.ourServicesText}>Our Services</Text>
+            
             <TouchableOpacity
               style={styles.seeAllLink}
               onPress={() => navigation.navigate("Services")}
@@ -102,18 +107,19 @@ const navigateToScreen = (screenName) => {
             </TouchableOpacity>
           </View>
 
-    <ScrollView horizontal contentContainerStyle={styles.scrollViewContent}>
-        {servicesData.map((service) => (
-          <TouchableOpacity
-            key={service.id}
-            style={styles.serviceBlock}
-            onPress={() => navigateToScreen(service.screen)}
-          >
-            <Image source={service.icon} style={styles.serviceIcon} />
-            <Text style={styles.serviceName}>{service.displayName}</Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+          <ScrollView horizontal contentContainerStyle={styles.scrollViewContent}>
+            {services.map((service) => (
+              <TouchableOpacity
+                key={service.name}
+                style={styles.serviceBlock}
+                onPress={() => navigateToService(service.name)}
+              >
+                <Image source={service.icon} style={styles.serviceIcon}/>
+                <Text style={styles.serviceName}>{service.displayName}</Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+
           <Text style={styles.specialOffersText}>Special Offers</Text>
 
           <ScrollView horizontal contentContainerStyle={styles.adsScrollView}>
@@ -283,4 +289,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default HomeScreen;
