@@ -26,6 +26,7 @@ import ProviderForm from './service_prvdr/ProviderForm';
 import ChatScreen from './service_prvdr/Chat';
 import BookingScreen from './service_prvdr/BookingScreen';
 
+
 // Import other services
 import BeautySaloonScreen from './Services/BeautySaloonScreen';
 import CateringScreen from './Services/CateringScreen';
@@ -68,7 +69,18 @@ export default function App() {
         {user ? (
           <>
             <Stack.Screen name="Home" options={{ headerShown: false }} component={HomeScreen} />
-            <Stack.Screen name="BeautySaloon" options={{ headerShown: false }} component={BeautySaloonScreen} />
+            <Stack.Screen name="BeautySaloon" options={{ headerShown: false }} component={BeautySaloonScreen}/>
+            <Stack.Screen name="Catering" options={{ headerShown: false }} component={CateringScreen}/>
+            <Stack.Screen name="Cleaning" options={{ headerShown: false }} component={CleaningScreen}/>
+            <Stack.Screen name="Clinical" options={{ headerShown: false }} component={ClinicalScreen}/>
+            <Stack.Screen name="Gardening" options={{ headerShown: false }} component={GardeningScreen}/>
+            <Stack.Screen name="Solar" options={{ headerShown: false }} component={SolarScreen}/>
+            <Stack.Screen name="Security" options={{ headerShown: false }} component={SecurityScreen}/>
+            <Stack.Screen name="Washing" options={{ headerShown: false }} component={WashingScreen}/>
+            <Stack.Screen name="HomeCare" options={{ headerShown: false }} component={HomeCareScreen}/>
+            <Stack.Screen name="Shifting" options={{ headerShown: false }} component={ShiftingScreen}/>
+            <Stack.Screen name="Maintenance" options={{ headerShown: false }} component={MaintenanceScreen}/>
+
           </>
         ) : (
         <>
@@ -91,7 +103,8 @@ export default function App() {
         {/* Add ProviderSignup screen */}
         <Stack.Screen name="ProviderSignup" component={ProviderSignup} options={{ headerShown: false }} />
         <Stack.Screen name="NextScreen" component={NextScreen} options={{ title: 'Next Screen' }} />
-
+        <Stack.Screen name="home" component={HomeScreen} options={{ title: 'home' }} />
+        <Stack.Screen name="Login Screen" component={HomeScreen} options={{ title: 'Login sareen' }} />
        
       </Stack.Navigator>
     </NavigationContainer>

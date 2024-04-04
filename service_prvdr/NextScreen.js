@@ -138,4 +138,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NextScreen;
+export default NextScreen;
