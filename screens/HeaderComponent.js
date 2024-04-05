@@ -40,7 +40,7 @@ const HeaderComponent = ({ userName, userEmail, profileImage, handleProfileClick
         <View style={styles.menu}>
           <ScrollView>
             <ImageBackground source={require('../assets/images/background.jpg')} style={{ width: undefined, padding: 16, paddingTop: 48 }}>
-              <Image source={require('../assets/images/pic.jpg')} style={styles.profile} />
+              <Image source={require('../assets/images/logoo.png')} style={styles.profile} />
               <Text style={styles.name}>Arslan Saeed</Text>
               <View style={{ flexDirection: "row" }}>
                 <Text style={styles.Registered}>Registered</Text>
