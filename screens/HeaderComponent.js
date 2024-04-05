@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView, TouchableOpacity, Image, ImageBackground, StyleSheet, Dimensions } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, Image, ImageBackground, StyleSheet } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import * as ImagePicker from 'expo-image-picker';
 
-const HeaderComponent = ({ userName, userEmail, profileImage, handleProfileClick, navigation }) => {
+const HeaderComponent = ({ userName, userEmail, profileImage, handleProfileClick }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const navigation = useNavigation();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -15,19 +18,50 @@ const HeaderComponent = ({ userName, userEmail, profileImage, handleProfileClick
     setIsMenuOpen(false);
   };
 
+  const navigateToHomeScreen = () => {
+    navigation.navigate('home');
+  };
+
+  const navigateToServicesScreen = () => {
+    navigation.navigate('Services');
+  };
+
+  // Function to handle image selection
+  const handleImageSelect = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert('Permission denied', 'Sorry, we need camera roll permissions to make this work!');
+      return;
+    }
+    
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      setSelectedImage(result.uri);
+    }
+  };
+
   return (
     <View style={styles.header}>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <TouchableOpacity onPress={handleProfileClick}>
-          <Image source={profileImage} style={styles.profileImage} />
+          {selectedImage ? (
+            <Image source={{ uri: selectedImage }} style={styles.profileImage} />
+          ) : (
+            <Image source={profileImage} style={styles.profileImage} />
+          )}
         </TouchableOpacity>
-        <Text style={{ fontSize: 16, marginLeft: 8 }}>{userName}</Text>
-        <Text style={{ fontSize: 14, marginLeft: 8 }}>{userEmail}</Text>
+        <Text style={{ fontSize: 19, marginLeft: 8, fontWeight: "bold",}}>Welcome To AuraUserve</Text>
       </View>
 
       {/* Cart Icon */}
       <TouchableOpacity onPress={() => {/* Add your cart functionality */}}>
-        <Ionicons name="shopping-cart" size={24} color="black" />
+        <FontAwesome5 name="shopping-cart" size={24} color="black" />
       </TouchableOpacity>
 
       {/* Hamburger Menu */}
@@ -40,7 +74,7 @@ const HeaderComponent = ({ userName, userEmail, profileImage, handleProfileClick
         <View style={styles.menu}>
           <ScrollView>
             <ImageBackground source={require('../assets/images/background.jpg')} style={{ width: undefined, padding: 16, paddingTop: 48 }}>
-              <Image source={require('../assets/images/logoo.png')} style={styles.profile} />
+              <Image source={require('../assets/images/pic.jpg')} style={styles.profile} />
               <Text style={styles.name}>Arslan Saeed</Text>
               <View style={{ flexDirection: "row" }}>
                 <Text style={styles.Registered}>Registered</Text>
@@ -48,7 +82,7 @@ const HeaderComponent = ({ userName, userEmail, profileImage, handleProfileClick
               </View>
             </ImageBackground>
           </ScrollView>
-          <TouchableOpacity onPress={closeMenu}>
+          <TouchableOpacity onPress={navigateToHomeScreen}>
             <View style={styles.menuItem}>
               <MaterialIcons name="home" size={24} color="black" />
               <Text style={styles.menuText}>Home</Text>
@@ -61,7 +95,7 @@ const HeaderComponent = ({ userName, userEmail, profileImage, handleProfileClick
               <Text style={styles.menuText}>About</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={closeMenu}>
+          <TouchableOpacity onPress={navigateToServicesScreen}>
             <View style={styles.menuItem}>
               <MaterialIcons name="settings" size={24} color="black" />
               <Text style={styles.menuText}>Services</Text>
@@ -86,7 +120,10 @@ const HeaderComponent = ({ userName, userEmail, profileImage, handleProfileClick
             </View>
           </TouchableOpacity>
 
-          
+          {/* Close Button */}
+          <TouchableOpacity style={styles.closeButton} onPress={closeMenu}>
+            <Text style={styles.closeButtonText}>Close</Text>
+          </TouchableOpacity>
         </View>
       )}
     </View>
@@ -116,7 +153,7 @@ const styles = StyleSheet.create({
     right: 0,
     backgroundColor: 'white',
     width: 280,
-    height: 704,
+    height: 705,
     borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -124,23 +161,21 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
     zIndex: 1,
+
   },
   menuItem: {
-    padding: 5,
+    padding: 10,
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 42,
-    
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
+    marginBottom: 20,
   },
   menuText: {
-    fontSize: 17,
+    fontSize: 16,
     marginLeft: 10,
     fontWeight: "bold",
-  
-    
-  },
-  container: {
-    flex: 1
+    color: "black",
   },
   profile: {
     width: 85,
@@ -161,6 +196,20 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "700",
     marginVertical: 5
+  },
+  closeButton: {
+    alignSelf: 'left',
+    marginTop: 20,
+    paddingHorizontal: 120,
+    paddingVertical: 10,
+    backgroundColor: '#FFD700',
+  },
+  hoveredItem: {
+    backgroundColor: "#f0f0f0", // Change the background color when hovered
+  },
+  closeButtonText:{
+    fontWeight: "bold",
+    fontSize: 15,
   }
 
 });
