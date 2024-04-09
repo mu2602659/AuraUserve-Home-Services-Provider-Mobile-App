@@ -1,16 +1,7 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-} from "react-native";
+import { View,Text,Image,TouchableOpacity,StyleSheet,ScrollView,} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import { ArrowLeftIcon } from "react-native-heroicons/solid";
-
 const Prov_Requirement = () => {
   const navigation = useNavigation();
   const [selectedOption, setSelectedOption] = useState(null);
@@ -31,18 +22,6 @@ const Prov_Requirement = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
-        <View style={styles.header}>
-          <View className="flex-row justify-start mt-1">
-                    <TouchableOpacity
-                        onPress={() => navigation.goBack()}
-                        className="bg-yellow-400 p-2 rounded-tr-2xl rounded-bl-2xl ml-4"
-                    >
-                        <ArrowLeftIcon size="20" color="black" />
-                    </TouchableOpacity>
-          <Text style={styles.heading}>Our Requirements</Text>
-
-                </View>
-        </View>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           {/* Content */}
           <View style={styles.mainContainer}>
@@ -199,21 +178,7 @@ const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
   },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 8,
-    backgroundColor: "black",
-    paddingHorizontal: 2,
-  },
-  heading: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 5,
-    textAlign: "center",
-    color: "white",
-    flex: 1,
-  },
+ 
   backButton: {
     padding: 10,
   },

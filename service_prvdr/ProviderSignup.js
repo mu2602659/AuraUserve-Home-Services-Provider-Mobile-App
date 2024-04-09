@@ -8,6 +8,15 @@ const ProviderSignup = ({ navigation }) => {
   const [mobileNumber, setMobileNumber] = useState('');
   const [selectedService, setSelectedService] = useState('');
 
+  const handleNavigateToMongotry = () => {
+    navigation.navigate('Mongotry');
+  };
+
+  const handleNavigatefirebase_img = () => {
+    navigation.navigate('firebase_img');
+  };
+
+
   const handleSignup = () => {
     if (firstName && lastName && mobileNumber && selectedService) {
       // Navigate to the next screen with selected service and user details as parameters
@@ -85,6 +94,12 @@ const ProviderSignup = ({ navigation }) => {
       <TouchableOpacity style={styles.signupButton} onPress={handleSignup}>
         <Text style={styles.signupButtonText}>Sign Up</Text>
       </TouchableOpacity>
+      <TouchableOpacity style={styles.signupButton} onPress={handleNavigateToMongotry}>
+        <Text style={styles.signupButtonText}>Mongodb Attach</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.signupButton} onPress={handleNavigatefirebase_img}>
+        <Text style={styles.signupButtonText}>image upload with firebase</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -133,6 +148,8 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 5,
     width: '100%',
+    margin:10,
+    borderColor:'black',
     alignItems: 'center',
   },
   signupButtonText: {

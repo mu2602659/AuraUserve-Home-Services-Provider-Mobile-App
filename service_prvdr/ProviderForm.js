@@ -10,10 +10,27 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { View, Text, TouchableOpacity, StyleSheet, Platform, Image, TextInput, ScrollView, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
-// Define the ProviderForm component
 const ProviderForm = () => {
-  // Using useNavigation hook from React Navigation
   const navigation = useNavigation();
+
+  const [image, setImage] = useState(null);
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+
 
   // State to manage form data
   const [formData, setFormData] = useState({
@@ -32,30 +49,7 @@ const ProviderForm = () => {
     smartphoneType: '',
   });
 
-  const [profileImage, setProfileImage] = useState(null);
-
-  // Function to handle image selection
-  const handleImageSelect = async () => {
-    if (Platform.OS !== 'web') {
-      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (status !== 'granted') {
-        Alert.alert('Permission denied', 'Sorry, we need camera roll permissions to make this work!');
-        return;
-      }
-    }
-    
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.cancelled) {
-      setProfileImage(result.uri);
-    }
-  };
-
+  
   const handleFormSubmit = async () => {
     try {
       const docRef = await addDoc(collection(fr, 'providerForms'), formData); // using fr for Firestore instance
@@ -78,15 +72,15 @@ const ProviderForm = () => {
       <ScrollView>
         <View style={{ flex: 1 }}>
           <View style={{ alignItems: 'center', marginVertical: 20 }}>
-            <TouchableOpacity onPress={handleImageSelect} style={styles.profileContainer}>
-              {profileImage ? (
-                <Image source={{ uri: profileImage }} style={styles.profileImage} />
-              ) : (
-                <View style={styles.profilePlaceholder}>
-                  <Text style={styles.profilePlaceholderText}>Add Profile Picture</Text>
-                </View>
-              )}
-            </TouchableOpacity>
+          <TouchableOpacity onPress={pickImage} style={styles.profileContainer}>
+           {image ? (
+           <Image source={{ uri: image }} style={styles.profileImage} />
+          ) : (
+          <View style={styles.profilePlaceholder}>
+            <Text style={styles.profilePlaceholderText}>Add Profile Picture</Text>
+          </View>
+          )}
+      </TouchableOpacity>
           </View>
 
           {/* Form */}
@@ -255,6 +249,28 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     color: 'white', // Setting text color to white
   },
+  profileContainer: {
+    marginBottom: 20,
+  },
+  profileImage: {
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+  },
+  profilePlaceholder: {
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    backgroundColor: 'lightgray',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  profilePlaceholderText: {
+    fontSize: 16,
+    color: '#555',
+  },
 });
 
 export default ProviderForm;
+
+

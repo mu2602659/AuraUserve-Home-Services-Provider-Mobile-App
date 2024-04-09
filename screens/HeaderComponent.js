@@ -5,9 +5,9 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 
-const HeaderComponent = ({ userName, userEmail, profileImage, handleProfileClick }) => {
+const HeaderComponent = ({ userName, userEmail,handleLogout }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [image, setImage] = useState(null);
   const navigation = useNavigation();
 
   const toggleMenu = () => {
@@ -26,14 +26,8 @@ const HeaderComponent = ({ userName, userEmail, profileImage, handleProfileClick
     navigation.navigate('Services');
   };
 
-  // Function to handle image selection
-  const handleImageSelect = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== 'granted') {
-      Alert.alert('Permission denied', 'Sorry, we need camera roll permissions to make this work!');
-      return;
-    }
-    
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -41,22 +35,29 @@ const HeaderComponent = ({ userName, userEmail, profileImage, handleProfileClick
       quality: 1,
     });
 
-    if (!result.cancelled) {
-      setSelectedImage(result.uri);
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
     }
   };
+
+  
+   
 
   return (
     <View style={styles.header}>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <TouchableOpacity onPress={handleProfileClick}>
-          {selectedImage ? (
-            <Image source={{ uri: selectedImage }} style={styles.profileImage} />
+        <TouchableOpacity onPress={pickImage} style={styles.profileContainer}>
+      {image ? (
+        <Image source={{ uri: image }} style={styles.profileImage} />
           ) : (
-            <Image source={profileImage} style={styles.profileImage} />
+          <View style={styles.profilePlaceholder}>
+            <Text style={styles.profilePlaceholderText}>Add</Text>
+          </View>
           )}
-        </TouchableOpacity>
-        <Text style={{ fontSize: 19, marginLeft: 8, fontWeight: "bold",}}>Welcome To AuraUserve</Text>
+      </TouchableOpacity>
+      <Text style={{ fontSize: 17, marginLeft: 5, fontWeight: "bold",}}>Welcome To App</Text>
       </View>
 
       {/* Cart Icon */}
@@ -74,12 +75,17 @@ const HeaderComponent = ({ userName, userEmail, profileImage, handleProfileClick
         <View style={styles.menu}>
           <ScrollView>
             <ImageBackground source={require('../assets/images/background.jpg')} style={{ width: undefined, padding: 16, paddingTop: 48 }}>
-              <Image source={require('../assets/images/pic.jpg')} style={styles.profile} />
-              <Text style={styles.name}>Arslan Saeed</Text>
-              <View style={{ flexDirection: "row" }}>
-                <Text style={styles.Registered}>Registered</Text>
-                <MaterialIcons name="person" size={24} color={"white"}/>
+          <TouchableOpacity onPress={pickImage} style={styles.profileContainer1}>
+              {image ? (
+                <Image source={{ uri: image }} style={styles.profileImage1} />
+                ) : (
+              <View style={styles.profilePlaceholder1}>
+                <Text style={styles.profilePlaceholderText1}>Add Profile Picture</Text>
               </View>
+              )}
+          </TouchableOpacity>
+              <Text style={{ fontSize: 16, marginLeft: 8, color: 'white', fontWeight: "bold" }}>{userName}</Text>
+        <Text style={{ fontSize: 14, marginLeft: 8, color: 'white', fontWeight:"bold" }}>{userEmail}</Text>
             </ImageBackground>
           </ScrollView>
           <TouchableOpacity onPress={navigateToHomeScreen}>
@@ -113,7 +119,7 @@ const HeaderComponent = ({ userName, userEmail, profileImage, handleProfileClick
               <Text style={styles.menuText}>Contact</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={closeMenu}>
+          <TouchableOpacity onPress={handleLogout} >
             <View style={styles.menuItem}>
               <MaterialIcons name="logout" size={24} color="black" />
               <Text style={styles.menuText}>LogOut</Text>
@@ -210,8 +216,49 @@ const styles = StyleSheet.create({
   closeButtonText:{
     fontWeight: "bold",
     fontSize: 15,
-  }
-
+  },
+  
+  profileContainer: {
+    marginBottom: 20,
+  },
+  profileImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 75,
+  },
+  profilePlaceholder: {
+    width: 50,
+    height: 50,
+    borderRadius: 75,
+    backgroundColor: 'lightgray',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  profilePlaceholderText: {
+    fontSize: 16,
+    color: '#555',
+  },
+  
+  profileContainer1: {
+    marginBottom: 20,
+  },
+  profileImage1: {
+    width: 110,
+    height: 110,
+    borderRadius: 75,
+  },
+  profilePlaceholder1: {
+    width: 100,
+    height: 100,
+    borderRadius: 75,
+    backgroundColor: 'lightgray',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  profilePlaceholderText1: {
+    fontSize: 16,
+    color: '#555',
+  },
 });
 
 export default HeaderComponent;

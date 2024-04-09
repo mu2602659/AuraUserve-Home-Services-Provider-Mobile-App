@@ -18,13 +18,17 @@ import ServicesScreen from './screens/ServicesScreen';
 import myProfileScreen from './screens/myProfileScreen';
 
 
-// Import Service Provider Signup
+// Import Service Provider 
 import ProviderSignup from './service_prvdr/ProviderSignup';
 import NextScreen from './service_prvdr/NextScreen';
 import Prov_Requirement from './service_prvdr/Prov_Requirement';
 import ProviderForm from './service_prvdr/ProviderForm';
 import ChatScreen from './service_prvdr/Chat';
 import BookingScreen from './service_prvdr/BookingScreen';
+import Mongotry from './service_prvdr/Mongotry';
+import firebase_img from './service_prvdr/firebase_img';
+import List_images from './service_prvdr/List_images';
+import List_Users from './service_prvdr/List_Users';
 
 // Import other services
 import BeautySaloonScreen from './Services/BeautySaloonScreen';
@@ -68,7 +72,18 @@ export default function App() {
         {user ? (
           <>
             <Stack.Screen name="Home" options={{ headerShown: false }} component={HomeScreen} />
-            <Stack.Screen name="BeautySaloon" options={{ headerShown: false }} component={BeautySaloonScreen} />
+            <Stack.Screen name="BeautySaloon" options={{ headerShown: false }} component={BeautySaloonScreen}/>
+            <Stack.Screen name="Catering" options={{ headerShown: false }} component={CateringScreen}/>
+            <Stack.Screen name="Cleaning" options={{ headerShown: false }} component={CleaningScreen}/>
+            <Stack.Screen name="Clinical" options={{ headerShown: false }} component={ClinicalScreen}/>
+            <Stack.Screen name="Gardening" options={{ headerShown: false }} component={GardeningScreen}/>
+            <Stack.Screen name="Solar" options={{ headerShown: false }} component={SolarScreen}/>
+            <Stack.Screen name="Security" options={{ headerShown: false }} component={SecurityScreen}/>
+            <Stack.Screen name="Washing" options={{ headerShown: false }} component={WashingScreen}/>
+            <Stack.Screen name="HomeCare" options={{ headerShown: false }} component={HomeCareScreen}/>
+            <Stack.Screen name="Shifting" options={{ headerShown: false }} component={ShiftingScreen}/>
+            <Stack.Screen name="Maintenance" options={{ headerShown: false }} component={MaintenanceScreen}/>
+
           </>
         ) : (
         <>
@@ -80,7 +95,7 @@ export default function App() {
         </>
         )}
         {/* Common screens */}
-        <Stack.Screen name="Prov_Requirement" options={{ headerShown: false }} component={Prov_Requirement} />
+        <Stack.Screen name="Prov_Requirement"  component={Prov_Requirement} />
         <Stack.Screen name="ProviderForm"  component={ProviderForm} />
         <Stack.Screen name="Services" options={{ headerShown: false }} component={ServicesStackNavigator} />
         <Stack.Screen name="PrvdrDashboard" component={Prvdr_Dashboard} />
@@ -91,8 +106,16 @@ export default function App() {
         {/* Add ProviderSignup screen */}
         <Stack.Screen name="ProviderSignup" component={ProviderSignup} options={{ headerShown: false }} />
         <Stack.Screen name="NextScreen" component={NextScreen} options={{ title: 'Next Screen' }} />
+        <Stack.Screen name="home" component={HomeScreen} options={{ title: 'home' }} />
+        <Stack.Screen name="Login Screen" component={HomeScreen} options={{ title: 'Login sareen' }} />
 
-       
+        <Stack.Screen name="Mongotry" component={Mongotry} options={{ headerShown: false }} />
+        <Stack.Screen name="firebase_img" component={firebase_img} />
+        <Stack.Screen name="List_images" component={List_images} />
+        <Stack.Screen name="List_Users" component={List_Users} options={{ title: 'User List' }}
+        />
+
+
       </Stack.Navigator>
     </NavigationContainer>
   );

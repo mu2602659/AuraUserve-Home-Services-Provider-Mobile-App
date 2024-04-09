@@ -1,21 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, Platform, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
 const NextScreen = ({ route }) => {
   const { firstName, lastName, selectedService } = route.params;
-  const [profileImage, setProfileImage] = useState(null);
+  const [image, setImage] = useState(null);
 
-  // Function to handle image selection
-  const handleImageSelect = async () => {
-    if (Platform.OS !== 'web') {
-      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (status !== 'granted') {
-        Alert.alert('Permission denied', 'Sorry, we need camera roll permissions to make this work!');
-        return;
-      }
-    }
-    
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -23,23 +15,25 @@ const NextScreen = ({ route }) => {
       quality: 1,
     });
 
-    if (!result.cancelled) {
-      setProfileImage(result.uri);
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
     }
   };
 
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={handleImageSelect} style={styles.profileContainer}>
-        {profileImage ? (
-          <Image source={{ uri: profileImage }} style={styles.profileImage} />
-        ) : (
+    <TouchableOpacity onPress={pickImage} style={styles.profileContainer}>
+      {image ? (
+        <Image source={{ uri: image }} style={styles.profileImage} />
+          ) : (
           <View style={styles.profilePlaceholder}>
             <Text style={styles.profilePlaceholderText}>Add Profile Picture</Text>
           </View>
-        )}
+          )}
       </TouchableOpacity>
-   
       <Text style={styles.title}> {firstName} {lastName}</Text>
       <Text style={styles.text}>Welcome To {selectedService} Services</Text>
       <TouchableOpacity style={styles.addButton} onPress={() => {}}>
@@ -53,6 +47,15 @@ const NextScreen = ({ route }) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  image: {
+    width: 200,
+    height: 200,
+  },
   container: {
     flex: 1,
     alignItems: 'center',
@@ -113,6 +116,7 @@ const styles = StyleSheet.create({
   addButton: {
     backgroundColor: '#FDDA0D',
     padding: 15,
+    color:'Black',
     borderRadius: 5,
     width: '100%',
     alignItems: 'center',
@@ -138,4 +142,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NextScreen;
+export default NextScreen;

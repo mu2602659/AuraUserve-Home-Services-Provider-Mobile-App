@@ -4,8 +4,10 @@ import { signOut } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
+import { FontAwesome5 } from "@expo/vector-icons";
 import HeaderComponent from "./HeaderComponent";
 import FooterComponent from "./FooterComponent";
+import ServicesScreen from "./ServicesScreen";
 
 const HomeScreen = () => {
   const [userName, setUserName] = useState("");
@@ -23,7 +25,6 @@ const HomeScreen = () => {
         setUserEmail("");
       }
     });
-
     // Unsubscribe when component unmounts
     return () => unsubscribe();
   }, []);
@@ -64,6 +65,9 @@ const HomeScreen = () => {
     console.log(`Navigating to ${serviceName}`);
     navigation.navigate(serviceName);
   };
+  const navigateToHomeScreen = () => {
+    navigation.navigate('Home');
+  };
   
   // Ads Data
   const adsData = [
@@ -79,10 +83,9 @@ const HomeScreen = () => {
     // Add more reviews as needed
   ];
 
-const navigateToScreen = (screenName) => {
-  navigation.navigate(screenName);
-};
-
+  const navigateToScreen = (screenName) => {
+    navigation.navigate(screenName);
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -98,6 +101,7 @@ const navigateToScreen = (screenName) => {
         <ScrollView style={styles.content}>
           <View style={styles.servicesHeader}>
             <Text style={styles.ourServicesText}>Our Services</Text>
+            
             <TouchableOpacity
               style={styles.seeAllLink}
               onPress={() => navigation.navigate("Services")}
@@ -106,18 +110,19 @@ const navigateToScreen = (screenName) => {
             </TouchableOpacity>
           </View>
 
-    <ScrollView horizontal contentContainerStyle={styles.scrollViewContent}>
-        {servicesData.map((service) => (
-          <TouchableOpacity
-            key={service.id}
-            style={styles.serviceBlock}
-            onPress={() => navigateToScreen(service.screen)}
-          >
-            <Image source={service.icon} style={styles.serviceIcon} />
-            <Text style={styles.serviceName}>{service.displayName}</Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+          <ScrollView horizontal contentContainerStyle={styles.scrollViewContent}>
+            {services.map((service) => (
+              <TouchableOpacity
+                key={service.name}
+                style={styles.serviceBlock}
+                onPress={() => navigateToService(service.name)}
+              >
+                <Image source={service.icon} style={styles.serviceIcon}/>
+                <Text style={styles.serviceName}>{service.displayName}</Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+
           <Text style={styles.specialOffersText}>Special Offers</Text>
 
           <ScrollView horizontal contentContainerStyle={styles.adsScrollView}>
@@ -287,4 +292,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default HomeScreen;
