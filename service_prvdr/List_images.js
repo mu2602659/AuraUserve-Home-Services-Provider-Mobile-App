@@ -1,9 +1,11 @@
+// Frontend code
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, ActivityIndicator, FlatList, Image, Text, TouchableOpacity } from 'react-native';
+import { View, Image, FlatList, Text, ActivityIndicator } from 'react-native';
 import axios from 'axios';
 
-const List_images = ({ navigation }) => {
-  const [images, setImages] = useState([]);
+const List_images = () => {
+  const [latestImages, setLatestImages] = useState([]);
+  const [allImages, setAllImages] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -12,8 +14,10 @@ const List_images = ({ navigation }) => {
 
   const fetchImages = async () => {
     try {
-      const response = await axios.get('http://192.168.43.48:5002/images');
-      setImages(response.data);
+      const latestResponse = await axios.get('http://192.168.1.214:5002/latest-images');
+      const allResponse = await axios.get('http://192.168.1.214:5002/all-images');
+      setLatestImages(latestResponse.data);
+      setAllImages(allResponse.data);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching images:', error);
@@ -21,57 +25,51 @@ const List_images = ({ navigation }) => {
     }
   };
 
-  const handleImagePress = (image) => {
-    // Navigate to a new screen to display the selected image
-    navigation.navigate('ImageDetail', { image });
-  };
-
   return (
-    <View style={styles.container}>
-      {loading ? (
-        <ActivityIndicator size="large" color="#0000ff" />
-      ) : (
-        <FlatList
-          data={images}
-          keyExtractor={(item) => item._id}
-          renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => handleImagePress(item)}>
-              <View style={styles.imageContainer}>
-                <Image source={{ uri: `http://192.168.43.48:5002/uploads/${item.uniqueFilename}` }} style={styles.image} />
-                <Text style={styles.imageName}>{item.originalFilename}</Text>
+    <View>
+      <View>
+        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Latest Images</Text>
+        {loading ? (
+          <ActivityIndicator />
+        ) : (
+          <FlatList
+            data={latestImages}
+            keyExtractor={(item) => item._id}
+            horizontal
+            renderItem={({ item }) => (
+              <View style={{ margin: 10 }}>
+                <Image
+                  source={{ uri: `data:image/jpeg;base64,${item.imageData}` }}
+                  style={{ width: 100, height: 100 }}
+                />
+                <Text>{item.originalFilename}</Text>
               </View>
-            </TouchableOpacity>
-          )}
-        />
-      )}
+            )}
+          />
+        )}
+      </View>
+      <View>
+        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>All Images</Text>
+        {loading ? (
+          <ActivityIndicator />
+        ) : (
+          <FlatList
+            data={allImages}
+            keyExtractor={(item) => item._id}
+            renderItem={({ item }) => (
+              <View style={{ margin: 10 }}>
+                <Image
+                  source={{ uri: `data:image/jpeg;base64,${item.imageData}` }}
+                  style={{ width: 200, height: 200 }}
+                />
+                <Text>{item.originalFilename}</Text>
+              </View>
+            )}
+          />
+        )}
+      </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f0f0f0',
-  },
-  imageContainer: {
-    margin: 10,
-    borderRadius: 10,
-    overflow: 'hidden',
-    alignItems: 'center',
-  },
-  image: {
-    width: 150,
-    height: 150,
-    resizeMode: 'cover',
-  },
-  imageName: {
-    marginTop: 5,
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-});
 
 export default List_images;

@@ -95,13 +95,13 @@ export default function App() {
         </>
         )}
         {/* Common screens */}
-        <Stack.Screen name="Prov_Requirement"  component={Prov_Requirement} />
-        <Stack.Screen name="ProviderForm"  component={ProviderForm} />
+        <Stack.Screen name="Prov_Requirement"  component={Prov_Requirement} options={{ title: 'Verify the Requirements' }} />
+        <Stack.Screen name="ProviderForm"  component={ProviderForm} options={{ title: 'Fill the Form' }}/>
         <Stack.Screen name="Services" options={{ headerShown: false }} component={ServicesStackNavigator} />
-        <Stack.Screen name="PrvdrDashboard" component={Prvdr_Dashboard} />
-        <Stack.Screen name="UserDashboard" component={User_Dashboard} />
         <Stack.Screen name="myProfile" component={myProfileScreen} options={{ title: 'myProfile' }} />
         <Stack.Screen name="Chat" component={ChatScreen} options={{ title: 'Chat Conversation' }} />
+        <Stack.Screen name="PrvdrDashboard" component={Prvdr_Dashboard} />
+        <Stack.Screen name="UserDashboard" component={User_Dashboard} />
 
         {/* Add ProviderSignup screen */}
         <Stack.Screen name="ProviderSignup" component={ProviderSignup} options={{ headerShown: false }} />
@@ -111,9 +111,8 @@ export default function App() {
 
         <Stack.Screen name="Mongotry" component={Mongotry} options={{ headerShown: false }} />
         <Stack.Screen name="firebase_img" component={firebase_img} />
-        <Stack.Screen name="List_images" component={List_images} />
-        <Stack.Screen name="List_Users" component={List_Users} options={{ title: 'User List' }}
-        />
+        <Stack.Screen name="List_images" component={List_images} options={{ title: 'Images List' }}/>
+        <Stack.Screen name="List_Users" component={List_Users} options={{ title: 'User List' }}/>
 
 
       </Stack.Navigator>

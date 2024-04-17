@@ -1,3 +1,4 @@
+//Mongotry.js
 import React, { useState, useEffect } from 'react';
 import { ScrollView, View, Text, TouchableOpacity, TextInput, Image, Button, Platform, Alert } from 'react-native';
 import { Avatar } from 'react-native-paper';
@@ -75,7 +76,7 @@ export default function ProfileEditScreen() {
       name: 'avatar.jpg',
     });
 
-    axios.post('http://192.168.43.48:5002/profile', formData, {
+    axios.post('http://192.168.1.214:5002/profile', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -117,7 +118,7 @@ export default function ProfileEditScreen() {
       image: { uri: image }
     };
 
-    axios.post('http://192.168.43.48:5001/register', userData)
+    axios.post('http://192.168.1.214:5001/register', userData)
       .then(res => {
         console.log(res.data);
         if (res.data.status === 'ok') {

@@ -1,9 +1,11 @@
+// Backend code
+// Import necessary modules
 const express = require('express');
 const multer = require('multer');
-const path = require('path');
 const mongoose = require('mongoose');
 const { v4: uuidv4 } = require('uuid');
 
+// Create an Express app
 const app = express();
 
 // Connect to MongoDB
@@ -17,8 +19,7 @@ mongoose.connect('mongodb+srv://AuraUserve:aura1234@cluster0.jqlyfp6.mongodb.net
 // Define a schema for the image model
 const imageSchema = new mongoose.Schema({
   originalFilename: String,
-  uniqueFilename: String,
-  path: String,
+  imageData: String, // Store image data as base64 string
   uploadedAt: {
     type: Date,
     default: Date.now,
@@ -29,18 +30,23 @@ const imageSchema = new mongoose.Schema({
 const Image = mongoose.model('Image', imageSchema);
 
 // Set up multer storage for uploading images
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/');
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = uuidv4();
-    cb(null, uniqueSuffix + '-' + file.originalname);
-  }
-});
+const storage = multer.memoryStorage(); // Store uploaded files in memory
 
 // Initialize multer with storage options
-const upload = multer({ storage: storage });
+const upload = multer({ 
+  storage: storage,
+  fileFilter: function (req, file, cb) {
+    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+      return cb(new Error('Only image files are allowed!'));
+    }
+    cb(null, true);
+  },
+  // Rename the file to avatar1, avatar2, ...
+  filename: function (req, file, cb) {
+    const uniqueSuffix = uuidv4();
+    cb(null, 'avatar' + uniqueSuffix);
+  }
+});
 
 // Handle POST request to /profile for single image upload
 app.post('/profile', upload.single('avatar'), async function (req, res) {
@@ -51,28 +57,13 @@ app.post('/profile', upload.single('avatar'), async function (req, res) {
   }
 
   try {
-    let originalFilename = file.originalname;
+    // Convert image to base64
+    const imageData = file.buffer.toString('base64');
 
-    // Check if the original filename already exists in the database
-    const existingImage = await Image.findOne({ originalFilename });
-
-    // If an image with the same original filename exists, generate a new filename
-    if (existingImage) {
-      let count = 1;
-      let newFilename;
-      do {
-        count++;
-        newFilename = `${path.parse(originalFilename).name} ${count}${path.extname(originalFilename)}`;
-      } while (await Image.findOne({ originalFilename: newFilename }));
-      
-      originalFilename = newFilename;
-    }
-
-    // Save the image metadata to the database
+    // Save the image data to the database
     const image = new Image({
-      originalFilename,
-      uniqueFilename: `${uuidv4()}-${originalFilename}`,
-      path: file.path,
+      originalFilename: file.originalname,
+      imageData: imageData,
     });
     await image.save();
 
@@ -85,14 +76,25 @@ app.post('/profile', upload.single('avatar'), async function (req, res) {
   }
 });
 
-// Endpoint to fetch images
-app.get('/images', async function(req, res) {
+// Endpoint to fetch latest images
+app.get('/latest-images', async function(req, res) {
   try {
-    const images = await Image.find();
-    res.status(200).json(images);
+    const latestImages = await Image.find().sort({ uploadedAt: -1 }).limit(5); // Fetch latest 5 images
+    res.status(200).json(latestImages);
   } catch (error) {
-    console.error('Error fetching images:', error);
-    res.status(500).send({ status: 'error', message: 'Failed to fetch images from database' });
+    console.error('Error fetching latest images:', error);
+    res.status(500).send({ status: 'error', message: 'Failed to fetch latest images from database' });
+  }
+});
+
+// Endpoint to fetch all images
+app.get('/all-images', async function(req, res) {
+  try {
+    const allImages = await Image.find();
+    res.status(200).json(allImages);
+  } catch (error) {
+    console.error('Error fetching all images:', error);
+    res.status(500).send({ status: 'error', message: 'Failed to fetch all images from database' });
   }
 });
 
