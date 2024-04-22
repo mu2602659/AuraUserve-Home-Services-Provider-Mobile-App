@@ -3,7 +3,8 @@ import { initializeApp } from "firebase/app";
 import { initializeAuth, getAuth, browserLocalPersistence, setPersistence } from 'firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getFirestore } from 'firebase/firestore';
-
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/storage'
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -28,4 +29,7 @@ setPersistence(getAuth(app), browserLocalPersistence, AsyncStorage);
 // Get Firestore instance
 const fr = getFirestore(app);
 
-export { auth, fr };
+if(!firebase.apps.length){
+  firebase.initializeApp(firebaseConfig);
+}
+export { auth, fr, firebase };

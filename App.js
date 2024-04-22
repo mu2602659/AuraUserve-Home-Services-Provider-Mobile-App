@@ -18,14 +18,17 @@ import ServicesScreen from './screens/ServicesScreen';
 import myProfileScreen from './screens/myProfileScreen';
 
 
-// Import Service Provider Signup
+// Import Service Provider 
 import ProviderSignup from './service_prvdr/ProviderSignup';
 import NextScreen from './service_prvdr/NextScreen';
 import Prov_Requirement from './service_prvdr/Prov_Requirement';
 import ProviderForm from './service_prvdr/ProviderForm';
 import ChatScreen from './service_prvdr/Chat';
 import BookingScreen from './service_prvdr/BookingScreen';
-
+import Mongotry from './service_prvdr/Mongotry';
+import firebase_img from './service_prvdr/firebase_img';
+import List_images from './service_prvdr/List_images';
+import List_Users from './service_prvdr/List_Users';
 
 // Import other services
 import BeautySaloonScreen from './Services/BeautySaloonScreen';
@@ -92,20 +95,31 @@ export default function App() {
         </>
         )}
         {/* Common screens */}
-        <Stack.Screen name="Prov_Requirement" options={{ headerShown: false }} component={Prov_Requirement} />
-        <Stack.Screen name="ProviderForm"  component={ProviderForm} />
+        <Stack.Screen name="Prov_Requirement"  component={Prov_Requirement} options={{ title: 'Verify the Requirements' }} />
+        <Stack.Screen name="ProviderForm"  component={ProviderForm} options={{ title: 'Fill the Form' }}/>
         <Stack.Screen name="Services" options={{ headerShown: false }} component={ServicesStackNavigator} />
-        <Stack.Screen name="PrvdrDashboard" component={Prvdr_Dashboard} />
-        <Stack.Screen name="UserDashboard" component={User_Dashboard} />
         <Stack.Screen name="myProfile" component={myProfileScreen} options={{ title: 'myProfile' }} />
         <Stack.Screen name="Chat" component={ChatScreen} options={{ title: 'Chat Conversation' }} />
+        <Stack.Screen name="PrvdrDashboard" component={Prvdr_Dashboard} />
+        <Stack.Screen name="UserDashboard" component={User_Dashboard} />
 
         {/* Add ProviderSignup screen */}
         <Stack.Screen name="ProviderSignup" component={ProviderSignup} options={{ headerShown: false }} />
         <Stack.Screen name="NextScreen" component={NextScreen} options={{ title: 'Next Screen' }} />
         <Stack.Screen name="home" component={HomeScreen} options={{ title: 'home' }} />
+<<<<<<< HEAD
       
        
+=======
+        <Stack.Screen name="Login Screen" component={HomeScreen} options={{ title: 'Login sareen' }} />
+
+        <Stack.Screen name="Mongotry" component={Mongotry} options={{ headerShown: false }} />
+        <Stack.Screen name="firebase_img" component={firebase_img} />
+        <Stack.Screen name="List_images" component={List_images} options={{ title: 'Images List' }}/>
+        <Stack.Screen name="List_Users" component={List_Users} options={{ title: 'User List' }}/>
+
+
+>>>>>>> d617b00cc548d2a2f74a6043ff92b83c25dfd3e7
       </Stack.Navigator>
     </NavigationContainer>
   );

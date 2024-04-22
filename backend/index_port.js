@@ -1,7 +1,8 @@
-const http = require('http');
+// app.js (or server.js)
+const express = require('express');
+const bodyParser = require('body-parser');
 const admin = require("firebase-admin");
 
-// Initialize Firebase Admin SDK with your service account key
 const serviceAccount = require("./serviceAccountKey.json");
 
 admin.initializeApp({
@@ -9,42 +10,48 @@ admin.initializeApp({
 });
 
 const db = admin.firestore();
+const app = express();
+const PORT = 3000;
 
-// Function to add a user to Firestore
-const addUserToFirestore = async (id, name) => {
+app.use(bodyParser.json());
+
+// Update the route handlers to use the local IP address
+app.post('/addUser', async (req, res) => {
   try {
-    const userRef = db.collection("Coustomers").doc(id);
+    const { id, name } = req.body;
+    const userRef = db.collection("Customers").doc(id);
     await userRef.set({ id, name });
-    console.log("User added successfully!");
+    res.status(200).json({ message: 'User added successfully' });
   } catch (error) {
     console.error("Error adding user:", error);
-  }
-};
-
-// Create an HTTP server
-const PORT = 3000;
-const server = http.createServer((req, res) => {
-  // Handle incoming requests
-  if (req.method === 'POST' && req.url === '/addUser') {
-    let data = '';
-    req.on('data', chunk => {
-      data += chunk;
-    });
-    req.on('end', () => {
-      const { id, name } = JSON.parse(data);
-      addUserToFirestore(id, name);
-      res.statusCode = 200;
-      res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify({ message: 'User added successfully' }));
-    });
-  } else {
-    res.statusCode = 404;
-    res.setHeader('Content-Type', 'text/plain');
-    res.end('Not Found');
+    res.status(500).json({ message: 'Error adding user' });
   }
 });
 
-// Start the server
-server.listen(PORT, () => {
+app.post('/sendMessage', async (req, res) => {
+  try {
+    const { senderId, receiverId, message } = req.body;
+    const messageRef = db.collection("Messages").doc();
+    await messageRef.set({ senderId, receiverId, message, timestamp: Date.now() });
+    res.status(200).json({ message: 'Message sent successfully' });
+  } catch (error) {
+    console.error("Error sending message:", error);
+    res.status(500).json({ message: 'Error sending message' });
+  }
+});
+
+app.get('/getMessages', async (req, res) => {
+  try {
+    const userId = req.query.userId;
+    const messagesSnapshot = await db.collection("Messages").where('receiverId', '==', userId).get();
+    const messages = messagesSnapshot.docs.map(doc => doc.data());
+    res.status(200).json(messages);
+  } catch (error) {
+    console.error("Error fetching messages:", error);
+    res.status(500).json({ message: 'Error fetching messages' });
+  }
+});
+
+app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
