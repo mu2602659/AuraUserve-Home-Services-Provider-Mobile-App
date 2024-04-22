@@ -65,9 +65,6 @@ const HomeScreen = () => {
     console.log(`Navigating to ${serviceName}`);
     navigation.navigate(serviceName);
   };
-  const navigateToHomeScreen = () => {
-    navigation.navigate('Home');
-  };
   
   // Ads Data
   const adsData = [

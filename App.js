@@ -104,7 +104,7 @@ export default function App() {
         <Stack.Screen name="ProviderSignup" component={ProviderSignup} options={{ headerShown: false }} />
         <Stack.Screen name="NextScreen" component={NextScreen} options={{ title: 'Next Screen' }} />
         <Stack.Screen name="home" component={HomeScreen} options={{ title: 'home' }} />
-        <Stack.Screen name="Login Screen" component={HomeScreen} options={{ title: 'Login sareen' }} />
+      
        
       </Stack.Navigator>
     </NavigationContainer>
