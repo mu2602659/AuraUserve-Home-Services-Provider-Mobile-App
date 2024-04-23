@@ -7,6 +7,8 @@ import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
+import { IMG_URL } from '../config/ip_address';
+import { DATA_URL } from '../config/ip_address';
 import styles from './stylesProfileEdit'; // Import your styles
 
 export default function ProfileEditScreen() {
@@ -76,7 +78,7 @@ export default function ProfileEditScreen() {
       name: 'avatar.jpg',
     });
 
-    axios.post('http://192.168.1.214:5002/profile', formData, {
+    axios.post(`${IMG_URL}/profile`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -118,7 +120,7 @@ export default function ProfileEditScreen() {
       image: { uri: image }
     };
 
-    axios.post('http://192.168.1.214:5001/register', userData)
+    axios.post(`${DATA_URL}register`, userData)
       .then(res => {
         console.log(res.data);
         if (res.data.status === 'ok') {

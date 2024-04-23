@@ -29,6 +29,7 @@ import Mongotry from './service_prvdr/Mongotry';
 import firebase_img from './service_prvdr/firebase_img';
 import List_images from './service_prvdr/List_images';
 import List_Users from './service_prvdr/List_Users';
+import EditProfileScreen from './service_prvdr/EditProfileScreen';
 
 // Import other services
 import BeautySaloonScreen from './Services/BeautySaloonScreen';
@@ -105,7 +106,6 @@ export default function App() {
 
         {/* Add ProviderSignup screen */}
         <Stack.Screen name="ProviderSignup" component={ProviderSignup} options={{ headerShown: false }} />
-        <Stack.Screen name="NextScreen" component={NextScreen} options={{ title: 'Next Screen' }} />
         <Stack.Screen name="home" component={HomeScreen} options={{ title: 'home' }} />
         <Stack.Screen name="Login Screen" component={HomeScreen} options={{ title: 'Login sareen' }} />
 
@@ -113,6 +113,9 @@ export default function App() {
         <Stack.Screen name="firebase_img" component={firebase_img} />
         <Stack.Screen name="List_images" component={List_images} options={{ title: 'Images List' }}/>
         <Stack.Screen name="List_Users" component={List_Users} options={{ title: 'User List' }}/>
+
+        <Stack.Screen name="NextScreen" component={NextScreen} options={{ title: 'Next Screen' }}/>
+        <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
 
 
       </Stack.Navigator>

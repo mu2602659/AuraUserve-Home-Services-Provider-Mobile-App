@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, ActivityIndicator } from 'react-native';
 import axios from 'axios';
+import { DATA_URL } from '../config/ip_address';
 
 const List_Users = () => {
   const [loading, setLoading] = useState(true);
@@ -9,13 +10,13 @@ const List_Users = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
+      try { 
         // Fetch all users
-        const usersResponse = await axios.get('http://192.168.1.214:5001/users');
+        const usersResponse = await axios.get(`${DATA_URL}/users`);
         setUsers(usersResponse.data);
 
         // Fetch latest user
-        const latestUserResponse = await axios.get('http://192.168.1.214:5001/latest-user');
+        const latestUserResponse = await axios.get(`${DATA_URL}/latest-user`);
         setLatestUser(latestUserResponse.data);
 
         setLoading(false);

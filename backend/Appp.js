@@ -20,6 +20,7 @@ mongoose.connect('mongodb+srv://AuraUserve:aura1234@cluster0.jqlyfp6.mongodb.net
 const imageSchema = new mongoose.Schema({
   originalFilename: String,
   imageData: String, // Store image data as base64 string
+  description: String, // Add field for image description
   uploadedAt: {
     type: Date,
     default: Date.now,
@@ -64,6 +65,7 @@ app.post('/profile', upload.single('avatar'), async function (req, res) {
     const image = new Image({
       originalFilename: file.originalname,
       imageData: imageData,
+      description: req.body.description, 
     });
     await image.save();
 
@@ -79,7 +81,7 @@ app.post('/profile', upload.single('avatar'), async function (req, res) {
 // Endpoint to fetch latest images
 app.get('/latest-images', async function(req, res) {
   try {
-    const latestImages = await Image.find().sort({ uploadedAt: -1 }).limit(5); // Fetch latest 5 images
+    const latestImages = await Image.find().sort({ uploadedAt: -1 }).limit(2); // Fetch latest 5 images
     res.status(200).json(latestImages);
   } catch (error) {
     console.error('Error fetching latest images:', error);
@@ -97,6 +99,25 @@ app.get('/all-images', async function(req, res) {
     res.status(500).send({ status: 'error', message: 'Failed to fetch all images from database' });
   }
 });
+
+
+// Add the DELETE endpoint for deleting posts
+app.delete('/post/:id', async function(req, res) {
+  const postId = req.params.id;
+
+  try {
+    const deletedPost = await Image.findByIdAndDelete(postId);
+    if (!deletedPost) {
+      return res.status(404).send({ status: 'error', message: 'Post not found' });
+    }
+    console.log('Post deleted successfully:', deletedPost);
+    res.status(200).send({ status: 'ok', message: 'Post deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting post:', error);
+    res.status(500).send({ status: 'error', message: 'Failed to delete post' });
+  }
+});
+
 
 // Serve uploaded images
 app.use('/uploads', express.static('uploads'));
