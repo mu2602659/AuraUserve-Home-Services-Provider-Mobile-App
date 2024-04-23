@@ -82,10 +82,7 @@ const HomeScreen = () => {
     { id: '2', name: 'Jane Smith', review: 'Excellent experience. Will use again.' },
     // Add more reviews as needed
   ];
-  const navigateToProviderSignup = () => {
-    // Navigate to the ProviderSignup screen when the button is pressed
-    navigation.navigate("ProviderSignup");
-  };
+ 
 
   const navigateToScreen = (screenName) => {
     navigation.navigate(screenName);
@@ -121,20 +118,6 @@ const HomeScreen = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
-      <TouchableOpacity
-              onPress={navigateToProviderSignup}
-              style={{
-                paddingVertical: 15,
-                backgroundColor: "#FFD700",
-                marginHorizontal: 20,
-                marginVertical: 8,
-                borderRadius: 10,
-              }}
-            >
-              <Text style={{ fontSize: 18, fontWeight: "bold", textAlign: "center", color: "#555555" }}>
-                Provider Sign up
-              </Text>
-            </TouchableOpacity>
         <HeaderComponent 
           userName={userName} 
           userEmail={userEmail} 

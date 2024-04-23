@@ -107,10 +107,7 @@ export default function App() {
         {/* Add ProviderSignup screen */}
         <Stack.Screen name="ProviderSignup" component={ProviderSignup} options={{ headerShown: false }} />
         <Stack.Screen name="home" component={HomeScreen} options={{ title: 'home' }} />
-<<<<<<< HEAD
-      
-       
-=======
+
         <Stack.Screen name="Login Screen" component={HomeScreen} options={{ title: 'Login sareen' }} />
 
         <Stack.Screen name="Mongotry" component={Mongotry} options={{ headerShown: false }} />
@@ -121,8 +118,6 @@ export default function App() {
         <Stack.Screen name="NextScreen" component={NextScreen} options={{ title: 'Next Screen' }}/>
         <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
 
-
->>>>>>> d617b00cc548d2a2f74a6043ff92b83c25dfd3e7
       </Stack.Navigator>
     </NavigationContainer>
   );
