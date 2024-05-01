@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ArrowLeftIcon } from 'react-native-heroicons/solid';
 import { useNavigation } from '@react-navigation/native';
 
 const GardeningScreen = () => {
+  const navigation = useNavigation();
 
   const GardeningData = [
     { id: '1', name: 'GardenInstallationScreen', displayName: 'Garden Installation', icon: require('../assets/icons/garden.png') },
@@ -15,27 +15,27 @@ const GardeningScreen = () => {
     { id: '7', name: 'RodentControlScreen', displayName: 'Rodent Control', icon: require('../assets/icons/rat.png') },
     { id: '8', name: 'BedBugExterminationScreen', displayName: 'Bed Bug Extermination', icon: require('../assets/icons/bed-bug.png') },
     { id: '9', name: 'BeeandWaspScreen', displayName: 'Bee and Wasp Removal', icon: require('../assets/icons/bee.png') },
-      ];
- const renderServiceBlock = (service) => (
-  <TouchableOpacity
-    key={service.id}
-    style={styles.serviceBlock}
-    onPress={() => {
-      console.log(`Navigating to ${service.name}`);
-      navigation.navigate(service.name);
-    }}
-  >
-    <View style={styles.serviceContent}>
-      <Image source={service.icon} style={styles.serviceIcon} />
-      <Text style={styles.serviceName}>{service.displayName}</Text>
-    </View>
-  </TouchableOpacity>
-);
+  ];
+
+  const renderServiceBlock = (service) => (
+    <TouchableOpacity
+      key={service.id}
+      style={styles.serviceBlock}
+     onPress={() => {
+  console.log(`Navigating to BookingScreen from ${service.name}`);
+  navigation.navigate('Booking'); // Navigate to BookingScreen
+      }}
+    >
+      <View style={styles.serviceContent}>
+        <Image source={service.icon} style={styles.serviceIcon} />
+        <Text style={styles.serviceName}>{service.displayName}</Text>
+      </View>
+    </TouchableOpacity>
+  );
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-       
         <View style={styles.gridContainer}>
           {GardeningData.map((service) => renderServiceBlock(service))}
         </View>
@@ -43,14 +43,11 @@ const GardeningScreen = () => {
     </SafeAreaView>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-  },
-  header: {
-    alignItems: 'center',
-    padding: 16,
   },
   gridContainer: {
     justifyContent: 'space-around',
@@ -61,7 +58,7 @@ const styles = StyleSheet.create({
     aspectRatio: 12/3,
     backgroundColor: '#F5F5F5',
     borderRadius: 10,
-    marginVertical: 8, // Adjust vertical margin as needed
+    marginVertical: 8,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 2,
@@ -72,13 +69,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
- serviceIcon: {
-  width: 50, // Example width value in pixels
-  height: 50, // Example height value in pixels
-  resizeMode: 'contain',
-  marginLeft: 30,
-},
-
+  serviceIcon: {
+    width: 50,
+    height: 50,
+    resizeMode: 'contain',
+    marginLeft: 30,
+  },
   serviceName: {
     fontSize: 18,
     fontWeight: 'bold',
@@ -86,4 +82,5 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
+
 export default GardeningScreen;

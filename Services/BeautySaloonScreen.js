@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native'; // Import the useNavigation hook
+import BookingScreen from '../service_prvdr/BookingScreen'; // Import BookingScreen
 
 const BeautySaloonScreen = () => {
   const navigation = useNavigation(); // Use the useNavigation hook to get the navigation object
@@ -21,22 +22,22 @@ const BeautySaloonScreen = () => {
     { id: '12', name: 'EyelashExtensionsScreen', displayName: 'Eyelash Extensions', icon: require('../assets/icons/eyelash.png') },
     // Add more services as needed
   ];
+const renderServiceBlock = (service) => (
+  <TouchableOpacity
+    key={service.id}
+    style={styles.serviceBlock}
+    onPress={() => {
+      console.log(`Navigating to Booking Page for ${service.displayName}`);
+      navigation.navigate('Services', { screen: 'Booking' }); // Navigate to BookingScreen
+    }}
+  >
+    <View style={styles.serviceContent}>
+      <Image source={service.icon} style={styles.serviceIcon} />
+      <Text style={styles.serviceName}>{service.displayName}</Text>
+    </View>
+  </TouchableOpacity>
+);
 
-  const renderServiceBlock = (service) => (
-    <TouchableOpacity
-      key={service.id}
-      style={styles.serviceBlock}
-      onPress={() => {
-        console.log(`Navigating to ${service.name}`);
-        navigation.navigate(service.name);
-      }}
-    >
-      <View style={styles.serviceContent}>
-        <Image source={service.icon} style={styles.serviceIcon} />
-        <Text style={styles.serviceName}>{service.displayName}</Text>
-      </View>
-    </TouchableOpacity>
-  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -44,15 +45,7 @@ const BeautySaloonScreen = () => {
         <View style={styles.gridContainer}>
           {BeautySaloonData.map((service) => renderServiceBlock(service))}
         </View>
-        <TouchableOpacity
-          style={{ paddingVertical: 15, backgroundColor: "#FFD700", marginHorizontal: 20, marginVertical: 10, borderRadius: 10 }}
-          onPress={() => {
-            console.log("Navigating to Booking Page");
-            navigation.navigate('Booking');
-          }}
-        >
-          <Text style={{ fontSize: 18, fontWeight: "bold", textAlign: "center", color: "#555555" }}>Book Now</Text>
-        </TouchableOpacity>
+      
       </ScrollView>
     </SafeAreaView>
   );
@@ -62,17 +55,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-  },
-  header: {
-    alignItems: 'center',
-    padding: 16,
-  },
-  logoImage: {
-    width: 190,
-    height: 120,
-    resizeMode: 'contain',
-    borderTopLeftRadius: 40, // Adjust the value as needed
-    borderBottomRightRadius: 40, // Adjust the value as needed
   },
   gridContainer: {
     justifyContent: 'space-around',
@@ -94,13 +76,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
- serviceIcon: {
-  width: 50, // Example width value in pixels
-  height: 50, // Example height value in pixels
-  resizeMode: 'contain',
-  marginLeft: 30,
-},
-
+  serviceIcon: {
+    width: 50, // Example width value in pixels
+    height: 50, // Example height value in pixels
+    resizeMode: 'contain',
+    marginLeft: 30,
+  },
   serviceName: {
     fontSize: 18,
     fontWeight: 'bold',

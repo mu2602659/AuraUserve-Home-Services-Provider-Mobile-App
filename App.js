@@ -51,6 +51,8 @@ const ServicesStackNavigator = () => (
   <ServicesStack.Navigator>
     <ServicesStack.Screen name="ServicesScreen" options={{ headerShown: false }} component={ServicesScreen} />
     <ServicesStack.Screen name="BeautySaloon" component={BeautySaloonScreen} />
+        <ServicesStack.Screen name="Booking" options={{ headerShown: false }} component={BookingScreen} />
+
     <ServicesStack.Screen name="Catering" component={CateringScreen} />
     <ServicesStack.Screen name="Maintenance" component={MaintenanceScreen} />
     <ServicesStack.Screen name="Shifting" component={ShiftingScreen} />
@@ -61,7 +63,6 @@ const ServicesStackNavigator = () => (
     <ServicesStack.Screen name="Washing" component={WashingScreen} />
     <ServicesStack.Screen name="Cleaning" component={CleaningScreen} />
     <ServicesStack.Screen name="HomeCare" component={HomeCareScreen} />
-    <ServicesStack.Screen name="Booking" options={{ headerShown: false }} component={BookingScreen} />
   </ServicesStack.Navigator>
 );
 export default function App() {
