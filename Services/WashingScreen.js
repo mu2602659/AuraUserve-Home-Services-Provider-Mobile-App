@@ -1,10 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import { SliderBox } from 'react-native-image-slider-box';
+import axios from 'axios';
+import { IMG_URL } from '../config/ip_address';
 
 const WashingScreen = () => {
   const navigation = useNavigation(); // Initialize useNavigation hook
+  const [washingImages, setWashingImages] = useState([]);
+
+  useEffect(() => {
+    fetchWashingImages();
+  }, []);
+
+  const fetchWashingImages = async () => {
+    try {
+      const response = await axios.get(`${IMG_URL}/post-images?service=Vehicle Maintenance`);
+      setWashingImages(response.data);
+    } catch (error) {
+      console.error('Error fetching washing images:', error);
+    }
+  };
+
+  const navigateToPostDetails = (post) => {
+    navigation.navigate('PostDetails', { post });
+  };
+
 
   const WashingData = [
     { id: '1', name: 'HeadlightScreen', displayName: 'Headlight', icon: require('../assets/icons/headlight.png') },
@@ -37,6 +59,24 @@ const WashingScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
+      <View style={styles.sliderContainer}>
+          <SliderBox
+            images={washingImages.map(image => ({ uri: `data:image/jpeg;base64,${image.imageData}`, title: image.title }))}
+            sliderBoxHeight={200}
+            dotColor="#FFEE58"
+            inactiveDotColor="#90A4AE"
+            paginationBoxVerticalPadding={20}
+            autoplay
+            circleLoop
+            resizeMethod={'resize'}
+            resizeMode={'cover'}
+            paginationBoxStyle={styles.paginationBoxStyle}
+            dotStyle={styles.dotStyle}
+            ImageComponentStyle={styles.imageComponentStyle}
+            imageLoadingColor="#2196F3"
+            onCurrentImagePressed={(index) => navigateToPostDetails(washingImages[index])}
+          />
+        </View>
         <View style={styles.gridContainer}>
           {WashingData.map((service) => renderServiceBlock(service))}
         </View>
@@ -85,6 +125,33 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     flex: 1,
+  },
+  sliderContainer: {
+    marginVertical: 10,
+    paddingHorizontal: 10,
+  },
+  paginationBoxStyle: {
+    position: 'absolute',
+    bottom: 0,
+    padding: 0,
+    alignItems: 'center',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    paddingVertical: 10
+  },
+  dotStyle: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginHorizontal: 0,
+    padding: 0,
+    margin: 0,
+    backgroundColor: 'rgba(128, 128, 128, 0.92)'
+  },
+  imageComponentStyle: {
+    borderRadius: 15,
+    width: '97%',
+    marginTop: 5
   },
 });
 

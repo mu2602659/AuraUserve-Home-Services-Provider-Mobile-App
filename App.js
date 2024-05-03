@@ -31,6 +31,10 @@ import List_images from './service_prvdr/List_images';
 import List_Users from './service_prvdr/List_Users';
 import EditProfileScreen from './service_prvdr/EditProfileScreen';
 
+// Post integration
+import PostDetails from './Posts_integration/PostDetails';
+
+
 // Import other services
 import BeautySaloonScreen from './Services/BeautySaloonScreen';
 import CateringScreen from './Services/CateringScreen';
@@ -73,18 +77,18 @@ export default function App() {
       <Stack.Navigator initialRouteName={user ? "Home" : "Welcome"}>
         {user ? (
           <>
-            <Stack.Screen name="Home" options={{ headerShown: false }} component={HomeScreen} />
-            <Stack.Screen name="BeautySaloon" options={{ headerShown: false }} component={BeautySaloonScreen}/>
-            <Stack.Screen name="Catering" options={{ headerShown: false }} component={CateringScreen}/>
-            <Stack.Screen name="Cleaning" options={{ headerShown: false }} component={CleaningScreen}/>
-            <Stack.Screen name="Clinical" options={{ headerShown: false }} component={ClinicalScreen}/>
-            <Stack.Screen name="Gardening" options={{ headerShown: false }} component={GardeningScreen}/>
-            <Stack.Screen name="Solar" options={{ headerShown: false }} component={SolarScreen}/>
-            <Stack.Screen name="Security" options={{ headerShown: false }} component={SecurityScreen}/>
-            <Stack.Screen name="Washing" options={{ headerShown: false }} component={WashingScreen}/>
-            <Stack.Screen name="HomeCare" options={{ headerShown: false }} component={HomeCareScreen}/>
-            <Stack.Screen name="Shifting" options={{ headerShown: false }} component={ShiftingScreen}/>
-            <Stack.Screen name="Maintenance" options={{ headerShown: false }} component={MaintenanceScreen}/>
+            <Stack.Screen name="Home"  component={HomeScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="BeautySaloon" options={{ title: 'Beauty Saloon' }} component={BeautySaloonScreen}/>
+            <Stack.Screen name="Catering" options={{ title: 'Catering' }} component={CateringScreen}/>
+            <Stack.Screen name="Cleaning" options={{ title: 'Cleaning' }} component={CleaningScreen}/>
+            <Stack.Screen name="Clinical" options={{ title: 'Clinical' }} component={ClinicalScreen}/>
+            <Stack.Screen name="Gardening" options={{ title: 'Gardening' }} component={GardeningScreen}/>
+            <Stack.Screen name="Solar" options={{ title: 'Solar' }} component={SolarScreen}/>
+            <Stack.Screen name="Security" options={{ title: 'Security' }} component={SecurityScreen}/>
+            <Stack.Screen name="Washing" options={{ title: 'Washing' }} component={WashingScreen}/>
+            <Stack.Screen name="HomeCare" options={{ title: 'HomeCare' }} component={HomeCareScreen}/>
+            <Stack.Screen name="Shifting" options={{ title: 'Shifting' }} component={ShiftingScreen}/>
+            <Stack.Screen name="Maintenance" options={{ title: 'Maintenance' }} component={MaintenanceScreen}/>
 
           </>
         ) : (
@@ -116,8 +120,10 @@ export default function App() {
         <Stack.Screen name="List_images" component={List_images} options={{ title: 'Images List' }}/>
         <Stack.Screen name="List_Users" component={List_Users} options={{ title: 'User List' }}/>
 
-        <Stack.Screen name="NextScreen" component={NextScreen} options={{ title: 'Next Screen' }}/>
+        <Stack.Screen name="NextScreen" component={NextScreen} options={{ title: 'Service Povider' }}/>
         <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
+
+        <Stack.Screen name="PostDetails" component={PostDetails} options={{ title: "Post Details" }} />
 
       </Stack.Navigator>
     </NavigationContainer>

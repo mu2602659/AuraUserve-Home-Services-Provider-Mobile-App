@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image, ActivityIndicator, RefreshControl } from "react-native"; // Import RefreshControl
+import { View, Text, StyleSheet, TouchableOpacity, Image, ActivityIndicator, RefreshControl, FlatList } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
 import { IMG_URL } from "../config/ip_address";
@@ -7,9 +7,9 @@ import axios from "axios";
 
 const HamburgerMenu = ({ handleLogout }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [latestImage, setLatestImage] = useState(null);
+  const [profileImages, setProfileImages] = useState([]);
+  const [latestImages, setLatestImages] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const navigation = useNavigation();
 
   const toggleMenu = () => {
@@ -17,21 +17,18 @@ const HamburgerMenu = ({ handleLogout }) => {
   };
 
   useEffect(() => {
-    fetchLatestImage();
-  }, [refreshing]);
+    fetchProfileImages();
+  }, []);
 
-  const fetchLatestImage = async () => {
+  const fetchProfileImages = async () => {
     try {
-      const response = await axios.get(`${IMG_URL}/latest-images`);
-      if (response.data && response.data.length > 0) {
-        setLatestImage(response.data[0]);
-      }
+      const response = await axios.get(`${IMG_URL}/profile-images`);
+      setProfileImages(response.data);
+      setLatestImages(response.data.slice(-1)); // Get last two latest images
       setLoading(false);
-      setRefreshing(false);
     } catch (error) {
-      console.error("Error fetching image:", error);
+      console.error("Error fetching profile images:", error);
       setLoading(false);
-      setRefreshing(false);
     }
   };
 
@@ -58,11 +55,15 @@ const HamburgerMenu = ({ handleLogout }) => {
   const closeMenu = () => {
     setIsMenuOpen(false);
   };
-
-  const handleRefresh = () => {
-    setRefreshing(true);
-  };
-
+  const renderItem = ({ item }) => (
+    <View style={styles.item}>
+      <Image source={{ uri: `data:image/jpeg;base64,${item.imageData}` }} style={styles.image} />
+      <View style={styles.textContainer}>
+        <Text style={styles.name}>{item.name}</Text>
+      </View>
+    </View>
+  );
+  
   return (
     <View style={styles.header}>
       <TouchableOpacity onPress={toggleMenu} style={styles.hamburgerMenu}>
@@ -71,24 +72,15 @@ const HamburgerMenu = ({ handleLogout }) => {
 
       {isMenuOpen && (
         <View style={styles.menu}>
-          <View style={{ alignItems: "center", justifyContent: "center" }}>
-            {loading ? (
-              <ActivityIndicator />
-            ) : latestImage ? (
-              <>
-                <Image
-                  source={{
-                    uri: `data:image/jpeg;base64,${latestImage.imageData}`,
-                  }}
-                  style={{ width: 150, height: 150, borderRadius: 75 }}
-                />
-              </>
-            ) : (
-              <View style={{ alignItems: "center" }}>
-                <Text>No image found</Text>
-              </View>
-            )}
-          </View>
+          {loading ? (
+            <ActivityIndicator />
+          ) : (
+            <FlatList
+          data={latestImages}
+          renderItem={renderItem}
+          keyExtractor={(item) => item._id}
+        />
+          )}
 
           <TouchableOpacity style={styles.menuItem} onPress={navigateToEditProfile}>
             <FontAwesome5 name="edit" size={20} color="black" style={styles.menuIcon} />
@@ -140,10 +132,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     right: 5,
-    paddingVertical: 19,
+    paddingVertical: 39,
     backgroundColor: '#FFF',
     width: 200,
-    height: 900,
+    height: 530,
     borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -165,6 +157,35 @@ const styles = StyleSheet.create({
   menuText: {
     fontSize: 16,
     color: 'black',
+  },
+  item: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    paddingHorizontal: 10, // Add horizontal padding to center the image
+  },
+  image: {
+    width: 100,
+    height: 100,
+    borderRadius: 50, // Make the image round
+    marginRight: 20, // Add space between the image and the text
+  },
+  textContainer: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
+  name: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  deleteButton: {
+    backgroundColor: 'red',
+    padding: 5,
+    borderRadius: 5,
+  },
+  deleteText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 });
 

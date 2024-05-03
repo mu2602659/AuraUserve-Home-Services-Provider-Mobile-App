@@ -96,9 +96,7 @@ const HomeScreen = () => {
 
   const fetchPosterImages = async () => {
     try {
-      const latestResponse = await axios.get(`${IMG_URL}/latest-images`);
-      const allResponse = await axios.get(`${IMG_URL}/all-images`);
-      setPosterImages(latestResponse.data);
+      const allResponse = await axios.get(`${IMG_URL}/post-images`);
       setPosterImages(allResponse.data);
       setRefreshing(false); // Stop refreshing
       setLoading(false);
@@ -106,14 +104,15 @@ const HomeScreen = () => {
       console.error('Error fetching images:', error);
       setLoading(false);
       setRefreshing(false); // Stop refreshing
-
     }
   };
   const onRefresh = () => {
     setRefreshing(true); // Start refreshing
     fetchPosterImages(); // Fetch images again
   };
-
+  const navigateToPostDetails = (post) => {
+    navigation.navigate('PostDetails', { post });
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -174,16 +173,21 @@ const HomeScreen = () => {
                 keyExtractor={(item) => item._id}
                 horizontal
                 renderItem={({ item }) => (
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={() => navigation.navigate('PostDetails', { post: item })}>
                   <View style={styles.postContainer}>
                     <Image
                       source={{ uri: `data:image/jpeg;base64,${item.imageData}` }}
                       style={{ width: 250, height: 150 }}
                     />
-                    <Text style={styles.postDescription}>{item.description}</Text>
-                  {/* <View style={styles.postTextContainer}>
-                    <Text style={styles.postText}>{item.originalFilename}</Text>
-                    </View>*}*/}
+                    <Text style={styles.postTitle}>{item.title}</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                      <Text style={[styles.postPrice, { fontWeight: 'bold', color: 'blue',marginRight: 50  }]}> Rs. {item.price}</Text>
+                      <View style={[styles.postServiceLabel, { backgroundColor: 'lightblue' }]}>
+                        <Text style={styles.postServiceLabelText}>{item.service}</Text>
+                      </View>
+                    </View>
+
+
                   </View>
                   </TouchableOpacity>
                 )}
@@ -337,11 +341,37 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     overflow: 'hidden',
   },
-  postDescription: {
-    backgroundColor: '#fff',
-    padding: 10,
+ 
+  postService: {
+    backgroundColor: 'rgba(0, 0, 255, 0.3)', // Blue transparent background
+    borderRadius: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    marginRight: 10,
+  },
+  postImage: {
+    width: '100%',
+    height: 200,
+  },
+  postTitle: {
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  postPrice: {
+    fontSize: 16,
+    color: 'blue',
+  },
+  postServiceLabel: {
+    borderRadius: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  postServiceLabelText: {
+    fontWeight: 'bold',
+    color: 'blue',
   },
   postImage: {
     width: '100%',

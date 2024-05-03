@@ -1,15 +1,24 @@
-import React, { useState, useEffect } from "react"; // Add this line
-import {View,Text,StyleSheet,TouchableOpacity,Image,TextInput,Alert,} from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Alert, Dimensions, ScrollView } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import HamburgerMenu from "./HamburgerMenu";
+import { useNavigation } from '@react-navigation/native';
 import { FontAwesome5 } from "@expo/vector-icons";
 import { IMG_URL } from "../config/ip_address";
+import ServicePicker from "../Posts_integration/ServicePicker";
 import axios from "axios";
 
 const NextScreen = ({ route }) => {
-  const { firstName, lastName, selectedService } = route.params;
+  const { firstName, lastName } = route.params;
   const [image, setImage] = useState(null);
-  const [description, setDescription] = useState("");
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [price, setPrice] = useState('');
+  const [address, setAddress] = useState('');
+  const [selectedService, setSelectedService] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const navigation = useNavigation();
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -19,27 +28,28 @@ const NextScreen = ({ route }) => {
       quality: 1,
     });
 
-    console.log(result);
-
-    if (!result.canceled) {
+    if (!result.cancelled) {
       setImage(result.assets[0].uri);
     }
   };
-  const handleImageUpload = () => {
-    if (!image) {
-      Alert.alert(
-        "No image selected",
-        "Please select an image before uploading."
-      );
+
+  const services = ['Gardening', 'Security', 'Beauty Salon','Clinical','Maintenance','Shifting','Solar','Cleaning','Event Organization','Vehicle Maintenance','HomeCare Solutions'];
+
+  const handleServiceSelection = (service) => {
+    setSelectedService(service);
+    setModalVisible(false);
+  };
+
+ const handleSubmit = () => {
+    if (!image || !title || !description || !price || !address || !selectedService) {
+      Alert.alert("Incomplete Form", "Please fill in all fields before submitting.");
       return;
     }
-    if (!description) {
-      Alert.alert(
-        "Description required",
-        "Please enter a description for the image."
-      );
-      return;
-    }
+
+   // if (submitted) {
+   //   Alert.alert("Already Submitted", "You have already submitted this form.");
+    //  return;
+   // }
 
     const formData = new FormData();
     formData.append("avatar", {
@@ -47,10 +57,14 @@ const NextScreen = ({ route }) => {
       type: "image/jpeg",
       name: "avatar.jpg",
     });
+    formData.append("title", title);
     formData.append("description", description);
+    formData.append("price", price);
+    formData.append("address", address);
+    formData.append("service", selectedService);
 
     axios
-      .post(`${IMG_URL}/profile`, formData, {
+      .post(`${IMG_URL}/post-image`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -58,98 +72,116 @@ const NextScreen = ({ route }) => {
       .then((response) => {
         console.log(response.data);
         if (response.data.status === "ok") {
-          Toast.show({
-            type: "success",
-            text1: "Success!!",
-            text2: "Image Uploaded",
-            text2: "Decription Added",
-            visibilityTime: 1000,
-          });
+          Alert.alert("Success", "Image Uploaded and Description Added Successfully");
+          setSubmitted(true);
+        } else if (response.data.status === "error" && response.data.message === "Duplicate post") {
+          Alert.alert("Error", "Duplicate post. You have already submitted this post.");
         } else {
-          Toast.show({
-            type: "error",
-            text1: "Error!!",
-            text2: response.data.data,
-            visibilityTime: 1000,
-          });
+          Alert.alert("Error", "Failed to upload image. Please try again later.");
         }
       })
       .catch((error) => {
         console.error("Error uploading image:", error);
-        Toast.show({
-          type: "error",
-          text1: "Error!!",
-          text2: "Failed to upload image",
-          visibilityTime: 1000,
-        });
+        Alert.alert("Error", "Failed to upload image. Please try again later.");
       });
   };
+  
   const navigateToAllPosts = () => {
     navigation.navigate("List_images");
-    closeMenu();
   };
 
   const navigateToEditProfile = () => {
     navigation.navigate("EditProfileScreen");
-    closeMenu();
   };
 
   const navigateToAllUsers = () => {
     navigation.navigate("List_Users");
-    closeMenu();
-  };
-
-  const handleNavigatefirebase_img = () => {
-    navigation.navigate("firebase_img");
-    closeMenu();
-  };
-
-  const closeMenu = () => {
-    setIsMenuOpen(false);
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <HamburgerMenu />
-      </View>
+      <ScrollView contentContainerStyle={styles.scrollView}>
+        <View style={styles.header}>
+          <HamburgerMenu />
+        </View>    
+        <View style={styles.formContainer}>
+          <Text style={styles.name}>{firstName} {lastName}</Text>
+          <TouchableOpacity style={styles.imageContainer} onPress={pickImage}>
+            {image ? (
+              <Image source={{ uri: image }} style={styles.image} />
+            ) : (
+              <View style={styles.profilePlaceholder}>
+                <FontAwesome5 name="image" size={50} color="#ccc" />
+                <Text style={styles.label}>Add Post</Text>
+              </View>
+            )}
+          </TouchableOpacity>
 
-      <Text style={{ marginTop: 10, fontSize: 18 }}>
-        {firstName} {lastName}
-      </Text>
-      <Text style={{ fontSize: 16, marginBottom: 20 }}>
-        Welcome to {selectedService} Services
-      </Text>
-      <TouchableOpacity style={styles.addButton} onPress={pickImage}>
-        <Text style={styles.buttonText}>Pick an image from camera roll</Text>
-      </TouchableOpacity>
-      {image && <Image source={{ uri: image }} style={styles.image} />}
-      <TextInput
-        style={styles.input}
-        placeholder="Enter Image Description"
-        onChangeText={(text) => setDescription(text)}
-      />
-      <TouchableOpacity onPress={handleImageUpload} style={styles.addButton}>
-        <Text style={styles.buttonText}>Add Post</Text>
-      </TouchableOpacity>
-      
-      <TouchableOpacity style={styles.requestsButton} onPress={() => {}}>
-        <Text style={styles.requestsButtonText}>Incoming Requests</Text>
-      </TouchableOpacity>
+          <Text style={styles.label}>Title</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Title"
+            onChangeText={(text) => setTitle(text)}
+          />
+
+          <Text style={styles.label}>Description</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter Image Description"
+            onChangeText={(text) => setDescription(text)}
+          />
+
+          <Text style={styles.label}>Price</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Price"
+            onChangeText={(text) => setPrice(text)}
+            keyboardType="numeric"
+          />
+
+          <Text style={styles.label}>Address</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Address"
+            value={address}
+            onChangeText={(text) => setAddress(text)}
+          />
+
+          <Text style={styles.label}>Selected Service</Text>
+          <TouchableOpacity style={styles.serviceContainer} onPress={() => setModalVisible(true)}>
+            <Text style={[styles.input, selectedService ? styles.selectedService : null]}>{selectedService ? selectedService : 'Select a Service'}</Text>
+          </TouchableOpacity>
+          <ServicePicker
+            visible={modalVisible}
+            services={services}
+            selectedService={selectedService}
+            onSelect={handleServiceSelection}
+          />
+
+          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+            <Text style={styles.buttonText}>Submit</Text>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity style={styles.requestsButton} onPress={() => {}}>
+          <Text style={styles.requestsButtonText}>Incoming Requests</Text>
+        </TouchableOpacity>
+      </ScrollView>
 
       {/* Footer */}
       <View style={styles.footer}>
-        <TouchableOpacity
-          style={styles.footerItem}
-          onPress={handleNavigatefirebase_img}
-        >
-          <FontAwesome5
-            name="file-alt"
-            size={20}
-            color="black"
-            style={styles.footerIcon}
-          />
-          <Text style={styles.footerText}>Firebase store image</Text>
+        <TouchableOpacity style={styles.footerItem} onPress={navigateToEditProfile}>
+          <FontAwesome5 name="edit" size={20} color="black" style={styles.menuIcon} />
+          <Text style={styles.menuText}>Edit Profile</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.footerItem} onPress={navigateToAllPosts}>
+          <FontAwesome5 name="file-alt" size={20} color="black" style={styles.menuIcon} />
+          <Text style={styles.menuText}>All Posts</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.footerItem} onPress={navigateToAllUsers}>
+          <FontAwesome5 name="users" size={20} color="black" style={styles.menuIcon} />
+          <Text style={styles.menuText}>All users</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.footerItem}>
@@ -166,91 +198,83 @@ const NextScreen = ({ route }) => {
   );
 };
 
+const windowWidth = Dimensions.get('window').width;
+
 const styles = StyleSheet.create({
   container: {
+    padding:10,
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: "#fff",
+    position: "relative",
+  },
+  scrollView: {
+    flexGrow: 1,
+    paddingBottom: 100,
   },
   header: {
     position: "absolute",
     top: 0,
-    left:0,
-    right: 218,
+    left: 0,
+    right: windowWidth - 218,
     zIndex: 1,
   },
-  image: {
+  name: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  formContainer: {
+    paddingTop:80,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  imageContainer: {
     width: 200,
     height: 200,
-  },
-  container: {
-    flex: 1,
-    alignItems: "center",
+    backgroundColor: "#eee",
     justifyContent: "center",
-    paddingHorizontal: 20,
-    backgroundColor: "#fff",
-    position: "relative",
-  },
-  profileContainer: {
+    alignItems: "center",
     marginBottom: 20,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 10,
   },
-  profileImage: {
-    width: 150,
-    height: 150,
-    borderRadius: 75,
+  image: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 10,
   },
-  profilePlaceholder: {
-    width: 150,
-    height: 150,
-    borderRadius: 75,
-    backgroundColor: "lightgray",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  profilePlaceholderText: {
+  label: {
+    alignSelf: 'flex-start',
+    marginBottom: 5,
     fontSize: 16,
-    color: "#555",
+    fontWeight: 'bold',
   },
-  logoContainer: {
-    alignItems: "center",
+  input: {
+    width: "100%",
+    height: 40,
+    borderColor: "gray",
+    borderWidth: 1,
+    paddingHorizontal: 10,
     marginBottom: 20,
   },
-  logoImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-  },
-  logoPlaceholder: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    backgroundColor: "lightgray",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  logoPlaceholderText: {
-    fontSize: 16,
-    color: "#555",
-  },
-  title: {
-    fontSize: 24,
+  serviceContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 20,
   },
-  text: {
-    fontSize: 18,
-    marginBottom: 20,
+  selectedService: {
+    backgroundColor: "#FDDA0D",
   },
-  addButton: {
+  submitButton: {
     backgroundColor: "#FDDA0D",
     padding: 15,
-    color: "Black",
     borderRadius: 5,
-    width: "100%",
     alignItems: "center",
     marginBottom: 20,
   },
   buttonText: {
-    color: "Black",
+    color: "black",
     fontSize: 18,
     fontWeight: "bold",
   },
@@ -267,37 +291,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
-  postItem: {
-    marginRight: 10,
-    alignItems: "center",
-  },
-  postImage: {
-    width: 150,
-    height: 150,
-    borderRadius: 10,
-    marginBottom: 10,
-  },
-  postInfo: {
-    alignItems: "center",
-  },
-  postText: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 5,
-  },
-  deleteText: {
-    color: "red",
-    fontSize: 14,
-    fontWeight: "bold",
-  },
-  input: {
-    width: "100%",
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    paddingHorizontal: 10,
-    marginBottom: 20,
-  },
   footer: {
     flexDirection: "row",
     justifyContent: "space-around",
@@ -306,21 +299,28 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: "#FDDA0D",
+    backgroundColor: "#fff",
     paddingVertical: 10,
   },
   footerItem: {
     flexDirection: "row",
     alignItems: "center",
   },
+  menuIcon: {
+    marginRight: 5,
+  },
+  menuText: {
+    fontSize: 16,
+    color: "black",
+  },
   footerIcon: {
     marginRight: 5,
   },
   footerText: {
     fontSize: 16,
+    color: "black",
     fontWeight: "bold",
   },
 });
 
 export default NextScreen;
-//above hamburger menu inside this page

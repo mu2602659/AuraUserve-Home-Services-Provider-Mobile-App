@@ -8,12 +8,13 @@ const List_images = () => {
   const [loading, setLoading] = useState(true);
   const [userPosts, setUserPosts] = useState([]);
   
-  useEffect(() => {
+    useEffect(() => {
       fetchUserPosts();
     }, []);
+
     const fetchUserPosts = async () => {
       try {
-        const response = await axios.get(`${IMG_URL}/all-images`);
+        const response = await axios.get(`${IMG_URL}/post-images`);
         setUserPosts(response.data);
         setLoading(false);
       } catch (error) {
@@ -24,7 +25,7 @@ const List_images = () => {
   
     const deletePost = (postId) => {
       axios
-        .delete(`${IMG_URL}/post/${postId}`)
+        .delete(`${IMG_URL}/post-image/${postId}`)
         .then((response) => {
           console.log("Post deleted successfully:", response.data);
           // Refresh user posts after deletion
