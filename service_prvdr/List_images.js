@@ -14,8 +14,8 @@ const List_images = () => {
 
   const fetchImages = async () => {
     try {
-      const latestResponse = await axios.get('http://192.168.1.214:5002/latest-images');
-      const allResponse = await axios.get('http://192.168.1.214:5002/all-images');
+      const latestResponse = await axios.get('http:// 192.168.137.1:5002/latest-images');
+      const allResponse = await axios.get('http:// 192.168.137.1:5002/all-images');
       setLatestImages(latestResponse.data);
       setAllImages(allResponse.data);
       setLoading(false);

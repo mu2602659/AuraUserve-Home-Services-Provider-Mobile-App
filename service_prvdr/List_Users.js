@@ -11,11 +11,11 @@ const List_Users = () => {
     const fetchData = async () => {
       try {
         // Fetch all users
-        const usersResponse = await axios.get('http://192.168.1.214:5001/users');
+        const usersResponse = await axios.get('http:// 192.168.137.1:5001/users');
         setUsers(usersResponse.data);
 
         // Fetch latest user
-        const latestUserResponse = await axios.get('http://192.168.1.214:5001/latest-user');
+        const latestUserResponse = await axios.get('http:// 192.168.137.1:5001/latest-user');
         setLatestUser(latestUserResponse.data);
 
         setLoading(false);
