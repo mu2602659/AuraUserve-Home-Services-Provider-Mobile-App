@@ -74,16 +74,18 @@ export default function LoginScreen() {
                     <Text className="text-gray-700 ml-4">Email Address</Text>
                     <TextInput
                         className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-3"
-                        placeholder="Enter Email"
+                        placeholder="Enter Your Email Address"
                         value={email}
                         onChangeText={value => setEmail(value)}
                     />
                     <View style={{ position: 'relative' }}>
+                                           <Text className="text-gray-700 ml-4">Password</Text>
+
                         <TextInput
                             style={{ backgroundColor: '#F3F4F6', padding: 20, borderRadius: 20, marginBottom: 10 }}
                             secureTextEntry={secureTextEntry}
                             keyboardType='numeric'
-                            placeholder="Enter Password"
+                            placeholder="Enter Your Password"
                             value={password}
                             onChangeText={value => setPassword(value)}
                         />

@@ -1,21 +1,21 @@
 // Frontend code
 import React, { useState, useEffect } from 'react';
-import { View, Image, FlatList, Text, ActivityIndicator } from 'react-native';
+import {View,Text,StyleSheet, TouchableOpacity, Image, ActivityIndicator,FlatList,} from "react-native";
+import { IMG_URL } from '../config/ip_address';
 import axios from 'axios';
 
 const List_images = () => {
-  const [latestImages, setLatestImages] = useState([]);
-  const [allImages, setAllImages] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchImages();
-  }, []);
+  const [userPosts, setUserPosts] = useState([]);
+  
+    useEffect(() => {
+      fetchUserPosts();
+    }, []);
 
   const fetchImages = async () => {
     try {
-      const latestResponse = await axios.get('http:// 192.168.137.1:5002/latest-images');
-      const allResponse = await axios.get('http:// 192.168.137.1:5002/all-images');
+      const latestResponse = await axios.get('http://192.168.1.214:5002/latest-images');
+      const allResponse = await axios.get('http://192.168.1.214:5002/all-images');
       setLatestImages(latestResponse.data);
       setAllImages(allResponse.data);
       setLoading(false);
@@ -71,5 +71,37 @@ const List_images = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+container: {
+  flex: 1,
+  alignItems: 'center',
+  justifyContent: 'center',
+},
+postItem: {
+  marginRight: 10,
+  alignItems: "center",
+},
+postImage: {
+  width: 150,
+  height: 150,
+  borderRadius: 10,
+  marginBottom: 10,
+},
+postInfo: {
+  alignItems: "center",
+},
+postText: {
+  fontSize: 16,
+  fontWeight: "bold",
+  marginBottom: 5,
+},
+deleteText: {
+  color: "red",
+  fontSize: 14,
+  fontWeight: "bold",
+},
+});
+
 
 export default List_images;

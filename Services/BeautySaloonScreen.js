@@ -1,11 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native'; // Import the useNavigation hook
+import { useNavigation } from '@react-navigation/native';
+import { SliderBox } from 'react-native-image-slider-box'; // Import SliderBox for image slider
+import axios from 'axios'; // Import axios for HTTP requests
+import { IMG_URL } from '../config/ip_address';
 
 const BeautySaloonScreen = () => {
-  const navigation = useNavigation(); // Use the useNavigation hook to get the navigation object
+  const navigation = useNavigation();
+  const [beautySalonImages, setBeautySalonImages] = useState([]);
 
+  useEffect(() => {
+    fetchBeautySalonImages();
+  }, []);
+
+  const fetchBeautySalonImages = async () => {
+    try {
+      const response = await axios.get(`${IMG_URL}/post-images?service=Beauty Salon`);
+      setBeautySalonImages(response.data);
+    } catch (error) {
+      console.error('Error fetching beauty salon images:', error);
+    }
+  };
   const BeautySaloonData = [
     { id: '1', name: 'HairCutScreen', displayName: 'HairCut', icon: require('../assets/icons/hair-cutting.png') },
     { id: '2', name: 'BeardSettingScreen', displayName: 'Beard Setting', icon: require('../assets/icons/beard.png') },
@@ -22,13 +38,17 @@ const BeautySaloonScreen = () => {
     // Add more services as needed
   ];
 
+  const navigateToPostDetails = (post) => {
+    navigation.navigate('PostDetails', { post });
+  };
+
   const renderServiceBlock = (service) => (
     <TouchableOpacity
       key={service.id}
       style={styles.serviceBlock}
       onPress={() => {
-        console.log(`Navigating to ${service.name}`);
-        navigation.navigate(service.name);
+        console.log(`Navigating to Booking Page for ${service.displayName}`);
+        navigation.navigate('Services', { screen: 'Booking' });
       }}
     >
       <View style={styles.serviceContent}>
@@ -41,18 +61,45 @@ const BeautySaloonScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
+        <View style={styles.sliderContainer}>
+          <SliderBox
+            images={beautySalonImages.map(image => `data:image/jpeg;base64,${image.imageData}`)}
+            sliderBoxHeight={200}
+            dotColor="#FFEE58"
+            inactiveDotColor="#90A4AE"
+            paginationBoxVerticalPadding={20}
+            autoplay
+            circleLoop
+            resizeMethod={'resize'}
+            resizeMode={'cover'}
+            paginationBoxStyle={{
+              position: "absolute",
+              bottom: 0,
+              padding: 0,
+              alignItems: "center",
+              alignSelf: "center",
+              justifyContent: "center",
+              paddingVertical: 10
+            }}
+            dotStyle={{
+              width: 10,
+              height: 10,
+              borderRadius: 5,
+              marginHorizontal: 0,
+              padding: 0,
+              margin: 0,
+              backgroundColor: "rgba(128, 128, 128, 0.92)"
+            }}
+            ImageComponentStyle={{ borderRadius: 15, width: '97%', marginTop: 5 }}
+            imageLoadingColor="#2196F3"
+            onCurrentImagePressed={(index) => navigateToPostDetails(beautySalonImages[index])}
+          />
+        </View>
+      
         <View style={styles.gridContainer}>
           {BeautySaloonData.map((service) => renderServiceBlock(service))}
         </View>
-        <TouchableOpacity
-          style={{ paddingVertical: 15, backgroundColor: "#FFD700", marginHorizontal: 20, marginVertical: 10, borderRadius: 10 }}
-          onPress={() => {
-            console.log("Navigating to Booking Page");
-            navigation.navigate('Booking');
-          }}
-        >
-          <Text style={{ fontSize: 18, fontWeight: "bold", textAlign: "center", color: "#555555" }}>Book Now</Text>
-        </TouchableOpacity>
+      
       </ScrollView>
     </SafeAreaView>
   );
@@ -63,16 +110,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
-  header: {
-    alignItems: 'center',
-    padding: 16,
-  },
-  logoImage: {
-    width: 190,
-    height: 120,
-    resizeMode: 'contain',
-    borderTopLeftRadius: 40, // Adjust the value as needed
-    borderBottomRightRadius: 40, // Adjust the value as needed
+  sliderContainer: {
+    marginVertical: 10,
+    paddingHorizontal: 10,
   },
   gridContainer: {
     justifyContent: 'space-around',
@@ -83,7 +123,7 @@ const styles = StyleSheet.create({
     aspectRatio: 12/3,
     backgroundColor: '#F5F5F5',
     borderRadius: 10,
-    marginVertical: 8, // Adjust vertical margin as needed
+    marginVertical: 8,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 2,
@@ -94,13 +134,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
- serviceIcon: {
-  width: 50, // Example width value in pixels
-  height: 50, // Example height value in pixels
-  resizeMode: 'contain',
-  marginLeft: 30,
-},
-
+  serviceIcon: {
+    width: 50,
+    height: 50,
+    resizeMode: 'contain',
+    marginLeft: 30,
+  },
   serviceName: {
     fontSize: 18,
     fontWeight: 'bold',

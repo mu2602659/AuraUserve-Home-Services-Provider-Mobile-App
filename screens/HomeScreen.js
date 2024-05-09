@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, Image, StyleSheet, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, Image, StyleSheet, ScrollView, ActivityIndicator, FlatList, RefreshControl, } from "react-native";
 import { signOut } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import { FontAwesome5 } from "@expo/vector-icons";
 import HeaderComponent from "./HeaderComponent";
 import FooterComponent from "./FooterComponent";
-import ServicesScreen from "./ServicesScreen";
+import axios from 'axios';
+import { IMG_URL } from "../config/ip_address";
 
 const HomeScreen = () => {
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [profileImage, setProfileImage] = useState(require("../assets/images/logoo.png"));
+  const [posterImages, setPosterImages] = useState([]);
+  const [refreshing, setRefreshing] = useState(false); // State for refreshing
+  const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -79,9 +82,36 @@ const HomeScreen = () => {
     { id: '2', name: 'Jane Smith', review: 'Excellent experience. Will use again.' },
     // Add more reviews as needed
   ];
+ 
 
   const navigateToScreen = (screenName) => {
     navigation.navigate(screenName);
+  };
+
+  //images from backend
+  useEffect(() => {
+    fetchPosterImages();
+  }, []);
+
+
+  const fetchPosterImages = async () => {
+    try {
+      const allResponse = await axios.get(`${IMG_URL}/post-images`);
+      setPosterImages(allResponse.data);
+      setRefreshing(false); // Stop refreshing
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching images:', error);
+      setLoading(false);
+      setRefreshing(false); // Stop refreshing
+    }
+  };
+  const onRefresh = () => {
+    setRefreshing(true); // Start refreshing
+    fetchPosterImages(); // Fetch images again
+  };
+  const navigateToPostDetails = (post) => {
+    navigation.navigate('PostDetails', { post });
   };
 
   return (
@@ -98,11 +128,8 @@ const HomeScreen = () => {
         <ScrollView style={styles.content}>
           <View style={styles.servicesHeader}>
             <Text style={styles.ourServicesText}>Our Services</Text>
-            
-            <TouchableOpacity
-              style={styles.seeAllLink}
-              onPress={() => navigation.navigate("Services")}
-            >
+
+            <TouchableOpacity style={styles.seeAllLink} onPress={() => navigation.navigate("Services")}>
               <Text style={styles.seeAllText}>See All</Text>
             </TouchableOpacity>
           </View>
@@ -112,8 +139,8 @@ const HomeScreen = () => {
               <TouchableOpacity
                 key={service.name}
                 style={styles.serviceBlock}
-                onPress={() => navigateToService(service.name)}
-              >
+                onPress={() => navigateToService(service.name)}>
+
                 <Image source={service.icon} style={styles.serviceIcon}/>
                 <Text style={styles.serviceName}>{service.displayName}</Text>
               </TouchableOpacity>
@@ -137,11 +164,38 @@ const HomeScreen = () => {
 
           {/* Poster Section */}
           <View style={styles.posterContainer}>
-            <TouchableOpacity style={styles.posterBlock}>
-              <Image source={require('../assets/images/poster.png')} style={styles.posterImage} />
-            </TouchableOpacity>
-          </View>
+          <Text style={styles.postsHeader}>Services Posts</Text>
+            {loading ? (
+              <ActivityIndicator />
+            ) : (
+              <FlatList
+                data={posterImages}
+                keyExtractor={(item) => item._id}
+                horizontal
+                renderItem={({ item }) => (
+                  <TouchableOpacity onPress={() => navigation.navigate('PostDetails', { post: item })}>
+                  <View style={styles.postContainer}>
+                    <Image
+                      source={{ uri: `data:image/jpeg;base64,${item.imageData}` }}
+                      style={{ width: 250, height: 150 }}
+                    />
+                    <Text style={styles.postTitle}>{item.title}</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                      <Text style={[styles.postPrice, { fontWeight: 'bold', color: 'blue',marginRight: 50  }]}> Rs. {item.price}</Text>
+                      <View style={[styles.postServiceLabel, { backgroundColor: 'lightblue' }]}>
+                        <Text style={styles.postServiceLabelText}>{item.service}</Text>
+                      </View>
+                    </View>
 
+
+                  </View>
+                  </TouchableOpacity>
+                )}
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />} // Add RefreshControl
+              />
+            )}
+          </View>
+      
           {/* Customer Reviews Slider */}
           <View style={styles.customerReviewsContainer}>
             <Text style={styles.customerReviewsHeader}>Customer Reviews</Text>
@@ -249,22 +303,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginBottom: 20,
   },
-  posterBlock: {
-    width: '100%',
-    height: 226,
-    borderRadius: 10,
-    overflow: 'hidden',
-    marginTop: 20,
-  },
-  posterImage: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
-  },
-  customerReviewsContainer: {
-    marginTop: 20,
-    paddingHorizontal: 20,
-  },
   customerReviewsHeader: {
     fontSize: 18,
     fontWeight: "bold",
@@ -287,6 +325,65 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "right",
   },
+  postsContainer: {
+    marginHorizontal: 20,
+    marginBottom: 20,
+  },
+  postsHeader: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  postContainer: {
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+ 
+  postService: {
+    backgroundColor: 'rgba(0, 0, 255, 0.3)', // Blue transparent background
+    borderRadius: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    marginRight: 10,
+  },
+  postImage: {
+    width: '100%',
+    height: 200,
+  },
+  postTitle: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  postPrice: {
+    fontSize: 16,
+    color: 'blue',
+  },
+  postServiceLabel: {
+    borderRadius: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  postServiceLabelText: {
+    fontWeight: 'bold',
+    color: 'blue',
+  },
+  postImage: {
+    width: '100%',
+    height: 200,
+  },
+  postTextContainer: {
+    backgroundColor: '#fff',
+    padding: 10,
+  },
+  postText: {
+    fontSize: 16,
+  },
 });
 
-export default HomeScreen;
+export default HomeScreen;

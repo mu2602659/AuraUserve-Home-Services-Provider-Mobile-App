@@ -68,11 +68,11 @@ const HeaderComponent = ({ userName, userEmail,handleLogout }) => {
           </View>
           )}
       </TouchableOpacity>
-      <Text style={{ fontSize: 17, marginLeft: 5, fontWeight: "bold",}}>Welcome To App</Text>
+      <Text style={{ fontSize: 17, marginLeft: 5, marginTop:-17, fontWeight: "bold",}}>Welcome To AuraUserve</Text>
       </View>
 
       {/* Cart Icon */}
-      <TouchableOpacity onPress={() => {/* Add your cart functionality */}}>
+      <TouchableOpacity style={styles.CartMenu} onPress={() => {/* Add your cart functionality */}}>
         <FontAwesome5 name="shopping-cart" size={24} color="black" />
       </TouchableOpacity>
 
@@ -165,8 +165,12 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   hamburgerMenu: {
-    padding: 5,
-    marginLeft: -103,
+    marginLeft: -130,
+    marginTop:-17,
+  },
+  CartMenu: {
+    marginLeft: -110,
+    marginTop:-17,
   },
   menu: {
     position: 'absolute',

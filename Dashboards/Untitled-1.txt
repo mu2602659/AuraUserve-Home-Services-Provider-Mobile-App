@@ -1,0 +1,87 @@
+// Prvdr_Dashboard.js
+import React, { useState } from 'react';
+import { View, TextInput, Button } from 'react-native';
+import axios from 'axios';
+
+const backendURL = 'http://192.168.1.84:3000'; // Update with your local IP address
+
+const Prvdr_Dashboard = () => {
+  const [receiverId, setReceiverId] = useState('');
+  const [message, setMessage] = useState('');
+
+  const sendMessage = async () => {
+    try {
+      const response = await axios.post(`${backendURL}/sendMessage`, {
+        senderId: 'providerId', // Assuming you have a way to get providerId
+        receiverId,
+        message
+      });
+      console.log(response.data.message); // Message sent successfully
+      // Reset form fields if needed
+    } catch (error) {
+      console.error('Error sending message:', error.message);
+    }
+  };
+
+  return (
+    <View>
+      <TextInput
+        placeholder="Receiver ID"
+        value={receiverId}
+        onChangeText={setReceiverId}
+      />
+      <TextInput
+        placeholder="Message"
+        value={message}
+        onChangeText={setMessage}
+      />
+      <Button title="Send Message" onPress={sendMessage} />
+    </View>
+  );
+};
+
+export default Prvdr_Dashboard;
+
+
+
+
+
+// User_Dashboard.js
+import React, { useEffect, useState } from 'react';
+import { View, Text } from 'react-native';
+import axios from 'axios';
+
+const backendURL = 'http://192.168.1.84:3000'; // Update with your local IP address
+
+const User_Dashboard = () => {
+  const [messages, setMessages] = useState([]);
+
+  useEffect(() => {
+    fetchMessages();
+  }, []);
+
+  const fetchMessages = async () => {
+    try {
+      const userId = 'user123'; // Assuming you have a way to get the userId
+      const response = await axios.get(`${backendURL}/getMessages?userId=${userId}`);
+      setMessages(response.data);
+    } catch (error) {
+      console.error('Error fetching messages:', error.message);
+    }
+  };
+
+  return (
+    <View>
+      <Text>Received Messages</Text>
+      {messages.map(message => (
+        <View key={message.id}>
+          <Text>From: {message.senderId}</Text>
+          <Text>{message.message}</Text>
+          {/* Display other message details as needed */}
+        </View>
+      ))}
+    </View>
+  );
+};
+
+export default User_Dashboard;
