@@ -4,8 +4,10 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
+import { signOut } from "firebase/auth";
+import { auth } from "../config/firebase";
 
-const HeaderComponent = ({ userName, userEmail,handleLogout }) => {
+const HeaderComponent = ({ userName, userEmail, }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [image, setImage] = useState(null);
   const navigation = useNavigation();
@@ -26,15 +28,19 @@ const HeaderComponent = ({ userName, userEmail,handleLogout }) => {
     navigation.navigate('Services');
   };
 
-  const navigateToLoginScreen = () => {
-    navigation.navigate('Login');
-  };
   const navigateToMongotry = () => {
     navigation.navigate('Mongotry');
   };
 
   const navigateToAbout = () => {
     navigation.navigate('About');
+  };
+  const handleLogout = async () => {
+    try {
+      await signOut(auth); 
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
   };
 
   const pickImage = async () => {
@@ -134,7 +140,7 @@ const HeaderComponent = ({ userName, userEmail,handleLogout }) => {
               <Text style={styles.menuText}>Contact</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={navigateToLoginScreen} >
+          <TouchableOpacity onPress={handleLogout} >
             <View style={styles.menuItem}>
               <MaterialIcons name="logout" size={24} color="black" />
               <Text style={styles.menuText}>LogOut</Text>

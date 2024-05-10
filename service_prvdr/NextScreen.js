@@ -7,6 +7,8 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { IMG_URL } from "../config/ip_address";
 import ServicePicker from "../Posts_integration/ServicePicker";
 import axios from "axios";
+import { signOut } from "firebase/auth";
+import { auth } from "../config/firebase";
 import WelcomeScreen from "../screens/WelcomeScreen";
 
 const NextScreen = ({ route }) => {
@@ -21,10 +23,14 @@ const NextScreen = ({ route }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const navigation = useNavigation();
 
- const handleLogout = () => {
-    // Code to perform logout actions if needed
-    navigation.navigate("welcome"); // Navigate to WelcomeScreen
-  };
+  const handleLogout = async () => {
+    try {
+        await signOut(auth);
+        navigation.navigate('welcome');
+    } catch (error) {
+        console.error('Sign-out error:', error.message);
+    }
+};
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -182,12 +188,12 @@ const NextScreen = ({ route }) => {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.footerItem} onPress={navigateToAllPosts}>
-          <FontAwesome5 name="file-alt" size={20} color="black" style={styles.menuIcon} />
+          <FontAwesome5 name="image" size={20} color="black" style={styles.menuIcon} />
           <Text style={styles.menuText}>All Posts</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.footerItem} onPress={navigateToAllUsers}>
-          <FontAwesome5 name="users" size={20} color="black" style={styles.menuIcon} />
+          <FontAwesome5 name="user" size={20} color="black" style={styles.menuIcon} />
           <Text style={styles.menuText}>All users</Text>
         </TouchableOpacity>
 

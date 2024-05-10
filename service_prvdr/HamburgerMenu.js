@@ -4,8 +4,10 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
 import { IMG_URL } from "../config/ip_address";
 import axios from "axios";
+import { signOut } from "firebase/auth";
+import { auth } from "../config/firebase";
 
-const HamburgerMenu = ({ handleLogout }) => {
+const HamburgerMenu = ({ }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [profileImages, setProfileImages] = useState([]);
   const [latestImages, setLatestImages] = useState([]);
@@ -15,6 +17,15 @@ const HamburgerMenu = ({ handleLogout }) => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+  const handleLogout = async () => {
+    try {
+        await signOut(auth);
+        navigation.navigate('welcome');
+    } catch (error) {
+        console.error('Sign-out error:', error.message);
+    }
+};
+
 
   useEffect(() => {
     fetchProfileImages();
@@ -88,13 +99,13 @@ const HamburgerMenu = ({ handleLogout }) => {
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.menuItem} onPress={navigateToAllPosts}>
-            <FontAwesome5 name="file-alt" size={20} color="black" style={styles.menuIcon} />
-            <Text style={styles.menuText}>All Posts</Text>
+            <FontAwesome5 name="image" size={20} color="black" style={styles.menuIcon} />
+            <Text style={styles.menuText}>Posts</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.menuItem} onPress={navigateToAllUsers}>
-            <FontAwesome5 name="users" size={20} color="black" style={styles.menuIcon} />
-            <Text style={styles.menuText}>All users</Text>
+            <FontAwesome5 name="user" size={20} color="black" style={styles.menuIcon} />
+            <Text style={styles.menuText}>Profile pictures</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.menuItem} onPress={handleNavigatefirebase_img}>

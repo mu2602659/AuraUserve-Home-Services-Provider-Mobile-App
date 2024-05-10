@@ -9,22 +9,20 @@ const ProfileImages = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Fetch all users
-        const usersResponse = await axios.get('http://192.168.1.214:5001/users');
-        setUsers(usersResponse.data);
+    fetchProfileImages();
+  }, []);
 
-        // Fetch latest user
-        const latestUserResponse = await axios.get('http://192.168.1.214:5001/latest-user');
-        setLatestUser(latestUserResponse.data);
-
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        setLoading(false);
-      }
-    };
+  const fetchProfileImages = async () => {
+    try {
+      const response = await axios.get(`${IMG_URL}/profile-images`);
+      setProfileImages(response.data);
+      setLatestImages(response.data.slice(-2)); // Get last two latest images
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching profile images:", error);
+      setLoading(false);
+    }
+  };
 
   const deleteImage = async (imageId) => {
     try {
