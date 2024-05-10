@@ -7,6 +7,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { IMG_URL } from "../config/ip_address";
 import ServicePicker from "../Posts_integration/ServicePicker";
 import axios from "axios";
+import WelcomeScreen from "../screens/WelcomeScreen";
 
 const NextScreen = ({ route }) => {
   const { firstName, lastName } = route.params;
@@ -19,6 +20,11 @@ const NextScreen = ({ route }) => {
   const [submitted, setSubmitted] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const navigation = useNavigation();
+
+ const handleLogout = () => {
+    // Code to perform logout actions if needed
+    navigation.navigate("welcome"); // Navigate to WelcomeScreen
+  };
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -50,6 +56,7 @@ const NextScreen = ({ route }) => {
    //   Alert.alert("Already Submitted", "You have already submitted this form.");
     //  return;
    // }
+    
 
     const formData = new FormData();
     formData.append("avatar", {
@@ -184,15 +191,11 @@ const NextScreen = ({ route }) => {
           <Text style={styles.menuText}>All users</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.footerItem}>
-          <FontAwesome5
-            name="sign-out-alt"
-            size={20}
-            color="black"
-            style={styles.footerIcon}
-          />
-          <Text style={styles.footerText}>Logout</Text>
-        </TouchableOpacity>
+      <TouchableOpacity style={styles.footerItem} onPress={handleLogout}>
+  <FontAwesome5 name="sign-out-alt" size={20} color="black" style={styles.footerIcon} />
+  <Text style={styles.footerText}>Logout</Text>
+</TouchableOpacity>
+
       </View>
     </View>
   );

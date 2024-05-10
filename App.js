@@ -20,6 +20,8 @@ import myProfileScreen from './screens/myProfileScreen';
 
 // Import Service Provider 
 import ProviderSignup from './service_prvdr/ProviderSignup';
+import ProviderSignin from './service_prvdr/ProviderSignin';
+
 import NextScreen from './service_prvdr/NextScreen';
 import Prov_Requirement from './service_prvdr/Prov_Requirement';
 import ProviderForm from './service_prvdr/ProviderForm';
@@ -96,7 +98,6 @@ export default function App() {
         <Stack.Screen name="Welcome" options={{ headerShown: false }} component={WelcomeScreen} />
         <Stack.Screen name="User" options={{ headerShown: false }} component={UserScreen} />
         <Stack.Screen name="Login" options={{ headerShown: false }} component={LoginScreen} />
-        <Stack.Screen name="VerificationComponent" options={{ headerShown: false }} component={VerificationComponent} />
         <Stack.Screen name="SignUp" options={{ headerShown: false }} component={SignUpScreen} />
         </>
         )}
@@ -111,7 +112,10 @@ export default function App() {
 
         {/* Add ProviderSignup screen */}
         <Stack.Screen name="ProviderSignup" component={ProviderSignup} options={{ headerShown: false }} />
+        <Stack.Screen name="ProviderSignin" component={ProviderSignin} options={{ headerShown: false }} />
+
         <Stack.Screen name="home" component={HomeScreen} options={{ title: 'home' }} />
+
 
         <Stack.Screen name="Login Screen" component={HomeScreen} options={{ title: 'Login sareen' }} />
 
@@ -119,7 +123,10 @@ export default function App() {
         <Stack.Screen name="firebase_img" component={firebase_img} />
         <Stack.Screen name="List_images" component={List_images} options={{ title: 'Images List' }}/>
         <Stack.Screen name="List_Users" component={List_Users} options={{ title: 'User List' }}/>
-
+        <Stack.Screen name="welcome" options={{ headerShown: false }} component={WelcomeScreen} />
+        <Stack.Screen name="login" options={{ headerShown: false }} component={LoginScreen} />
+        <Stack.Screen name="signUp" options={{ headerShown: false }} component={SignUpScreen} />
+       
         <Stack.Screen name="NextScreen" component={NextScreen} options={{ title: 'Service Povider' }}/>
         <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
 
