@@ -1,6 +1,5 @@
-//Mongotry.js
 import React, { useState, useEffect } from 'react';
-import { ScrollView, View, Text, TouchableOpacity, TextInput, Image, Button, Platform, Alert } from 'react-native';
+import { ScrollView, View, Text, TouchableOpacity, TextInput, ImageBackground, Image, Button, Platform, Alert } from 'react-native';
 import { Avatar } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
@@ -16,7 +15,7 @@ export default function ProfileEditScreen() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [mobile, setMobile] = useState('');
-  
+
   const navigation = useNavigation();
   const route = useRoute();
 
@@ -54,15 +53,13 @@ export default function ProfileEditScreen() {
       aspect: [4, 3],
       quality: 1,
     });
-  
+
     console.log(result);
 
     if (!result.cancelled) {
       setImage(result.assets[0].uri);
     }
   };
-
-  
 
   const handleImageUpload = () => {
     if (!image) {
@@ -78,38 +75,38 @@ export default function ProfileEditScreen() {
       name: 'avatar.jpg',
     });
 
-    axios.post(`${IMG_URL}/profile`, formData, {
+    axios.post('http://192.168.1.214:5002/profile', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     })
-    .then(response => {
-      console.log(response.data);
-      if (response.data.status === 'ok') {
-        Toast.show({
-          type: 'success',
-          text1: 'Success!!',
-          text2: 'Image Uploaded',
-          visibilityTime: 5000,
-        });
-      } else {
+      .then(response => {
+        console.log(response.data);
+        if (response.data.status === 'ok') {
+          Toast.show({
+            type: 'success',
+            text1: 'Success!!',
+            text2: 'Image Uploaded',
+            visibilityTime: 5000,
+          });
+        } else {
+          Toast.show({
+            type: 'error',
+            text1: 'Error!!',
+            text2: response.data.data,
+            visibilityTime: 5000,
+          });
+        }
+      })
+      .catch(error => {
+        console.error('Error uploading image:', error);
         Toast.show({
           type: 'error',
           text1: 'Error!!',
-          text2: response.data.data,
+          text2: 'Failed to upload image',
           visibilityTime: 5000,
         });
-      }
-    })
-    .catch(error => {
-      console.error('Error uploading image:', error);
-      Toast.show({
-        type: 'error',
-        text1: 'Error!!',
-        text2: 'Failed to upload image',
-        visibilityTime: 5000,
       });
-    });
   };
 
   const handleSubmit = () => {
@@ -120,7 +117,7 @@ export default function ProfileEditScreen() {
       image: { uri: image }
     };
 
-    axios.post(`${DATA_URL}register`, userData)
+    axios.post('http://192.168.1.214:5001/register', userData)
       .then(res => {
         console.log(res.data);
         if (res.data.status === 'ok') {
@@ -160,9 +157,10 @@ export default function ProfileEditScreen() {
           </View>
           <View style={{ flex: 1 }}></View>
         </View>
-
+     
         {/* Avatar */}
         <View style={styles.camDiv}>
+        <ImageBackground source={require('../assets/images/background.jpg')} style={{ padding: 210, paddingTop:7,position: 'absolute' }} />
           <TouchableOpacity onPress={pickImage}>
             <Avatar.Image
               size={140}
@@ -177,7 +175,7 @@ export default function ProfileEditScreen() {
 
         {/* Form */}
         <View style={styles.formContainer}>
-          <Text>Name:</Text>
+          <Text style={[{fontWeight:'bold',marginTop:'2%',marginLeft:'1%'}]}>Name:</Text>
           <TextInput
             placeholder="Your Name"
             placeholderTextColor={'#999797'}
@@ -185,7 +183,7 @@ export default function ProfileEditScreen() {
             value={name}
             onChangeText={setName}
           />
-          <Text>Email:</Text>
+          <Text style={[{fontWeight:'bold',marginLeft:'1%'}]}>Email:</Text>
           <TextInput
             placeholder="Your Email"
             placeholderTextColor={'#999797'}
@@ -193,7 +191,7 @@ export default function ProfileEditScreen() {
             value={email}
             onChangeText={setEmail}
           />
-          <Text>Mobile No:</Text>
+           <Text style={[{fontWeight:'bold',marginLeft:'1%'}]}>Mobile No:</Text>
           <TextInput
             placeholder="Your Mobile No"
             placeholderTextColor={'#999797'}
@@ -214,7 +212,7 @@ export default function ProfileEditScreen() {
             <Text style={styles.saveButtonText}>Upload Image to Back-End</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={ImagesList} style={styles.saveButton}>
-            <Text style={styles.saveButtonText}>View All Images  Data</Text>
+            <Text style={styles.saveButtonText}>View All Images Data</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={UserList} style={styles.saveButton}>
             <Text style={styles.saveButtonText}>View All Users Data</Text>
@@ -224,3 +222,4 @@ export default function ProfileEditScreen() {
     </ScrollView>
   );
 }
+

@@ -26,6 +26,17 @@ const HeaderComponent = ({ userName, userEmail,handleLogout }) => {
     navigation.navigate('Services');
   };
 
+  const navigateToLoginScreen = () => {
+    navigation.navigate('Login');
+  };
+  const navigateToMongotry = () => {
+    navigation.navigate('Mongotry');
+  };
+
+  const navigateToAbout = () => {
+    navigation.navigate('About');
+  };
+
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -74,7 +85,10 @@ const HeaderComponent = ({ userName, userEmail,handleLogout }) => {
       {isMenuOpen && (
         <View style={styles.menu}>
           <ScrollView>
-            <ImageBackground source={require('../assets/images/background.jpg')} style={{ width: undefined, padding: 16, paddingTop: 48 }}>
+            <ImageBackground source={require('../assets/images/background.jpg')} style={{ width: undefined, padding: 16, paddingTop: 25 }}>
+            <TouchableOpacity style={styles.editButton}  onPress={navigateToMongotry}>
+  <FontAwesome5 style={styles.editButton} name="edit" size={23} color="white"  />
+</TouchableOpacity>
           <TouchableOpacity onPress={pickImage} style={styles.profileContainer1}>
               {image ? (
                 <Image source={{ uri: image }} style={styles.profileImage1} />
@@ -86,6 +100,7 @@ const HeaderComponent = ({ userName, userEmail,handleLogout }) => {
           </TouchableOpacity>
               <Text style={{ fontSize: 16, marginLeft: 8, color: 'white', fontWeight: "bold" }}>{userName}</Text>
         <Text style={{ fontSize: 14, marginLeft: 8, color: 'white', fontWeight:"bold" }}>{userEmail}</Text>
+    
             </ImageBackground>
           </ScrollView>
           <TouchableOpacity onPress={navigateToHomeScreen}>
@@ -95,7 +110,7 @@ const HeaderComponent = ({ userName, userEmail,handleLogout }) => {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={closeMenu}>
+          <TouchableOpacity onPress={navigateToAbout}>
             <View style={styles.menuItem}>
               <MaterialIcons name="info" size={24} color="black" />
               <Text style={styles.menuText}>About</Text>
@@ -119,7 +134,7 @@ const HeaderComponent = ({ userName, userEmail,handleLogout }) => {
               <Text style={styles.menuText}>Contact</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleLogout} >
+          <TouchableOpacity onPress={navigateToLoginScreen} >
             <View style={styles.menuItem}>
               <MaterialIcons name="logout" size={24} color="black" />
               <Text style={styles.menuText}>LogOut</Text>
@@ -220,6 +235,11 @@ const styles = StyleSheet.create({
   closeButtonText:{
     fontWeight: "bold",
     fontSize: 15,
+  },
+  editButton:{
+    marginLeft: 110,
+   marginTop: 0,
+
   },
   
   profileContainer: {

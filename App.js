@@ -116,8 +116,7 @@ export default function App() {
 
         <Stack.Screen name="home" component={HomeScreen} options={{ title: 'home' }} />
 
-
-        <Stack.Screen name="Login Screen" component={HomeScreen} options={{ title: 'Login sareen' }} />
+        <Stack.Screen name="Login Screen" component={HomeScreen} options={{ title: 'Login screen' }} />
 
         <Stack.Screen name="Mongotry" component={Mongotry} options={{ headerShown: false }} />
         <Stack.Screen name="firebase_img" component={firebase_img} />
