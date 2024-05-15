@@ -1,6 +1,4 @@
-// Booking.js
-
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput, Alert, ScrollView, Linking } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
@@ -8,12 +6,8 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { FontAwesome5 } from '@expo/vector-icons';
 import MapView, { Marker } from 'react-native-maps';
 import Geocoder from 'react-native-geocoding';
-
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { fr } from '../config/firebase'; // Import your Firebase configuration
-
-// Set your Geocoding API key here
-//Geocoder.init('YOUR_GEOCODING_API_KEY');
+import axios from 'axios';
+import { IMG_URL } from '../config/ip_address'; // Import the IP address configuration
 
 const Booking = () => {
   const navigation = useNavigation();
@@ -28,6 +22,18 @@ const Booking = () => {
     location: null,
     workDescription: '',
   });
+const handleSubmit = async () => {
+  try {
+    // Send booking data to the server
+    const response = await axios.post(`${IMG_URL}/bookings`, bookingInfo); // Use backticks for string interpolation
+    console.log(response.data);
+    Alert.alert('Success', 'Your booking is submitted!');
+  } catch (error) {
+    console.error('Error submitting booking:', error);
+    Alert.alert('Error', 'Failed to submit booking. Please try again later.');
+  }
+};
+
 
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -37,42 +43,6 @@ const Booking = () => {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
-
-  useEffect(() => {
-    // Check if geolocation is available
-    if ('geolocation' in navigator) {
-      // Set the initial location to the user's current location
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setRegion({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          });
-        },
-        (error) => console.log(error),
-        { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-      );
-    } else {
-      console.log('Geolocation is not available in this environment.');
-    }
-  }, []);
-
-/*{ const openInAppChat = () => {
-    // Replace 'your_in_app_chat_url' with the actual URL for in-app chat
-    Linking.openURL('your_in_app_chat_url');
-  };}*/
-
-  const openInAppChat = () => {
-    // Navigate to the ChatScreen when the button is pressed
-    navigation.navigate('Chat');
-  };
-
-  const openWhatsAppChat = () => {
-    // Replace 'your_whatsapp_number' with the actual WhatsApp number
-    Linking.openURL(`whatsapp://send?phone=03314311640`);
-  };
 
   const handleDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || bookingInfo.serviceDate;
@@ -98,26 +68,6 @@ const Booking = () => {
       .catch((error) => console.warn(error));
   };
 
-  const handleBookingSubmit = async () => {
-    try {
-      // Add a timestamp to the booking information
-      const bookingData = {
-        ...bookingInfo,
-        timestamp: serverTimestamp(),
-      };
-  
-      // Add the booking information to Firestore
-      const docRef = await addDoc(collection(fr, 'bookings'), bookingData);
-      console.log('Booking submitted:', bookingData);
-      console.log('Booking stored in Firestore with ID:', docRef.id);
-  
-      Alert.alert('Success', 'Your booking is submitted!');
-    } catch (error) {
-      console.error('Error submitting booking:', error);
-      Alert.alert('Error', 'Failed to submit booking. Please try again later.');
-    }
-  };
-  
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView>
@@ -239,12 +189,9 @@ const Booking = () => {
  {/* Submit and Cancel Buttons */}
  <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
             {/* Submit Button */}
-            <TouchableOpacity
-              onPress={handleBookingSubmit}
-              style={{ flex: 1, padding: 15, borderRadius: 10, alignItems: 'center', backgroundColor: '#FFD700' }}
-            >
-              <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Submit Booking</Text>
-            </TouchableOpacity>
+           <TouchableOpacity onPress={handleSubmit} style={{ backgroundColor: 'blue', padding: 15, borderRadius: 10, alignItems: 'center' }}>
+            <Text style={{ color: 'white', fontSize: 18 }}>Submit Booking</Text>
+          </TouchableOpacity>
 
             {/* Cancel Button */}
             <TouchableOpacity
@@ -252,21 +199,6 @@ const Booking = () => {
               style={{ flex: 1, padding: 15, borderRadius: 10, alignItems: 'center', backgroundColor: '#FF0000', marginLeft: 10 }}
             >
               <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'white' }}>Cancel</Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* WhatsApp and In-App Chat Buttons */}
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
-            {/* WhatsApp Button */}
-            <TouchableOpacity onPress={openWhatsAppChat} style={{ flex: 1, padding: 15, borderRadius: 10, alignItems: 'center', backgroundColor: '#25D366', marginLeft: 10 }}>
-            <FontAwesome5 name="whatsapp" size={30} color="white" />
-              <Text style={{ fontSize: 16, marginTop: 5, color: 'white' }}>WhatsApp</Text>
-            </TouchableOpacity>
-
-            {/* In-App Chat Button */}
-            <TouchableOpacity onPress={openInAppChat} style={{ flex: 1, padding: 15, borderRadius: 10, alignItems: 'center', backgroundColor: '#007AFF', marginLeft: 10 }}>
-            <FontAwesome5 name="comment" size={30} color="white" />
-            <Text style={{ fontSize: 16, marginTop: 5, color: 'white' }}>In-App Chat</Text>
             </TouchableOpacity>
           </View>
           
@@ -297,35 +229,6 @@ const styles = {
   label: {
     fontSize: 16,
     marginRight: 10,
-  },
-  floatingButtonContainer: {
-    position: 'absolute',
-    bottom: 20,
-    right: 20,
-    flexDirection: 'row',
-  },
-  floatingButton: {
-    marginRight: 10,
-    backgroundColor: '#fff',
-    borderRadius: 30,
-    padding: 10,
-    elevation: 5,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 20,
-  },
-  button: {
-    flex: 1,
-    padding: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginLeft: 10,
-  },
-  buttonText: {
-    fontSize: 18,
-    fontWeight: 'bold',
   },
 };
 

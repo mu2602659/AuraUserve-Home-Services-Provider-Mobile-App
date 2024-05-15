@@ -15,6 +15,23 @@ const adSchema = new mongoose.Schema({
 });
 const Ad = mongoose.model('Ad', adSchema);
 
+// Schema for Booking
+const bookingSchema = new mongoose.Schema({
+    serviceName: String,
+    fullName: String,
+    email: String,
+    phone: String,
+    serviceTime: Date,
+    serviceDate: Date,
+    location: {
+        latitude: Number,
+        longitude: Number,
+        address: String
+    },
+    workDescription: String
+});
+const Booking = mongoose.model('Booking', bookingSchema);
+
 const app = express();
 
 app.use(bodyParser.json());
@@ -26,6 +43,19 @@ app.post('/ads', async (req, res) => {
         const ad = new Ad({ title, description, category });
         await ad.save();
         res.status(201).json({ message: 'Ad posted successfully!' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+// Route for booking a service
+app.post('/bookings', async (req, res) => {
+    try {
+        const { serviceName, fullName, email, phone, serviceTime, serviceDate, location, workDescription } = req.body;
+        const booking = new Booking({ serviceName, fullName, email, phone, serviceTime, serviceDate, location, workDescription });
+        await booking.save();
+        res.status(201).json({ message: 'Booking created successfully!' });
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Server error' });
