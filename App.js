@@ -119,6 +119,7 @@ export default function App() {
        
         <Stack.Screen name="NextScreen" component={NextScreen} options={{ title: 'Service Povider' }}/>
         <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
+    <ServicesStack.Screen name="booking" options={{ headerShown: false }} component={BookingScreen} />
 
         <Stack.Screen name="PostDetails" component={PostDetails} options={{ title: "Post Details" }} />
       </Stack.Navigator>

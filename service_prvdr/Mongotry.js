@@ -206,16 +206,7 @@ export default function ProfileEditScreen() {
         {/* Save Button */}
         <View style={styles.buttonDiv}>
           <TouchableOpacity onPress={handleSubmit} style={styles.saveButton}>
-            <Text style={styles.saveButtonText}>Save Form Data To Back-End</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleImageUpload} style={styles.saveButton}>
-            <Text style={styles.saveButtonText}>Upload Image to Back-End</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={ImagesList} style={styles.saveButton}>
-            <Text style={styles.saveButtonText}>View All Images Data</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={UserList} style={styles.saveButton}>
-            <Text style={styles.saveButtonText}>View All Users Data</Text>
+            <Text style={styles.saveButtonText}>Submit</Text>
           </TouchableOpacity>
         </View>
       </View>

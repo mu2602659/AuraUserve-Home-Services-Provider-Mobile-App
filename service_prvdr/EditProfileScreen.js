@@ -1,6 +1,6 @@
 // components/EditProfileScreen.js
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Alert } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image,ImageBackground, TextInput, Alert } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { IMG_URL } from "../config/ip_address";
 import axios from "axios";
@@ -64,7 +64,12 @@ const EditProfileScreen = () => {
   };
   
   return (
+   
     <View style={styles.container}>
+       <ImageBackground 
+    source={require("../assets/images/background.jpg")}
+      style={styles.Background}
+    >
       <TouchableOpacity onPress={pickImage} style={styles.profileContainer}>
         {image ? (
           <Image source={{ uri: image }} style={styles.profileImage} />
@@ -73,17 +78,21 @@ const EditProfileScreen = () => {
             <Text style={styles.profilePlaceholderText}>Add</Text>
           </View>
         )}
-      </TouchableOpacity>
-      <TextInput
-        style={styles.input}
-        placeholder="Name"
+         <TextInput
+        style={styles.field}
+        placeholder="Enter Your Name"
         value={name}
         onChangeText={setName}
       />
+      </TouchableOpacity>
+      </ImageBackground>
+     
       <TouchableOpacity onPress={handleSave} style={styles.saveButton}>
         <Text style={styles.buttonText}>Save</Text>
       </TouchableOpacity>
+      
     </View>
+    
   );
 };
 
@@ -92,11 +101,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: 20,
+    paddingHorizontal: 0,
     backgroundColor: "#fff",
   },
   profileContainer: {
-    marginBottom: 20,
+    marginBottom: 100,
+    marginLeft:100,
+    marginTop:100,
   },
   profileImage: {
     width: 150,
@@ -112,28 +123,35 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   profilePlaceholderText: {
-    fontSize: 16,
+    fontSize: 18,
     color: "#555",
-  },
-  input: {
-    width: "100%",
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    paddingHorizontal: 10,
-    marginBottom: 20,
   },
   saveButton: {
     backgroundColor: "#FDDA0D",
-    padding: 15,
+    padding: 18,
     borderRadius: 5,
-    width: "100%",
+    width: 230,
     alignItems: "center",
+    marginBottom:180,
+    marginTop:-100,
   },
   buttonText: {
     color: "black",
     fontSize: 18,
     fontWeight: "bold",
+  },
+  Background:{
+    width:"100%",
+    marginBottom:170,
+    marginLeft:100,
+    marginRight:100,
+  },
+  field:{
+    borderColor: "gray",
+    borderWidth: 5,
+    marginRight:60,
+    marginLeft:-50,
+    marginTop:15,
   },
 });
 

@@ -1,4 +1,3 @@
-// Backend code
 const express = require('express');
 const multer = require('multer');
 const mongoose = require('mongoose');
@@ -16,21 +15,19 @@ mongoose.connect('mongodb+srv://AuraUserve:aura1234@cluster0.jqlyfp6.mongodb.net
 // Schema for post images
 const postImageSchema = new mongoose.Schema({
   originalFilename: String,
-  imageData: String, // Store image data as base64 string
-  description: String, // Add field for image description
-  service: String, // Add field for service name
-  title: String, // Add field for title
-  price: Number, // Add field for price
-  address: String, // Add field for address
+  imageData: String,
+  description: String,
+  service: String,
+  title: String,
+  price: Number,
+  address: String,
   uploadedAt: {
     type: Date,
     default: Date.now,
   }
 });
-
-
 const PostImage = mongoose.model('PostImage', postImageSchema);
-const postImageStorage = multer.memoryStorage(); // Store uploaded files in memory
+const postImageStorage = multer.memoryStorage();
 
 const uploadPostImage = multer({ 
   storage: postImageStorage,
@@ -40,7 +37,6 @@ const uploadPostImage = multer({
     }
     cb(null, true);
   },
-  // Rename the file to avatar1, avatar2, ...
   filename: function (req, file, cb) {
     const uniqueSuffix = uuidv4();
     cb(null, 'avatar' + uniqueSuffix);
@@ -53,7 +49,7 @@ const profileImageSchema = new mongoose.Schema({
   imageData: String,
 });
 const ProfileImage = mongoose.model('ProfileImage', profileImageSchema);
-const profileImageStorage = multer.memoryStorage(); // Store uploaded files in memory
+const profileImageStorage = multer.memoryStorage();
 const uploadProfileImage = multer({ 
   storage: profileImageStorage,
   fileFilter: function (req, file, cb) {
@@ -62,13 +58,32 @@ const uploadProfileImage = multer({
     }
     cb(null, true);
   },
-  // Rename the file to avatar1, avatar2, ...
   filename: function (req, file, cb) {
     const uniqueSuffix = uuidv4();
     cb(null, 'avatar' + uniqueSuffix);
   }
 });
 
+// Schema for booking
+const bookingSchema = new mongoose.Schema({
+  serviceName: String,
+  fullName: String,
+  email: String,
+  phone: String,
+  serviceTime: Date,
+  serviceDate: Date,
+  location: {
+    latitude: Number,
+    longitude: Number,
+    address: String,
+  },
+  workDescription: String,
+  timestamp: {
+    type: Date,
+    default: Date.now,
+  }
+});
+const Booking = mongoose.model('Booking', bookingSchema);
 
 // Endpoint to upload profile images
 app.post('/profile-image', uploadProfileImage.single('avatar'), async function (req, res) {
@@ -168,17 +183,6 @@ app.get('/profile-images', async function(req, res) {
   }
 });
 
-// Endpoint to fetch post images
-app.get('/post-images', async function(req, res) {
-  try {
-    const postImages = await PostImage.find();
-    res.status(200).json(postImages);
-  } catch (error) {
-    console.error('Error fetching post images:', error);
-    res.status(500).send({ status: 'error', message: 'Failed to fetch post images from database' });
-  }
-});
-
 // Endpoint to delete profile images
 app.delete('/profile-image/:id', async function(req, res) {
   const imageId = req.params.id;
@@ -220,6 +224,22 @@ app.get('/latest-profile-image', async function(req, res) {
   } catch (error) {
     console.error('Error fetching latest profile image:', error);
     res.status(500).send({ status: 'error', message: 'Failed to fetch latest profile image from database' });
+  }
+});
+
+// Endpoint to handle booking submissions
+app.post('/bookings', async (req, res) => {
+  try {
+    const bookingData = req.body;
+
+    const booking = new Booking(bookingData);
+    await booking.save();
+
+    console.log('Booking saved successfully:', booking);
+    res.status(200).send({ status: 'ok', message: 'Booking submitted successfully' });
+  } catch (error) {
+    console.error('Error submitting booking:', error);
+    res.status(500).send({ status: 'error', message: 'Failed to submit booking' });
   }
 });
 

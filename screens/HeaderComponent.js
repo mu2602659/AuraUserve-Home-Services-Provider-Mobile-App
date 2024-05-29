@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: 16,
+    padding: 5,
   },
   profileImage: {
     width: 40,
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   hamburgerMenu: {
-    marginLeft: -130,
+    marginLeft: -140,
     marginTop:-17,
   },
   CartMenu: {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, Image, StyleSheet, ScrollView, ActivityIndicator, FlatList, RefreshControl, } from "react-native";
+import { View, Text, TouchableOpacity, Image,ImageBackground, StyleSheet, ScrollView, ActivityIndicator, FlatList, RefreshControl, } from "react-native";
 import { signOut } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -126,6 +126,7 @@ const HomeScreen = () => {
         />
 
         <ScrollView style={styles.content}>
+        <ImageBackground source={require("../assets/images/background.jpg")} style={[styles.servicesBackgroundImage, { width: "100%" }]}>
           <View style={styles.servicesHeader}>
             <Text style={styles.ourServicesText}>Our Services</Text>
 
@@ -146,6 +147,7 @@ const HomeScreen = () => {
               </TouchableOpacity>
             ))}
           </ScrollView>
+          </ImageBackground>
 
           <Text style={styles.specialOffersText}>Special Offers</Text>
 
@@ -245,6 +247,7 @@ const styles = StyleSheet.create({
   ourServicesText: {
     fontSize: 18,
     fontWeight: "bold",
+    color: "white",
   },
   servicesContainer: {
     flexDirection: "row",
@@ -266,6 +269,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "bold",
     textAlign: "center",
+    color: "white",
   },
   adsScrollView: {
     paddingHorizontal: 17,
@@ -292,25 +296,34 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   specialOffersText: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
     textAlign: "left",
     marginBottom: 12,
-    marginLeft: 17,
+    marginTop: 12,
+    marginLeft: 8,
     color: "black",
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
+    flexDirection: "row",
   },
    posterContainer: {
     marginHorizontal: 20,
     marginBottom: 20,
   },
   customerReviewsHeader: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
-    marginBottom: 10,
-    marginTop: -20,
+    textAlign: "left",
+    marginBottom: 8,
+    marginLeft: 8,
+    color: "black",
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
+    flexDirection: "row",
   },
   reviewBlock: {
-    backgroundColor: "#F5F5F5",
+    backgroundColor: "#FFD700",
     borderRadius: 10,
     padding: 15,
     marginRight: 10,
@@ -319,6 +332,7 @@ const styles = StyleSheet.create({
   reviewText: {
     fontSize: 14,
     marginBottom: 5,
+    
   },
   reviewName: {
     fontSize: 12,
@@ -331,8 +345,15 @@ const styles = StyleSheet.create({
   },
   postsHeader: {
     fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
+    fontWeight: "bold",
+    textAlign: "left",
+    marginBottom: 8,
+    marginLeft: -11,
+    color: "black",
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
+    flexDirection: "row",
+  
   },
   postContainer: {
     marginBottom: 20,
@@ -383,6 +404,11 @@ const styles = StyleSheet.create({
   },
   postText: {
     fontSize: 16,
+  },
+  servicesBackgroundImage: {
+    width: "100%",
+    height: 180, 
+    resizeMode: "cover",
   },
 });
 

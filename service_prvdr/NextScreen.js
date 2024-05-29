@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, Alert, Dimensions, ScrollView } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image,ImageBackground, TextInput, Alert, Dimensions, ScrollView } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import HamburgerMenu from "./HamburgerMenu";
 import { useNavigation } from '@react-navigation/native';
@@ -117,7 +117,7 @@ const NextScreen = ({ }) => {
             ) : (
               <View style={styles.profilePlaceholder}>
                 <FontAwesome5 name="image" size={50} color="#ccc" />
-                <Text style={styles.label}>Add Post</Text>
+                <Text style={styles.lablel}>Add Post</Text>
               </View>
             )}
           </TouchableOpacity>
@@ -173,29 +173,43 @@ const NextScreen = ({ }) => {
       </ScrollView>
 
       {/* Footer */}
+      <ImageBackground 
+    source={require("../assets/images/blackk.jpg")}
+      style={styles.footerBackground}
+    >
       <View style={styles.footer}>
-        <TouchableOpacity style={styles.footerItem} onPress={navigateToEditProfile}>
-          <FontAwesome5 name="edit" size={20} color="black" style={styles.menuIcon} />
-          <Text style={styles.menuText}>Edit Profile</Text>
+         <TouchableOpacity style={styles.footerItem}onPress={navigateToEditProfile}>
+          <FontAwesome5 name="edit" size={24} color="white" />
+          <Text style={styles.footerText}>Edit Profile</Text>
         </TouchableOpacity>
+
 
         <TouchableOpacity style={styles.footerItem} onPress={navigateToAllPosts}>
           <FontAwesome5 name="file-alt" size={20} color="black" style={styles.menuIcon} />
           <Text style={styles.menuText}>All Posts</Text>
+         <TouchableOpacity onPress={navigateToAllPosts} style={styles.footerItem}>
+          <FontAwesome5 name="image" size={24} color="white" />
+          <Text style={styles.footerText}>All Posts</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.footerItem} onPress={navigateToAllUsers}>
           <FontAwesome5 name="users" size={20} color="black" style={styles.menuIcon} />
           <Text style={styles.menuText}>All users</Text>
+<TouchableOpacity style={styles.footerItem}onPress={navigateToAllUsers}>
+          <FontAwesome5 name="user" size={24} color="white" />
+          <Text style={styles.footerText}>All Users</Text>
         </TouchableOpacity>
 
-      <TouchableOpacity style={styles.footerItem} onPress={handleLogout}>
-  <FontAwesome5 name="sign-out-alt" size={20} color="black" style={styles.footerIcon} />
-  <Text style={styles.footerText}>Logout</Text>
-</TouchableOpacity>
-
+ <TouchableOpacity onPress={handleLogout} style={styles.footerItem}>
+          <FontAwesome5 name="sign-out-alt" size={24} color="white" />
+          <Text style={styles.footerText}>Logout</Text>
+        </TouchableOpacity>
+        
       </View>
+      </ImageBackground>
+      
     </View>
+    
   );
 };
 
@@ -203,7 +217,7 @@ const windowWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
   container: {
-    padding:10,
+    padding:-1,
     flex: 1,
     backgroundColor: "#fff",
     position: "relative",
@@ -220,7 +234,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   name: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 'bold',
     marginBottom: 20,
   },
@@ -231,14 +245,14 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     width: 200,
-    height: 200,
+    height: 180,
     backgroundColor: "#eee",
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 20,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 10,
+    borderWidth: 1.5,
+    borderColor: "black",
+    borderRadius: 17,
   },
   image: {
     width: "100%",
@@ -250,14 +264,17 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     fontSize: 16,
     fontWeight: 'bold',
+    marginLeft:6,
   },
   input: {
     width: "100%",
     height: 40,
-    borderColor: "gray",
+    borderColor: "black",
     borderWidth: 1,
     paddingHorizontal: 10,
     marginBottom: 20,
+    marginLeft:8,
+    marginRight:4,
   },
   serviceContainer: {
     flexDirection: "row",
@@ -270,7 +287,7 @@ const styles = StyleSheet.create({
   submitButton: {
     backgroundColor: "#FDDA0D",
     padding: 15,
-    borderRadius: 5,
+    borderRadius: 12,
     alignItems: "center",
     marginBottom: 20,
   },
@@ -283,29 +300,32 @@ const styles = StyleSheet.create({
     backgroundColor: "#FDDA0D",
     paddingVertical: 10,
     paddingHorizontal: 20,
-    borderRadius: 5,
+    borderRadius: 15,
     position: "absolute",
     top: 20,
-    right: 20,
+    right: 2,
   },
   requestsButtonText: {
     fontSize: 18,
     fontWeight: "bold",
   },
+  footerBackground: {
+    width: '100%',
+  },
   footer: {
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: "#fff",
-    paddingVertical: 10,
+    paddingVertical: 8,
+    paddingHorizontal:8,
   },
   footerItem: {
-    flexDirection: "row",
     alignItems: "center",
+  },
+  footerText: {
+    fontSize: 13,
+    color: "white",
+    fontWeight: "bold",
   },
   menuIcon: {
     marginRight: 5,
@@ -314,14 +334,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "black",
   },
-  footerIcon: {
-    marginRight: 5,
-  },
-  footerText: {
+  lablel:{
+    alignSelf: 'flex-start',
+    marginBottom: 5,
     fontSize: 16,
-    color: "black",
-    fontWeight: "bold",
-  },
+    fontWeight: 'bold',
+    marginLeft:-8,
+
+  }
+ 
 });
 
 export default NextScreen;

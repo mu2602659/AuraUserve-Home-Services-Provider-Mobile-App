@@ -16,13 +16,14 @@ export default StyleSheet.create({
     height: 1000,
   },
    header: {
-    backgroundColor: '#FFD700',
+    // backgroundColor: '#FFD700',
     flexDirection: 'row',
-    height: 60,
+    height: 58,
     color: 'black',
-    marginTop: 15,
+    marginTop: 24,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingVertical:10,
   },
   avatar: {
     borderRadius: 80,
@@ -59,18 +60,17 @@ export default StyleSheet.create({
   },
   backIcon: {
     marginLeft: 20,
-    color: 'white',
+    color: 'black',
   },
   nameText: {
     color: 'black',
     fontSize: 24,
     fontStyle: 'normal',
-    fontFamily: 'Open Sans',
     fontWeight: 'bold',
     textAlign: 'center',
   },
   inputField: {
-    borderColor: '#FFD700',
+    borderColor: '#ccc',
     borderWidth: 2,
     borderRadius: 10,
     padding: 10,
@@ -81,16 +81,16 @@ export default StyleSheet.create({
   },
   
   buttonDiv: {
-    alignItems: 'center',
-    marginTop: 30,
+    alignItems: 'left',
+    marginTop: 5,
   },
   saveButton: {
-    width: '70%',
+    width: '30%',
     margin:5,
     backgroundColor: '#FFD700',
     alignItems: 'center',
-    paddingVertical: 15,
-    borderRadius: 50,
+    paddingVertical: 10,
+    borderRadius: 10,
   },
   saveButtonText: {
     fontSize: 18,
