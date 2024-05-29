@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import useAuth from './hooks/useAuth';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from './config/firebase';
 
 // Import screens
 import HomeScreen from './screens/HomeScreen';
 import WelcomeScreen from './screens/WelcomeScreen';
 import UserScreen from './screens/UserScreen';
 import LoginScreen from './screens/LoginScreen';
-import VerificationComponent from './screens/VerificationComponent';
 import SignUpScreen from './screens/SignUpScreen';
 import ServicesScreen from './screens/ServicesScreen';
 import myProfileScreen from './screens/myProfileScreen';
@@ -49,10 +50,11 @@ import CleaningScreen from './Services/CleaningScreen';
 const Stack = createNativeStackNavigator();
 const ServicesStack = createNativeStackNavigator();
 
+
 const ServicesStackNavigator = () => (
   <ServicesStack.Navigator>
-    <ServicesStack.Screen name="ServicesScreen" options={{ headerShown: false }} component={ServicesScreen} />
-    <ServicesStack.Screen name="Booking" options={{ headerShown: false }} component={BookingScreen} />
+    <ServicesStack.Screen name="Booking" component={BookingScreen} options={{ headerShown: false }} />
+    <ServicesStack.Screen name="ServicesScreen" component={ServicesScreen} options={{ headerShown: false }}  />
     <ServicesStack.Screen name="BeautySaloon" component={BeautySaloonScreen} options={{ title: 'Beauty Saloon' }} />
     <ServicesStack.Screen name="Maintenance" component={MaintenanceScreen} options={{ title: 'Maintenance' }} />
     <ServicesStack.Screen name="Gardening" component={GardeningScreen} options={{ title: 'Gardening' }} />
@@ -69,11 +71,38 @@ const ServicesStackNavigator = () => (
 export default function App() {
   const { user } = useAuth();
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+        // Check user's type here and navigate accordingly
+        if (user) {
+            if (user.isProvider) {
+                // Navigate to Provider's screen
+                navigation.navigate('NextScreen');
+            } else {
+                // Navigate to User's screen
+                navigation.navigate('Home');
+            }
+        } else {
+            // Navigate to login screen
+            navigation.navigate('Welcome');
+        }
+    });
+
+    return unsubscribe;
+}, []);
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName={user ? "Home" : "Welcome"}>
         {user ? (
           <>
+          {user.isProvider ? (
+        <>
+          <Stack.Screen name="NextScreen" component={NextScreen} options={{ headerShown: false }} />
+          {/* Add other provider screens */}
+        </>
+      ) : (
+        <>
             <Stack.Screen name="Home"  component={HomeScreen} options={{ headerShown: false }} />
             <Stack.Screen name="BeautySaloon" component={BeautySaloonScreen} options={{ title: 'Beauty Saloon' }} />
             <Stack.Screen name="Maintenance" component={MaintenanceScreen} options={{ title: 'Maintenance' }} />
@@ -86,41 +115,44 @@ export default function App() {
             <Stack.Screen name="Shifting" component={ShiftingScreen} options={{ title: 'Shifting' }} />
             <Stack.Screen name="Washing" component={WashingScreen} options={{ title: 'Washing' }} />
             <Stack.Screen name="Solar" component={SolarScreen} options={{ title: 'Solar' }} />
-
             
-          </>
-        ) : (
+            </>
+      )}
+    </>
+  ) : (
         <>
-        <Stack.Screen name="Welcome" options={{ headerShown: false }} component={WelcomeScreen} />
-        <Stack.Screen name="User" options={{ headerShown: false }} component={UserScreen} />
-        <Stack.Screen name="Login" options={{ headerShown: false }} component={LoginScreen} />
-        <Stack.Screen name="SignUp" options={{ headerShown: false }} component={SignUpScreen} />
+        <Stack.Screen name="Welcome"  component={WelcomeScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="User"     component={UserScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Login"    component={LoginScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="SignUp"   component={SignUpScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="NextScreen" component={NextScreen} options={{ headerShown: false }} />
+
+        <Stack.Screen name="ProviderSign"  component={ProviderSignin} options={{ headerShown: false }} />
         </>
         )}
+        <Stack.Screen name="Services"      component={ServicesStackNavigator} options={{ title: 'Services' }} />
+
         <Stack.Screen name="ProviderSignup" component={ProviderSignup} options={{ headerShown: false }} />
         <Stack.Screen name="ProviderSignin" component={ProviderSignin} options={{ headerShown: false }} />
         
-        <Stack.Screen name="welcome" options={{ headerShown: false }} component={WelcomeScreen} />
-        <Stack.Screen name="login" options={{ headerShown: false }} component={LoginScreen} />
-        <Stack.Screen name="signUp" options={{ headerShown: false }} component={SignUpScreen} />
+        <Stack.Screen name="welcome"  component={WelcomeScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="login"    component={LoginScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="signUp"   component={SignUpScreen} options={{ headerShown: false }} />
 
         <Stack.Screen name="Prov_Requirement"  component={Prov_Requirement} options={{ title: 'Verify the Requirements' }} />
-        <Stack.Screen name="ProviderForm"  component={ProviderForm} options={{ title: 'Fill the Form to become provider' }}/>
-        <Stack.Screen name="Services"  component={ServicesStackNavigator} options={{ headerShown: false }} />
+        <Stack.Screen name="ProviderForm"      component={ProviderForm} options={{ title: 'Fill the Form' }}/>
         <Stack.Screen name="myProfile" component={myProfileScreen} options={{ title: 'myProfile' }} />
-        <Stack.Screen name="Chat" component={ChatScreen} options={{ title: 'Chat Conversation' }} />
-
-        {/* Add ProviderSignup screen */}
+        <Stack.Screen name="Chat"      component={ChatScreen} options={{ title: 'Chat Conversation' }} />
 
         <Stack.Screen name="Mongotry"     component={Mongotry} options={{ headerShown: false }} />
-        <Stack.Screen name="firebase_img" component={firebase_img} />
-        <Stack.Screen name="List_images"  component={List_images} options={{ title: 'Images List' }}/>
-        <Stack.Screen name="List_Users"   component={List_Users} options={{ title: 'Profile Pictures' }}/>
-       
-        <Stack.Screen name="NextScreen" component={NextScreen} options={{ title: 'Service Povider' }}/>
-        <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
 
+
+        <Stack.Screen name="List_Users"   component={List_Users} options={{ title: 'Profile Pictures' }}/>
         <Stack.Screen name="PostDetails" component={PostDetails} options={{ title: "Post Details" }} />
+        <Stack.Screen name="List_images"  component={List_images} options={{ title: 'Images List' }}/>
+        <Stack.Screen name="firebase_img" component={firebase_img} />
+       
+        <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

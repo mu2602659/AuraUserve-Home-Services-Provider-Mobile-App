@@ -1,4 +1,3 @@
-// ProviderSignin.js
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Image, TextInput, Alert, ImageBackground } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -16,14 +15,11 @@ export default function ProviderSignin() {
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
-            console.log('Signed in user:', user.uid);
-            navigation.navigate('NextScreen', { userId: user.uid });
+            user.isProvider = true; // Set flag to indicate provider
         } catch (error) {
-            console.error('Sign-in error:', error.message);
-            Alert.alert('Error', 'Failed to sign in. Please check your email and password.');
+            setError(error.message);
         }
     };
-
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <ImageBackground

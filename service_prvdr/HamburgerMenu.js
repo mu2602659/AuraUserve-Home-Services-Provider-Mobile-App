@@ -20,7 +20,7 @@ const HamburgerMenu = ({ }) => {
   const handleLogout = async () => {
     try {
         await signOut(auth);
-        navigation.navigate('welcome');
+        navigation.navigate('Welcome');
     } catch (error) {
         console.error('Sign-out error:', error.message);
     }
