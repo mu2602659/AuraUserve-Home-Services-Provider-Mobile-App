@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Image,ImageBackground, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { SliderBox } from 'react-native-image-slider-box'; // Import SliderBox for image slider
@@ -99,9 +99,9 @@ const BeautySaloonScreen = () => {
         <View style={styles.gridContainer}>
           {BeautySaloonData.map((service) => renderServiceBlock(service))}
         </View>
-      
       </ScrollView>
     </SafeAreaView>
+    
   );
 };
 

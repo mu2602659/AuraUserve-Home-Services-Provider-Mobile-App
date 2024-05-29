@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image, ActivityIndicator, RefreshControl, FlatList } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image,ImageBackground, ActivityIndicator, RefreshControl, FlatList } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
 import { IMG_URL } from "../config/ip_address";
@@ -92,6 +92,7 @@ const HamburgerMenu = ({ }) => {
           keyExtractor={(item) => item._id}
         />
           )}
+            <ImageBackground source={require('../assets/images/background.jpg')} style={{ width: undefined,height:-100, padding: 90, paddingTop: 90 }}></ImageBackground>
 
           <TouchableOpacity style={styles.menuItem} onPress={navigateToEditProfile}>
             <FontAwesome5 name="edit" size={20} color="black" style={styles.menuIcon} />
@@ -141,14 +142,14 @@ const styles = StyleSheet.create({
   },
   menu: {
     position: 'absolute',
-    top: 0,
-    right: 5,
-    paddingVertical: 39,
+    top: -12,
+    right: -2,
+    paddingVertical: -20,
     backgroundColor: '#FFF',
     width: 200,
-    height: 530,
-    borderRadius: 10,
-    shadowColor: '#000',
+    height: 640,
+    borderRadius: 9,
+    shadowColor: '#ccc',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
@@ -168,6 +169,7 @@ const styles = StyleSheet.create({
   menuText: {
     fontSize: 16,
     color: 'black',
+    fontWeight:"bold",
   },
   item: {
     flexDirection: 'column',

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
+import { View, Text, Image,ImageBackground, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -35,9 +35,10 @@ const ServicesScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+        <ImageBackground source={require("../assets/images/blackk.jpg")} style={[styles.servicesBackgroundImage, { width: "100%" }]}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <FontAwesome5 name="arrow-left" size={24} color="black" />
+          <FontAwesome5 name="arrow-left" size={24} color="white" />
         </TouchableOpacity>
         <Text style={styles.headerText}>Services</Text>
         <View style={{ width: 24 }} />
@@ -49,6 +50,7 @@ const ServicesScreen = () => {
           {servicesData.map((service) => renderServiceBlock(service))}
         </View>
       </ScrollView>
+      </ImageBackground>
     </SafeAreaView>
   );
 };
@@ -65,9 +67,10 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   headerText: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: "bold",
     textAlign: "center",
+    color:"white",
   },
   scrollViewContent: {
     flexGrow: 1,
@@ -111,6 +114,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
+  },
+  servicesBackgroundImage: {
+    width: "100%", 
+    height:700,
+    resizeMode: "cover",
+    marginTop:"auto",
+    
   },
 });
 
