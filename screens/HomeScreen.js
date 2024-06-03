@@ -45,7 +45,6 @@ const HomeScreen = () => {
   };
 
   const Prov_Requirement = () => {
-    // Navigate to the ServiceScreenProviderForm when the button is pressed
     navigation.navigate("Prov_Requirement");
   };
 
@@ -73,14 +72,12 @@ const HomeScreen = () => {
   const adsData = [
     { id: '1', image: require('../assets/images/salon-ad.jpg'), description: 'Get salon services at the comfort of your home.', screen: 'BeautySaloonScreen' },
     { id: '2', image: require('../assets/images/doctor-ad.jpg'), description: 'Experienced doctors available for home consultations.', screen: 'ClinicalScreen' },
-    // Add more ads as needed
   ];
 
   // Customer Reviews Data
   const customerReviews = [
     { id: '1', name: 'John Doe', review: 'Amazing service! Highly recommended.' },
     { id: '2', name: 'Jane Smith', review: 'Excellent experience. Will use again.' },
-    // Add more reviews as needed
   ];
  
 
@@ -117,6 +114,7 @@ const HomeScreen = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
+      <ImageBackground source={require("../assets/images/srvc9.jpg")} style={{ padding: 220, paddingTop:7,position: 'absolute' }}/>
         <HeaderComponent 
           userName={userName} 
           userEmail={userEmail} 
@@ -124,9 +122,6 @@ const HomeScreen = () => {
           handleProfileClick={handleProfileClick}
           navigation={navigation} 
         />
-
-        <ScrollView style={styles.content}>
-        <ImageBackground source={require("../assets/images/background.jpg")} style={[styles.servicesBackgroundImage, { width: "100%" }]}>
           <View style={styles.servicesHeader}>
             <Text style={styles.ourServicesText}>Our Services</Text>
 
@@ -146,11 +141,11 @@ const HomeScreen = () => {
                 <Text style={styles.serviceName}>{service.displayName}</Text>
               </TouchableOpacity>
             ))}
-          </ScrollView>
-          </ImageBackground>
 
-          <Text style={styles.specialOffersText}>Special Offers</Text>
-
+        </ScrollView>
+        <ScrollView>
+        
+          <Text style={[styles.specialOffersText, {paddingTop:20,}]}>Special Offers</Text>
           <ScrollView horizontal contentContainerStyle={styles.adsScrollView}>
             {adsData.map((ad) => (
               <TouchableOpacity
@@ -164,8 +159,9 @@ const HomeScreen = () => {
             ))}
           </ScrollView>
 
+          <ScrollView style={styles.content}>
           {/* Poster Section */}
-          <View style={styles.posterContainer}>
+          <View style={[styles.posterContainer, {paddingTop:20,}]}>
           <Text style={styles.postsHeader}>Services Posts</Text>
             {loading ? (
               <ActivityIndicator />
@@ -188,8 +184,6 @@ const HomeScreen = () => {
                         <Text style={styles.postServiceLabelText}>{item.service}</Text>
                       </View>
                     </View>
-
-
                   </View>
                   </TouchableOpacity>
                 )}
@@ -212,7 +206,9 @@ const HomeScreen = () => {
           </View>
         </ScrollView>
 
+        </ScrollView>
         <FooterComponent Prov_Requirement={Prov_Requirement} handleLogout={handleLogout} />
+
       </View>
     </SafeAreaView>
   );
@@ -221,9 +217,13 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    color:"white",
     backgroundColor: "#FFFFFF",
   },
   content: {
+    flex: 1,
+  },
+  contents: {
     flex: 1,
   },
   seeAllLink: {
@@ -245,9 +245,10 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   ourServicesText: {
-    fontSize: 18,
+    fontStyle:'italic',
+    fontSize: 22,
     fontWeight: "bold",
-    color: "white",
+    color: "black",
   },
   servicesContainer: {
     flexDirection: "row",
@@ -258,6 +259,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginHorizontal: 8,
     marginVertical: 16,
+    color:"white",
+    fontWeight: 90,
+    fontSize: 100,
   },
   serviceIcon: {
     width: 50,

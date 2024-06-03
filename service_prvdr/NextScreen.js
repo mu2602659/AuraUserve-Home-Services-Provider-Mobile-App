@@ -10,7 +10,8 @@ import axios from "axios";
 import { signOut } from "firebase/auth";
 import { auth } from "../config/firebase";
 
-const NextScreen = ({ }) => {
+const NextScreen = ({ route }) => {
+  const { firstName, lastName } = route.params;
   const [image, setImage] = useState(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -22,8 +23,12 @@ const NextScreen = ({ }) => {
   const navigation = useNavigation();
 
   const handleLogout = async () => {
-    await signOut(auth);
-  };
+    try {
+        await signOut(auth);
+    } catch (error) {
+        console.error('Sign-out error:', error.message);
+    }
+};
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -104,6 +109,9 @@ const NextScreen = ({ }) => {
     navigation.navigate("List_Users");
   };
 
+  const navigateFetchImages = () => {
+    navigation.navigate("FetchImages");
+  };
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollView}>
@@ -111,6 +119,7 @@ const NextScreen = ({ }) => {
           <HamburgerMenu />
         </View>    
         <View style={styles.formContainer}>
+          <Text style={styles.name}>{firstName} {lastName}</Text>
           <TouchableOpacity style={styles.imageContainer} onPress={pickImage}>
             {image ? (
               <Image source={{ uri: image }} style={styles.image} />
@@ -166,6 +175,7 @@ const NextScreen = ({ }) => {
           <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
             <Text style={styles.buttonText}>Submit</Text>
           </TouchableOpacity>
+          
         </View>
         <TouchableOpacity style={styles.requestsButton} onPress={() => {}}>
           <Text style={styles.requestsButtonText}>Incoming Requests</Text>
@@ -183,24 +193,17 @@ const NextScreen = ({ }) => {
           <Text style={styles.footerText}>Edit Profile</Text>
         </TouchableOpacity>
 
-
-        <TouchableOpacity style={styles.footerItem} onPress={navigateToAllPosts}>
-          <FontAwesome5 name="file-alt" size={20} color="black" style={styles.menuIcon} />
-          <Text style={styles.menuText}>All Posts</Text>
          <TouchableOpacity onPress={navigateToAllPosts} style={styles.footerItem}>
           <FontAwesome5 name="image" size={24} color="white" />
-          <Text style={styles.footerText}>All Posts</Text>
+          <Text style={styles.footerText}>Posts</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.footerItem} onPress={navigateToAllUsers}>
-          <FontAwesome5 name="users" size={20} color="black" style={styles.menuIcon} />
-          <Text style={styles.menuText}>All users</Text>
-<TouchableOpacity style={styles.footerItem}onPress={navigateToAllUsers}>
+        <TouchableOpacity style={styles.footerItem}onPress={navigateToAllUsers}>
           <FontAwesome5 name="user" size={24} color="white" />
-          <Text style={styles.footerText}>All Users</Text>
+          <Text style={styles.footerText}>Profile Images</Text>
         </TouchableOpacity>
 
- <TouchableOpacity onPress={handleLogout} style={styles.footerItem}>
+       <TouchableOpacity onPress={handleLogout} style={styles.footerItem}>
           <FontAwesome5 name="sign-out-alt" size={24} color="white" />
           <Text style={styles.footerText}>Logout</Text>
         </TouchableOpacity>

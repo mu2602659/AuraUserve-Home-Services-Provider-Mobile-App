@@ -1,16 +1,18 @@
-import React, { useState } from "react";
-import { View, Text, ScrollView, TouchableOpacity, Image, ImageBackground, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { ActivityIndicator,ScrollView,ImageBackground,pickImage, View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import * as ImagePicker from 'expo-image-picker';
 import { signOut } from "firebase/auth";
 import { auth } from "../config/firebase";
+import { getFirestore, collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
 
 const HeaderComponent = ({ userName, userEmail, }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [image, setImage] = useState(null);
+  const [latestData, setLatestData] = useState(null);
+  const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
+
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -21,7 +23,7 @@ const HeaderComponent = ({ userName, userEmail, }) => {
   };
 
   const navigateToHomeScreen = () => {
-    navigation.navigate('home');
+    navigation.navigate('Home');
   };
 
   const navigateToServicesScreen = () => {
@@ -43,38 +45,56 @@ const HeaderComponent = ({ userName, userEmail, }) => {
     }
   };
 
-  const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    console.log(result);
-
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-    }
-  };
-
   
-   
+
+//////////////////
+useEffect(() => {
+    const fetchLatestData = async () => {
+      try {
+        const db = getFirestore();
+        const q = query(collection(db, 'user_edit-profile'), orderBy('createdAt', 'desc'), limit(1));
+        const querySnapshot = await getDocs(q);
+        const latest = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))[0];
+        setLatestData(latest);
+      } catch (error) {
+        console.error("Error fetching latest data: ", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLatestData();
+  }, []);
+
+  if (loading) {
+    return (
+      <View >
+        <ActivityIndicator size="large" color="#FFBF00" />
+      </View>
+    );
+  }
+
+  if (!latestData) {
+    return (
+      <View >
+        <Text>No data found.</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.header}>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <TouchableOpacity onPress={pickImage} style={styles.profileContainer}>
-      {image ? (
-        <Image source={{ uri: image }} style={styles.profileImage} />
+      <TouchableOpacity onPress={navigateToMongotry} style={styles.profileContainer}>
+          {latestData ? (
+            <Image source={{ uri: latestData.imageUrl }} style={styles.profileImage} />
           ) : (
-          <View style={styles.profilePlaceholder}>
-            <Text style={styles.profilePlaceholderText}>Add</Text>
-          </View>
+            <View style={styles.profilePlaceholder}>
+              <Text style={styles.profilePlaceholderText}>Image</Text>
+            </View>
           )}
-      </TouchableOpacity>
-      <Text style={{ fontSize: 17, marginLeft: 5, marginTop:-17, fontWeight: "bold",}}>Welcome To AuraUserve</Text>
+        </TouchableOpacity>
+      <Text style={{ fontSize:17, marginLeft:80, marginTop:-17, fontWeight:"900", color:"black",}}>Welcome To AuraUserve</Text>
       </View>
 
       {/* Cart Icon */}
@@ -93,19 +113,23 @@ const HeaderComponent = ({ userName, userEmail, }) => {
           <ScrollView>
             <ImageBackground source={require('../assets/images/background.jpg')} style={{ width: undefined, padding: 16, paddingTop: 25 }}>
             <TouchableOpacity style={styles.editButton}  onPress={navigateToMongotry}>
-  <FontAwesome5 style={styles.editButton} name="edit" size={23} color="white"  />
-</TouchableOpacity>
+            <FontAwesome5 style={styles.editButton} name="edit" size={23} color="white"  />
+            </TouchableOpacity>
           <TouchableOpacity onPress={pickImage} style={styles.profileContainer1}>
-              {image ? (
-                <Image source={{ uri: image }} style={styles.profileImage1} />
+          {latestData ? (
+            <Image source={{ uri: latestData.imageUrl }} style={styles.profileImage1} />
                 ) : (
               <View style={styles.profilePlaceholder1}>
-                <Text style={styles.profilePlaceholderText1}>Add Profile Picture</Text>
+                <Text style={styles.profilePlaceholderText1}>Profile Picture</Text>
               </View>
               )}
           </TouchableOpacity>
-              <Text style={{ fontSize: 16, marginLeft: 8, color: 'white', fontWeight: "bold" }}>{userName}</Text>
-        <Text style={{ fontSize: 14, marginLeft: 8, color: 'white', fontWeight:"bold" }}>{userEmail}</Text>
+          <Text style={{ fontSize: 16, marginLeft: 8, color: 'white', fontWeight: "bold" }}>Name: {latestData.name}</Text>
+         {/* <Text style={{ fontSize: 16, marginLeft: 8, color: 'white', fontWeight: "bold" }}>{userName}</Text>*/}
+         {/* <Text style={{ fontSize: 16, marginLeft: 8, color: 'white', fontWeight:"bold" }}>{latestData.email}</Text>*/}
+          <Text style={{ fontSize: 16, marginLeft: 8, color: 'white', fontWeight:"bold" }}>{userEmail}</Text>
+          <Text style={{ fontSize: 16, marginLeft: 8, color: 'white', fontWeight: "bold" }}>{latestData.mobile}</Text>
+
     
             </ImageBackground>
           </ScrollView>
@@ -171,12 +195,16 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   hamburgerMenu: {
-    marginLeft: -140,
+    marginRight: 10,
+    marginLeft: -90,
     marginTop:-17,
   },
   CartMenu: {
-    marginLeft: -110,
+    marginLeft: -90,
     marginTop:-17,
+  },
+  hoveredItem: {
+    backgroundColor: "#f0f0f0",
   },
   menu: {
     position: 'absolute',

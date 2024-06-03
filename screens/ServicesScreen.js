@@ -35,8 +35,8 @@ const ServicesScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-        <ImageBackground source={require("../assets/images/blackk.jpg")} style={[styles.servicesBackgroundImage, { width: "100%" }]}>
       <View style={styles.header}>
+      <ImageBackground source={require("../assets/images/blackk.jpg")} style={[styles.servicesBackgroundImage, { width: "100%",height:2000,width:'200%', paddingTop:7, paddingTop:7, position: 'absolute' }]}/>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <FontAwesome5 name="arrow-left" size={24} color="white" />
         </TouchableOpacity>
@@ -50,7 +50,6 @@ const ServicesScreen = () => {
           {servicesData.map((service) => renderServiceBlock(service))}
         </View>
       </ScrollView>
-      </ImageBackground>
     </SafeAreaView>
   );
 };

@@ -79,8 +79,7 @@ export default function LoginScreen() {
                         onChangeText={value => setEmail(value)}
                     />
                     <View style={{ position: 'relative' }}>
-                                           <Text className="text-gray-700 ml-4">Password</Text>
-
+                        <Text className="text-gray-700 ml-4">Password</Text>
                         <TextInput
                             style={{ backgroundColor: '#F3F4F6', padding: 20, borderRadius: 20, marginBottom: 10 }}
                             secureTextEntry={secureTextEntry}
@@ -89,7 +88,7 @@ export default function LoginScreen() {
                             value={password}
                             onChangeText={value => setPassword(value)}
                         />
-                        <TouchableOpacity onPress={() => setSecureTextEntry(!secureTextEntry)} style={{ position: 'absolute', right: 20, top: 20 }}>
+                        <TouchableOpacity onPress={() => setSecureTextEntry(!secureTextEntry)} style={{ position: 'absolute', right: 20, top: 40 }}>
                             <Feather name={secureTextEntry ? 'eye' : 'eye-off'} size={24} color='black' />
                         </TouchableOpacity>
                     </View>

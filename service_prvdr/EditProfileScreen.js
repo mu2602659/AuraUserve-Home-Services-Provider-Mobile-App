@@ -78,18 +78,15 @@ const EditProfileScreen = () => {
             <Text style={styles.profilePlaceholderText}>Add</Text>
           </View>
         )}
-         <TextInput
-        style={styles.field}
-        placeholder="Enter Your Name"
-        value={name}
-        onChangeText={setName}
-      />
       </TouchableOpacity>
       </ImageBackground>
-     
+      <View style={styles.container}>
+
+      <TextInput style={styles.field} placeholder="Enter Your Name" value={name} onChangeText={setName}/>
       <TouchableOpacity onPress={handleSave} style={styles.saveButton}>
         <Text style={styles.buttonText}>Save</Text>
       </TouchableOpacity>
+      </View>
       
     </View>
     
@@ -105,14 +102,18 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   profileContainer: {
-    marginBottom: 100,
+    marginBottom: 80,
     marginLeft:100,
-    marginTop:100,
+    marginTop:50,
+    justifyContent: "center"
+    
   },
   profileImage: {
     width: 150,
     height: 150,
-    borderRadius: 75,
+    borderRadius: 75, 
+    alignItems: "center",
+    justifyContent: "center" 
   },
   profilePlaceholder: {
     width: 150,
@@ -129,11 +130,11 @@ const styles = StyleSheet.create({
   saveButton: {
     backgroundColor: "#FDDA0D",
     padding: 18,
-    borderRadius: 5,
-    width: 230,
+    borderRadius: 10,
+    width: 150,
     alignItems: "center",
-    marginBottom:180,
-    marginTop:-100,
+    marginBottom:400,
+    marginTop:10,
   },
   buttonText: {
     color: "black",
@@ -142,16 +143,19 @@ const styles = StyleSheet.create({
   },
   Background:{
     width:"100%",
-    marginBottom:170,
     marginLeft:100,
     marginRight:100,
   },
   field:{
-    borderColor: "gray",
-    borderWidth: 5,
-    marginRight:60,
-    marginLeft:-50,
-    marginTop:15,
+    width: 350,
+    height: 50,
+    borderWidth: 1,
+    backgroundColor: 'white',
+    borderColor: 'gray',
+    padding: 10,
+    marginTop:1,
+    borderRadius: 8,
+    color: 'black',
   },
 });
 

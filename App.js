@@ -27,6 +27,7 @@ import Mongotry from './service_prvdr/Mongotry';
 import firebase_img from './service_prvdr/firebase_img';
 import List_images from './service_prvdr/List_images';
 import List_Users from './service_prvdr/List_Users';
+import FetchImages from './service_prvdr/FetchImages';
 import EditProfileScreen from './service_prvdr/EditProfileScreen';
 
 // Post integration
@@ -114,12 +115,14 @@ export default function App() {
 
         <Stack.Screen name="Mongotry"     component={Mongotry} options={{ headerShown: false }} />
         <Stack.Screen name="firebase_img" component={firebase_img} />
+        <Stack.Screen name="FetchImages" component={FetchImages} />
+
         <Stack.Screen name="List_images"  component={List_images} options={{ title: 'Images List' }}/>
         <Stack.Screen name="List_Users"   component={List_Users} options={{ title: 'Profile Pictures' }}/>
        
         <Stack.Screen name="NextScreen" component={NextScreen} options={{ title: 'Service Povider' }}/>
         <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
-    <ServicesStack.Screen name="booking" options={{ headerShown: false }} component={BookingScreen} />
+        <ServicesStack.Screen name="booking" options={{ headerShown: false }} component={BookingScreen} />
 
         <Stack.Screen name="PostDetails" component={PostDetails} options={{ title: "Post Details" }} />
       </Stack.Navigator>

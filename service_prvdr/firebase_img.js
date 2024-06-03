@@ -3,12 +3,14 @@ import { View, Text, Image, SafeAreaView, TouchableOpacity, Alert, StyleSheet } 
 import * as ImagePicker from 'expo-image-picker';
 import { firebase } from '../config/firebase';
 import * as FileSystem from 'expo-file-system';
+import { useNavigation } from '@react-navigation/native';
 
 const FirebaseImg = () => { // Changed the component name to start with uppercase letter
 
     const [image, setImage] = useState(null);
     const [uploading, setUploading] = useState(false);
-    
+    const navigation = useNavigation(); // Hook to access navigation
+
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -17,13 +19,13 @@ const FirebaseImg = () => { // Changed the component name to start with uppercas
           aspect: [4, 3],
           quality: 1,
         });
-      
+
         console.log(result);
-    
+
         if (!result.canceled) {
           setImage(result.assets[0].uri);
         }
-      };
+    };
 
     const uploadMedia = async () => {
         if (!image) {
@@ -57,6 +59,10 @@ const FirebaseImg = () => { // Changed the component name to start with uppercas
             setUploading(false);
             Alert.alert('Photo Uploaded!!!');
             setImage(null);
+
+            // Navigate to DisplayImage screen with the filename
+            navigation.navigate('FetchImages', { filename });
+
         } catch (error) {
             console.error('Error uploading image:', error);
             Alert.alert('Error uploading image. Please try again.');

@@ -1,50 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { ScrollView, View, Text, TouchableOpacity, TextInput, ImageBackground, Image, Button, Platform, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { ScrollView, View, Text, TouchableOpacity, TextInput, ImageBackground, StyleSheet, Image, Alert } from 'react-native';
 import { Avatar } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-import axios from 'axios';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import Toast from 'react-native-toast-message';
-import { IMG_URL } from '../config/ip_address';
-import { DATA_URL } from '../config/ip_address';
-import styles from './stylesProfileEdit'; // Import your styles
+import * as FileSystem from 'expo-file-system';
+import { useNavigation } from '@react-navigation/native';
+import { getFirestore, collection, addDoc } from 'firebase/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import styles from './stylesProfileEdit'; 
 
 export default function ProfileEditScreen() {
   const [image, setImage] = useState(null);
+  const [uploading, setUploading] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [mobile, setMobile] = useState('');
-
+  const [saveState, setSaveState] = useState('Save Profile'); // New state for button text
   const navigation = useNavigation();
-  const route = useRoute();
-
-  const ImagesList = () => {
-    navigation.navigate('List_images');
-  };
-  const UserList = () => {
-    navigation.navigate('List_Users');
-  };
-  useEffect(() => {
-    const userData = route.params?.data;
-    if (userData) {
-      setEmail(userData.email);
-      setImage(userData.image.uri);
-      setName(userData.name);
-      setMobile(userData.mobile);
-    }
-  }, [route.params]);
-
-  useEffect(() => {
-    (async () => {
-      if (Platform.OS !== 'web') {
-        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (status !== 'granted') {
-          alert('Sorry, we need camera roll permissions to make this work!');
-        }
-      }
-    })();
-  }, []);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -54,89 +26,62 @@ export default function ProfileEditScreen() {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.cancelled) {
       setImage(result.assets[0].uri);
     }
   };
 
-  const handleImageUpload = () => {
+  const uploadMedia = async () => {
     if (!image) {
-      // Ensure that an image is selected before uploading
-      Alert.alert('No image selected', 'Please select an image before uploading.');
+      Alert.alert('Please pick an image first.');
       return;
     }
 
-    const formData = new FormData();
-    formData.append('avatar', {
-      uri: image,
-      type: 'image/jpeg',
-      name: 'avatar.jpg',
-    });
+    setUploading(true);
+    setSaveState('Saving...');
 
-    axios.post('http://192.168.1.214:5002/profile', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
-      .then(response => {
-        console.log(response.data);
-        if (response.data.status === 'ok') {
-          Toast.show({
-            type: 'success',
-            text1: 'Success!!',
-            text2: 'Image Uploaded',
-            visibilityTime: 5000,
-          });
-        } else {
-          Toast.show({
-            type: 'error',
-            text1: 'Error!!',
-            text2: response.data.data,
-            visibilityTime: 5000,
-          });
-        }
-      })
-      .catch(error => {
-        console.error('Error uploading image:', error);
-        Toast.show({
-          type: 'error',
-          text1: 'Error!!',
-          text2: 'Failed to upload image',
-          visibilityTime: 5000,
-        });
+    try {
+      const { uri } = await FileSystem.getInfoAsync(image);
+      const blob = await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.onload = () => resolve(xhr.response);
+        xhr.onerror = (e) => reject(new TypeError('Network request failed'));
+        xhr.responseType = 'blob';
+        xhr.open('GET', uri, true);
+        xhr.send(null);
       });
-  };
 
-  const handleSubmit = () => {
-    const userData = {
-      name: name,
-      email: email,
-      mobile: mobile,
-      image: { uri: image }
-    };
+      const filename = image.substring(image.lastIndexOf('/') + 1);
+      const storage = getStorage();
+      const storageRef = ref(storage, `user_edit-profile/${filename}`); // Path to store image in Firebase Storage
 
-    axios.post('http://192.168.1.214:5001/register', userData)
-      .then(res => {
-        console.log(res.data);
-        if (res.data.status === 'ok') {
-          Toast.show({
-            type: 'success',
-            text1: 'Success!!',
-            text2: 'User Created',
-            visibilityTime: 5000,
-          });
-        } else {
-          Toast.show({
-            type: 'error',
-            text1: 'Error!!',
-            text2: res.data.data,
-            visibilityTime: 5000,
-          });
-        }
-      })
-      .catch(e => console.log(e));
+      // Upload image to Firebase Storage
+      await uploadBytes(storageRef, blob);
+
+      // Get download URL of the uploaded image
+      const imageUrl = await getDownloadURL(storageRef);
+
+      // Store user information and image URL in Firestore
+      const db = getFirestore();
+      await addDoc(collection(db, 'user_edit-profile'), {
+        name: name,
+        email: email,
+        mobile: mobile,
+        imageUrl: imageUrl,
+        createdAt: new Date() 
+      });
+
+      setUploading(false);
+      setSaveState('Saved'); // Set the button state to "Saved"
+      Alert.alert('Profile Updated Successfully!');
+      setImage(null);
+      
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      Alert.alert('Error uploading image. Please try again.');
+      setUploading(false);
+      setSaveState('Save Profile');
+    }
   };
 
   return (
@@ -160,7 +105,7 @@ export default function ProfileEditScreen() {
      
         {/* Avatar */}
         <View style={styles.camDiv}>
-        <ImageBackground source={require('../assets/images/background.jpg')} style={{ padding: 210, paddingTop:7,position: 'absolute' }} />
+          <ImageBackground source={require('../assets/images/background.jpg')} style={{ padding: 210, paddingTop:7,position: 'absolute' }} />
           <TouchableOpacity onPress={pickImage}>
             <Avatar.Image
               size={140}
@@ -191,7 +136,7 @@ export default function ProfileEditScreen() {
             value={email}
             onChangeText={setEmail}
           />
-           <Text style={[{fontWeight:'bold',marginLeft:'1%'}]}>Mobile No:</Text>
+          <Text style={[{fontWeight:'bold',marginLeft:'1%'}]}>Mobile No:</Text>
           <TextInput
             placeholder="Your Mobile No"
             placeholderTextColor={'#999797'}
@@ -202,15 +147,18 @@ export default function ProfileEditScreen() {
             onChangeText={setMobile}
           />
         </View>
+        <View style={styles.imageContainer}>
+          {image && 
+            <Image source={{ uri: image }} style={styles.image} />
+          }
+        </View>
 
-        {/* Save Button */}
         <View style={styles.buttonDiv}>
-          <TouchableOpacity onPress={handleSubmit} style={styles.saveButton}>
-            <Text style={styles.saveButtonText}>Submit</Text>
-          </TouchableOpacity>
+        <TouchableOpacity style={styles.saveButton} onPress={uploadMedia} disabled={uploading}>
+            <Text style={styles.saveButtonText}>{saveState}</Text>
+        </TouchableOpacity>
         </View>
       </View>
     </ScrollView>
   );
 }
-
