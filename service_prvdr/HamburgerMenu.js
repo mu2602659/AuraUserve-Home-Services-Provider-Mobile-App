@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image,ImageBackground, ActivityIndicator, RefreshControl, FlatList } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image,ImageBackground, ActivityIndicator, RefreshControl,menuWidth,FlatList } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
 import { IMG_URL } from "../config/ip_address";
@@ -92,7 +92,7 @@ const HamburgerMenu = ({ }) => {
           keyExtractor={(item) => item._id}
         />
           )}
-            <ImageBackground source={require('../assets/images/background.jpg')} style={{ width: undefined,height:-100, padding: 90, paddingTop: 90 }}></ImageBackground>
+            <ImageBackground source={require('../assets/images/background.jpg')} style={{ width: undefined, paddingTop:230,paddingBottom:100,marginBottom:8, }}></ImageBackground>
 
           <TouchableOpacity style={styles.menuItem} onPress={navigateToEditProfile}>
             <FontAwesome5 name="edit" size={20} color="black" style={styles.menuIcon} />
@@ -138,38 +138,41 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     left: 0,
-    padding: 10,
+    padding: 12,
   },
   menu: {
     position: 'absolute',
-    top: -12,
-    right: -2,
-    paddingVertical: -20,
-    backgroundColor: '#FFF',
-    width: 200,
-    height: 640,
-    borderRadius: 9,
-    shadowColor: '#ccc',
+    top: 0,
+    right: 0,
+    backgroundColor: 'white',
+    width: 280,
+    height: 705,
+    borderRadius: 10,
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+    zIndex: 1,
+    width: menuWidth,
   },
   menuItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 15,
-    paddingHorizontal: 20,
+    padding: 10,
+    flexDirection: "row",
+    alignItems: "center",
     borderBottomWidth: 1,
-    borderBottomColor: '#CCC',
+    borderBottomColor: "#ccc",
+    marginBottom: 20,
+    marginRight:20,
   },
   menuIcon: {
-    marginRight: 5,
+    marginRight: 4,
   },
   menuText: {
     fontSize: 16,
-    color: 'black',
-    fontWeight:"bold",
+    marginLeft: 10,
+    fontWeight: "bold",
+    color: "black",
   },
   item: {
     flexDirection: 'column',

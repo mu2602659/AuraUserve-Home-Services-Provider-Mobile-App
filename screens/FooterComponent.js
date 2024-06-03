@@ -1,11 +1,21 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet, ImageBackground } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
-const FooterComponent = ({ Prov_Requirement, handleLogout, myProfile }) => {
+const FooterComponent = ({ Prov_Requirement, handleLogout }) => {
+  const navigation = useNavigation();
+
+  const navigateToProfile = () => {
+    navigation.navigate('Mongotry'); // Make sure 'EditScreen' is the name used in your navigator
+  };
+  const navigateToAppointments = () => {
+    navigation.navigate('AppointmentsScreen'); // Make sure 'Appointments' is the name used in your navigator
+  };
+
   return (
     <ImageBackground 
-    source={require("../assets/images/blackk.jpg")}
+      source={require("../assets/images/blackk.jpg")}
       style={styles.footerBackground}
     >
       <View style={styles.footer}>
@@ -19,13 +29,12 @@ const FooterComponent = ({ Prov_Requirement, handleLogout, myProfile }) => {
           <Text style={styles.footerText}>Job Opportunities</Text>
         </TouchableOpacity>
         
-        <TouchableOpacity style={styles.footerItem}>
+        <TouchableOpacity onPress={navigateToAppointments} style={styles.footerItem}>
           <FontAwesome5 name="book" size={24} color="#FFBF00" />
           <Text style={styles.footerText}>Bookings</Text>
         </TouchableOpacity>
         
-        {/* Updated TouchableOpacity for My Profile */}
-        <TouchableOpacity onPress={myProfile} style={styles.footerItem}>
+        <TouchableOpacity onPress={navigateToProfile} style={styles.footerItem}>
           <FontAwesome5 name="user" size={24} color="#FFBF00" />
           <Text style={styles.footerText}>My Profile</Text>
         </TouchableOpacity>
@@ -48,7 +57,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
     paddingVertical: 9,
-    paddingHorizontal:8,
+    paddingHorizontal: 8,
   },
   footerItem: {
     alignItems: "center",
@@ -56,7 +65,7 @@ const styles = StyleSheet.create({
   footerText: {
     marginTop: 5,
     fontSize: 12,
-    color:"#FFBF00",
+    color: "#FFBF00",
   },
 });
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ActivityIndicator,ScrollView,ImageBackground,pickImage, View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
+import { ActivityIndicator,ScrollView,ImageBackground,pickImage, View, Text, TouchableOpacity, Image, menuWidth,StyleSheet } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -23,7 +23,7 @@ const HeaderComponent = ({ userName, userEmail, }) => {
   };
 
   const navigateToHomeScreen = () => {
-    navigation.navigate('Home');
+    navigation.navigate('home');
   };
 
   const navigateToServicesScreen = () => {
@@ -94,7 +94,7 @@ useEffect(() => {
             </View>
           )}
         </TouchableOpacity>
-      <Text style={{ fontSize:17, marginLeft:80, marginTop:-17, fontWeight:"900", color:"black",}}>Welcome To AuraUserve</Text>
+      <Text style={{ fontSize:17, marginLeft:45, marginTop:-17, fontWeight:"900", color:"black",}}>Welcome To AuraUserve</Text>
       </View>
 
       {/* Cart Icon */}
@@ -109,7 +109,7 @@ useEffect(() => {
 
       {/* Menu Items */}
       {isMenuOpen && (
-        <View style={styles.menu}>
+         <View style={[styles.menu, { width: menuWidth }]}>
           <ScrollView>
             <ImageBackground source={require('../assets/images/background.jpg')} style={{ width: undefined, padding: 16, paddingTop: 25 }}>
             <TouchableOpacity style={styles.editButton}  onPress={navigateToMongotry}>
@@ -123,6 +123,7 @@ useEffect(() => {
                 <Text style={styles.profilePlaceholderText1}>Profile Picture</Text>
               </View>
               )}
+              
           </TouchableOpacity>
           <Text style={{ fontSize: 16, marginLeft: 8, color: 'white', fontWeight: "bold" }}>Name: {latestData.name}</Text>
          {/* <Text style={{ fontSize: 16, marginLeft: 8, color: 'white', fontWeight: "bold" }}>{userName}</Text>*/}
@@ -220,7 +221,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
     zIndex: 1,
-
+    width: menuWidth, // Media query applied here
   },
   menuItem: {
     padding: 10,
@@ -228,7 +229,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderBottomWidth: 1,
     borderBottomColor: "#ccc",
-    marginBottom: 20,
+    marginBottom: 16,
   },
   menuText: {
     fontSize: 16,

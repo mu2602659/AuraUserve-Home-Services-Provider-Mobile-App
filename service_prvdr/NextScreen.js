@@ -10,6 +10,7 @@ import axios from "axios";
 import { signOut } from "firebase/auth";
 import { auth } from "../config/firebase";
 
+
 const NextScreen = ({ route }) => {
   const { firstName, lastName } = route.params;
   const [image, setImage] = useState(null);
@@ -112,6 +113,9 @@ const NextScreen = ({ route }) => {
   const navigateFetchImages = () => {
     navigation.navigate("FetchImages");
   };
+    const navigateToIncomingRequests = () => {
+      navigation.navigate('IncomingRequestsScreen'); // Navigate to the new screen
+    };
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollView}>
@@ -177,7 +181,7 @@ const NextScreen = ({ route }) => {
           </TouchableOpacity>
           
         </View>
-        <TouchableOpacity style={styles.requestsButton} onPress={() => {}}>
+        <TouchableOpacity style={styles.requestsButton} onPress={navigateToIncomingRequests}>
           <Text style={styles.requestsButtonText}>Incoming Requests</Text>
         </TouchableOpacity>
       </ScrollView>
@@ -189,22 +193,22 @@ const NextScreen = ({ route }) => {
     >
       <View style={styles.footer}>
          <TouchableOpacity style={styles.footerItem}onPress={navigateToEditProfile}>
-          <FontAwesome5 name="edit" size={24} color="white" />
+          <FontAwesome5 name="edit" size={24} color="#FFBF00" />
           <Text style={styles.footerText}>Edit Profile</Text>
         </TouchableOpacity>
 
          <TouchableOpacity onPress={navigateToAllPosts} style={styles.footerItem}>
-          <FontAwesome5 name="image" size={24} color="white" />
+          <FontAwesome5 name="image" size={24} color="#FFBF00" />
           <Text style={styles.footerText}>Posts</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.footerItem}onPress={navigateToAllUsers}>
-          <FontAwesome5 name="user" size={24} color="white" />
+          <FontAwesome5 name="user" size={24} color="#FFBF00" />
           <Text style={styles.footerText}>Profile Images</Text>
         </TouchableOpacity>
 
        <TouchableOpacity onPress={handleLogout} style={styles.footerItem}>
-          <FontAwesome5 name="sign-out-alt" size={24} color="white" />
+          <FontAwesome5 name="sign-out-alt" size={24} color="#FFBF00" />
           <Text style={styles.footerText}>Logout</Text>
         </TouchableOpacity>
         
@@ -327,7 +331,7 @@ const styles = StyleSheet.create({
   },
   footerText: {
     fontSize: 13,
-    color: "white",
+    color: "#FFBF00",
     fontWeight: "bold",
   },
   menuIcon: {

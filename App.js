@@ -12,6 +12,8 @@ import VerificationComponent from './screens/VerificationComponent';
 import SignUpScreen from './screens/SignUpScreen';
 import ServicesScreen from './screens/ServicesScreen';
 import myProfileScreen from './screens/myProfileScreen';
+import AppointmentsScreen from './screens/AppointmentsScreen';
+
 
 
 // Import Service Provider 
@@ -29,6 +31,7 @@ import List_images from './service_prvdr/List_images';
 import List_Users from './service_prvdr/List_Users';
 import FetchImages from './service_prvdr/FetchImages';
 import EditProfileScreen from './service_prvdr/EditProfileScreen';
+import IncomingRequestsScreen from './service_prvdr/IncomingRequestsScreen';
 
 // Post integration
 import PostDetails from './Posts_integration/PostDetails';
@@ -65,6 +68,7 @@ const ServicesStackNavigator = () => (
     <ServicesStack.Screen name="Shifting" component={ShiftingScreen} options={{ title: 'Shifting' }} />
     <ServicesStack.Screen name="Washing" component={WashingScreen} options={{ title: 'Washing' }} />
     <ServicesStack.Screen name="Solar" component={SolarScreen} options={{ title: 'Solar' }} />
+
   </ServicesStack.Navigator>
 );
 export default function App() {
@@ -87,6 +91,9 @@ export default function App() {
             <Stack.Screen name="Shifting" component={ShiftingScreen} options={{ title: 'Shifting' }} />
             <Stack.Screen name="Washing" component={WashingScreen} options={{ title: 'Washing' }} />
             <Stack.Screen name="Solar" component={SolarScreen} options={{ title: 'Solar' }} />
+            <Stack.Screen name="AppointmentsScreen" component={AppointmentsScreen} options={{ title: 'Appointments' }} />
+            <Stack.Screen name="IncomingRequestsScreen" component={IncomingRequestsScreen} options={{ title: 'Requests' }} />
+           
 
             
           </>
@@ -96,6 +103,7 @@ export default function App() {
         <Stack.Screen name="User" options={{ headerShown: false }} component={UserScreen} />
         <Stack.Screen name="Login" options={{ headerShown: false }} component={LoginScreen} />
         <Stack.Screen name="SignUp" options={{ headerShown: false }} component={SignUpScreen} />
+       
         </>
         )}
         <Stack.Screen name="ProviderSignup" component={ProviderSignup} options={{ headerShown: false }} />
@@ -110,6 +118,12 @@ export default function App() {
         <Stack.Screen name="Services"  component={ServicesStackNavigator} options={{ headerShown: false }} />
         <Stack.Screen name="myProfile" component={myProfileScreen} options={{ title: 'myProfile' }} />
         <Stack.Screen name="Chat" component={ChatScreen} options={{ title: 'Chat Conversation' }} />
+        
+       
+
+       
+       
+
 
         {/* Add ProviderSignup screen */}
 
@@ -123,8 +137,10 @@ export default function App() {
         <Stack.Screen name="NextScreen" component={NextScreen} options={{ title: 'Service Povider' }}/>
         <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
         <ServicesStack.Screen name="booking" options={{ headerShown: false }} component={BookingScreen} />
-
         <Stack.Screen name="PostDetails" component={PostDetails} options={{ title: "Post Details" }} />
+       
+        
+
       </Stack.Navigator>
     </NavigationContainer>
   );
