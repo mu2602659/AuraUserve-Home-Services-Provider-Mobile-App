@@ -31,10 +31,14 @@ import List_images from './service_prvdr/List_images';
 import List_Users from './service_prvdr/List_Users';
 import FetchImages from './service_prvdr/FetchImages';
 import EditProfileScreen from './service_prvdr/EditProfileScreen';
-import IncomingRequestsScreen from './service_prvdr/IncomingRequestsScreen';
 
 // Post integration
 import PostDetails from './Posts_integration/PostDetails';
+import IncomingRequests from './Posts_integration/IncomingRequests';
+import AcceptedBookings from './Posts_integration/AcceptedBookings';
+import RatingScreen from './Posts_integration/RatingScreen';
+import RejectedBookings from './Posts_integration/RejectedBookings';
+import Comment from './Posts_integration/Comment';
 
 
 // Import other services
@@ -91,11 +95,7 @@ export default function App() {
             <Stack.Screen name="Shifting" component={ShiftingScreen} options={{ title: 'Shifting' }} />
             <Stack.Screen name="Washing" component={WashingScreen} options={{ title: 'Washing' }} />
             <Stack.Screen name="Solar" component={SolarScreen} options={{ title: 'Solar' }} />
-            <Stack.Screen name="AppointmentsScreen" component={AppointmentsScreen} options={{ title: 'Appointments' }} />
-            <Stack.Screen name="IncomingRequestsScreen" component={IncomingRequestsScreen} options={{ title: 'Requests' }} />
-           
-
-            
+            <Stack.Screen name="AppointmentsScreen" component={AppointmentsScreen} options={{ title: 'Appointments' }} />           
           </>
         ) : (
         <>
@@ -103,7 +103,6 @@ export default function App() {
         <Stack.Screen name="User" options={{ headerShown: false }} component={UserScreen} />
         <Stack.Screen name="Login" options={{ headerShown: false }} component={LoginScreen} />
         <Stack.Screen name="SignUp" options={{ headerShown: false }} component={SignUpScreen} />
-       
         </>
         )}
         <Stack.Screen name="ProviderSignup" component={ProviderSignup} options={{ headerShown: false }} />
@@ -118,12 +117,7 @@ export default function App() {
         <Stack.Screen name="Services"  component={ServicesStackNavigator} options={{ headerShown: false }} />
         <Stack.Screen name="myProfile" component={myProfileScreen} options={{ title: 'myProfile' }} />
         <Stack.Screen name="Chat" component={ChatScreen} options={{ title: 'Chat Conversation' }} />
-        
-       
-
-       
-       
-
+      
 
         {/* Add ProviderSignup screen */}
 
@@ -137,7 +131,15 @@ export default function App() {
         <Stack.Screen name="NextScreen" component={NextScreen} options={{ title: 'Service Povider' }}/>
         <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
         <ServicesStack.Screen name="booking" options={{ headerShown: false }} component={BookingScreen} />
+
+        <Stack.Screen name="IncomingRequest" component={IncomingRequests} options={{ title: 'Requests' }} />
         <Stack.Screen name="PostDetails" component={PostDetails} options={{ title: "Post Details" }} />
+        <Stack.Screen name="AcceptedBookings" component={AcceptedBookings} options={{ title: "Accepted Bookings" }} />
+        <Stack.Screen name="RejectedBookings" component={RejectedBookings} options={{ title: "Rejected Bookings" }}/>
+        <Stack.Screen name="Comment" component={Comment} options={{ title: "Revews" }}/>
+        <Stack.Screen name="Rating" component={RatingScreen} options={{ title: "Rate the Provider" }} />
+
+
        
         
 

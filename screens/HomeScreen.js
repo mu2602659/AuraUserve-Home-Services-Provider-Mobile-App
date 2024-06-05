@@ -111,6 +111,19 @@ const HomeScreen = () => {
     navigation.navigate('PostDetails', { post });
   };
 
+
+  
+  const navigateToIncomingRequests = () => {
+    navigation.navigate('IncomingRequest'); 
+  };
+  const navigateToAcceptedBookings = () => {
+    navigation.navigate('AcceptedBookings'); 
+  };
+  const navigateToRating = () => {
+    navigation.navigate('Rating'); 
+  };
+  
+  
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
@@ -122,6 +135,15 @@ const HomeScreen = () => {
           handleProfileClick={handleProfileClick}
           navigation={navigation} 
         />
+        <TouchableOpacity style={{ backgroundColor: 'transparent', padding: 10, borderRadius: 5 }} onPress={navigateToIncomingRequests}>
+            <Text style={styles.requestsButtonText}>Incoming Requests</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{ backgroundColor: 'transparent', padding: 10, borderRadius: 5 }} onPress={navigateToAcceptedBookings}>
+            <Text style={styles.requestsButtonText}>ToAcceptedBookings</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{ backgroundColor: 'transparent', padding: 10, borderRadius: 5 }} onPress={navigateToRating}>
+            <Text style={styles.requestsButtonText}>Rating</Text>
+          </TouchableOpacity>
           <View style={styles.servicesHeader}>
             <Text style={styles.ourServicesText}>Our Services</Text>
 

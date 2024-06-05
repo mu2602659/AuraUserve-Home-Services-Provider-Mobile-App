@@ -63,6 +63,15 @@ const HamburgerMenu = ({ }) => {
     closeMenu();
   };
 
+
+  const navigateToAcceptedBookings = () => {
+    navigation.navigate('AcceptedBookings'); 
+  };
+
+  const navigateTocomment = () => {
+    navigation.navigate('Comment'); 
+  };
+
   const closeMenu = () => {
     setIsMenuOpen(false);
   };
@@ -92,8 +101,6 @@ const HamburgerMenu = ({ }) => {
           keyExtractor={(item) => item._id}
         />
           )}
-            <ImageBackground source={require('../assets/images/background.jpg')} style={{ width: undefined, paddingTop:230,paddingBottom:100,marginBottom:8, }}></ImageBackground>
-
           <TouchableOpacity style={styles.menuItem} onPress={navigateToEditProfile}>
             <FontAwesome5 name="edit" size={20} color="black" style={styles.menuIcon} />
             <Text style={styles.menuText}>Edit Profile</Text>
@@ -113,6 +120,18 @@ const HamburgerMenu = ({ }) => {
             <FontAwesome5 name="file-alt" size={20} color="black" style={styles.menuIcon} />
             <Text style={styles.menuText}>Firebase store image</Text>
           </TouchableOpacity>
+
+
+          <TouchableOpacity style={styles.menuItem} onPress={navigateToAcceptedBookings}>
+          <FontAwesome5 name="file-alt" size={20} color="black" style={styles.menuIcon} />
+            <Text style={styles.requestsButtonText}>AcceptedBookings</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.menuItem} onPress={navigateTocomment}>
+          <FontAwesome5 name="file-alt" size={20} color="black" style={styles.menuIcon} />
+            <Text style={styles.requestsButtonText}>Review</Text>
+          </TouchableOpacity>
+
 
           <TouchableOpacity style={styles.menuItem} onPress={handleLogout}>
             <FontAwesome5 name="sign-out-alt" size={20} color="black" style={styles.menuIcon} />

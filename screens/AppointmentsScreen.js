@@ -1,32 +1,80 @@
-import React from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, Alert, TextInput, Linking } from 'react-native';
+import axios from 'axios';
+import { IMG_URL } from '../config/ip_address';
 
 const AppointmentsScreen = () => {
-  // Sample data for appointments
-  const appointmentsData = [
-    { id: '1', time: '10:00 AM', service: 'Haircut' },
-    { id: '2', time: '11:30 AM', service: 'Manicure' },
-    { id: '3', time: '1:00 PM', service: 'Massage' },
-    { id: '4', time: '3:30 PM', service: 'Facial' },
-  ];
+  const [acceptedBookings, setAcceptedBookings] = useState([]);
+  const [rejectedBookings, setRejectedBookings] = useState([]);
+  const navigation = useNavigation();
 
-  // Render each appointment item
-  const renderAppointmentItem = ({ item }) => (
-    <View style={styles.appointmentItem}>
-      <Text style={styles.appointmentTime}>{item.time}</Text>
-      <Text style={styles.appointmentService}>{item.service}</Text>
-    </View>
-  );
+
+  useEffect(() => {
+    fetchBookings();
+  }, []);
+
+  const fetchBookings = async () => {
+    try {
+      const response = await axios.get(`${IMG_URL}/bookings`);
+      const accepted = response.data.filter(booking => booking.status === 'accepted');
+      const rejected = response.data.filter(booking => booking.status === 'rejected');
+      setAcceptedBookings(accepted);
+      setRejectedBookings(rejected);
+    } catch (error) {
+      console.error('Error fetching bookings:', error);
+      Alert.alert('Error', 'Failed to fetch bookings. Please try again later.');
+    }
+  };
+
+
+  const openWhatsApp = (phone) => {
+    const url = `whatsapp://send?phone=${phone}`;
+    Linking.openURL(url).catch(() => {
+      Alert.alert('Error', 'Failed to open WhatsApp. Please make sure WhatsApp is installed.');
+    });
+  };
+
+  const navigateToRating = () => {
+    navigation.navigate('Rating'); 
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Appointments</Text>
+      <Text style={styles.header}>Accepted Bookings</Text>
       <FlatList
-        data={appointmentsData}
-        renderItem={renderAppointmentItem}
-        keyExtractor={item => item.id}
-        contentContainerStyle={styles.appointmentList}
+        data={acceptedBookings}
+        keyExtractor={(item) => item._id}
+        renderItem={({ item }) => (
+          <View style={styles.bookingContainer}>
+            <Text>Service Name: {item.serviceName}</Text>
+            <Text>Full Name: {item.fullName}</Text>
+            <Text>Service Time: {new Date(item.serviceTime).toLocaleString()}</Text>
+            <Text>Service Date: {new Date(item.serviceDate).toDateString()}</Text>
+            <Text style={{ backgroundColor: '#1F51FF', width:115, borderRadius: 5, color:'white', height:30, padding:5, fontSize:15, fontWeight:'bold' }}>Status: {item.status}</Text>
+            <TouchableOpacity style={styles.whatsappButton1} onPress={navigateToRating}>
+              <Text style={styles.buttonText1}>Rate Booking</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       />
+
+      <Text style={styles.header}>Rejected Bookings</Text>
+      <FlatList
+        data={rejectedBookings}
+        keyExtractor={(item) => item._id}
+        renderItem={({ item }) => (
+          <View style={styles.bookingContainer}>
+            <Text>Service Name: {item.serviceName}</Text>
+            <Text>Full Name: {item.fullName}</Text>
+            <Text style={{ backgroundColor: 'red', width:105, borderRadius: 5, color:'white', height:30, padding:5, fontSize:15, fontWeight:'bold' }}>Status: {item.status}</Text>
+            <TouchableOpacity onPress={() => openWhatsApp(item.contactNumber)} style={styles.whatsappButton}>
+              <Text style={styles.buttonText}>Contact on WhatsApp</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      />
+
     </View>
   );
 };
@@ -34,33 +82,77 @@ const AppointmentsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 20,
     backgroundColor: '#fff',
-    paddingVertical: 20,
-    paddingHorizontal: 10,
   },
-  title: {
+  header: {
     fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  bookingContainer: {
+    borderWidth: 1,
+    borderColor: 'lightgray',
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 10,
+  },
+  ratingButton: {
+    backgroundColor: 'blue',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+  },
+  whatsappButton: {
+    backgroundColor: 'green',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+  },
+  whatsappButton1: {
+    backgroundColor: '#FFBF00',
+    color:'black',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+  },
+  buttonText1: {
+    color: 'black',
+    textAlign: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    textAlign: 'center',
+  },
+  commentInput: {
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 5,
+    padding: 10,
+    marginTop: 10,
+  },
+  ratingModal: {
+    position: 'absolute',
+    top: '30%',
+    left: '10%',
+    right: '10%',
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: 'lightgray',
+  },
+  modalHeader: {
+    fontSizegah: 20,
     fontWeight: 'bold',
     marginBottom: 20,
     textAlign: 'center',
   },
-  appointmentList: {
-    flexGrow: 1,
-  },
-  appointmentItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-    paddingVertical: 10,
-  },
-  appointmentTime: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  appointmentService: {
-    fontSize: 16,
+  submitButton: {
+    backgroundColor: 'blue',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
   },
 });
 

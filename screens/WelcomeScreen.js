@@ -7,15 +7,12 @@ export default function WelcomeScreen() {
   const navigation = useNavigation();
 
   const Prov_Requirement = () => {
-    // Navigate to the ServiceProviderFormScreen when the button is pressed
     navigation.navigate("Prov_Requirement");
   };
   const navigateToProviderSignup = () => {
-    // Navigate to the ProviderSignup screen when the button is pressed
     navigation.navigate("ProviderSignup");
   };
   const navigateToProviderSignin = () => {
-    // Navigate to the ProviderSignup screen when the button is pressed
     navigation.navigate("ProviderSignin");
   };
   return (
@@ -47,11 +44,11 @@ export default function WelcomeScreen() {
             <View style={{flexDirection: "row",justifyContent: "center", alignItems: "center",
               }}
             >
-              <Text style={{ color: "white", fontWeight: "bold" }}>
+              <Text style={{ color: "white", fontWeight: "bold", fontSize: 15,}}>
                 Already have an account?
               </Text>
               <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-                <Text style={{ fontWeight: "bold", color: "#FFD700" }}>
+                <Text style={{ fontWeight: "bold", color: "#FFD700", fontSize: 25, }}>
                   {" "}
                   Log In
                 </Text>

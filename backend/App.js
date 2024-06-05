@@ -2,7 +2,12 @@ const express = require('express');
 const multer = require('multer');
 const mongoose = require('mongoose');
 const { v4: uuidv4 } = require('uuid');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 const app = express();
+
+app.use(bodyParser.json());
+app.use(cors());
 
 // Connect to MongoDB
 mongoose.connect('mongodb+srv://AuraUserve:aura1234@cluster0.jqlyfp6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
@@ -44,11 +49,11 @@ const uploadPostImage = multer({
 });
 
 // Schema for profile images
-const profileImageSchema = new mongoose.Schema({
-  name: String,
-  imageData: String,
+const ProfileImageSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  imageData: { type: String, required: true },
 });
-const ProfileImage = mongoose.model('ProfileImage', profileImageSchema);
+const ProfileImage = mongoose.model('ProfileImage', ProfileImageSchema);
 const profileImageStorage = multer.memoryStorage();
 const uploadProfileImage = multer({ 
   storage: profileImageStorage,
@@ -64,26 +69,6 @@ const uploadProfileImage = multer({
   }
 });
 
-// Schema for booking
-const bookingSchema = new mongoose.Schema({
-  serviceName: String,
-  fullName: String,
-  email: String,
-  phone: String,
-  serviceTime: Date,
-  serviceDate: Date,
-  location: {
-    latitude: Number,
-    longitude: Number,
-    address: String,
-  },
-  workDescription: String,
-  timestamp: {
-    type: Date,
-    default: Date.now,
-  }
-});
-const Booking = mongoose.model('Booking', bookingSchema);
 
 // Endpoint to upload profile images
 app.post('/profile-image', uploadProfileImage.single('avatar'), async function (req, res) {
@@ -183,6 +168,22 @@ app.get('/profile-images', async function(req, res) {
   }
 });
 
+const ProviderSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  imageData: { type: String, required: true },
+});
+const Provider = mongoose.model('Provider', ProviderSchema);
+
+app.get('/providers', async (req, res) => {
+  try {
+    const providers = await Provider.find();
+    res.status(200).send(providers);
+  } catch (error) {
+    console.error('Error fetching providers:', error);
+    res.status(500).send({ message: 'Failed to fetch providers.' });
+  }
+});
+
 // Endpoint to delete profile images
 app.delete('/profile-image/:id', async function(req, res) {
   const imageId = req.params.id;
@@ -227,21 +228,171 @@ app.get('/latest-profile-image', async function(req, res) {
   }
 });
 
+
+// Schema for booking
+const bookingSchema = new mongoose.Schema({
+  serviceName: String,
+  fullName: String,
+  email: String,
+  phone: String,
+  serviceTime: Date,
+  serviceDate: Date,
+  location: {
+    type: { type: String },
+    coordinates: [Number]
+  },
+  address: String,
+  workDescription: String,
+  providerName: String,
+  status: { type: String, default: 'pending' },
+  rejectionReason: String,
+  contactNumber: String
+});
+
+const Booking = mongoose.model('Booking', bookingSchema);
+app.get('/bookings', async (req, res) => {
+  try {
+    const bookings = await Booking.find();
+    res.json(bookings);
+  } catch (error) {
+    res.status(500).send('Server error');
+  }
+});
+///////////////////////////
+app.post('/bookings', async (req, res) => {
+  try {
+    const booking = new Booking(req.body);
+    await booking.save();
+    res.status(201).send(booking);
+  } catch (error) {
+    console.error('Error submitting booking:', error);
+    res.status(400).send({ message: 'Failed to submit booking. Please try again later.', error });
+  }
+});
+//modify this code that save my bookind data
+
 // Endpoint to handle booking submissions
 app.post('/bookings', async (req, res) => {
   try {
-    const bookingData = req.body;
+    const { serviceName, fullName, email, phone, serviceTime, serviceDate, location, workDescription } = req.body;
+    const user = await User.findOne({ fullName });
+    const provider = await Provider.findOne({ serviceName }); 
+    
+    const newBooking = new Booking({
+      serviceName,
+      fullName,
+      email,
+      phone,
+      serviceTime,
+      serviceDate,
+      location,
+      workDescription,
+      userId: user._id,
+      providerId: provider._id,
+    });
 
-    const booking = new Booking(bookingData);
-    await booking.save();
-
-    console.log('Booking saved successfully:', booking);
-    res.status(200).send({ status: 'ok', message: 'Booking submitted successfully' });
+    await newBooking.save();
+    res.status(200).json({ message: 'Booking submitted successfully' });
   } catch (error) {
-    console.error('Error submitting booking:', error);
-    res.status(500).send({ status: 'error', message: 'Failed to submit booking' });
+    res.status(500).json({ message: 'Failed to submit booking' });
   }
 });
+
+
+// Endpoint to update booking status
+app.patch('/bookings/:id/status', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const booking = await Booking.findByIdAndUpdate(id, { status }, { new: true });
+
+    if (!booking) {
+      return res.status(404).json({ error: 'Booking not found' });
+    }
+
+    res.status(200).json(booking);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to update booking status' });
+  }
+});
+
+
+app.get('/bookings', async (req, res) => {
+  try {
+    const bookings = await Booking.find();
+    res.status(200).json(bookings);
+  } catch (error) {
+    console.error('Error fetching booking requests:', error);
+    res.status(500).send({ status: 'error', message: 'Failed to fetch booking requests from database' });
+  }
+});
+
+app.put('/bookings/:id/accept', async (req, res) => {
+  try {
+    const booking = await Booking.findByIdAndUpdate(req.params.id, { status: 'accepted' }, { new: true });
+    if (!booking) {
+      return res.status(404).json({ error: 'Booking not found' });
+    }
+    res.json(booking);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to accept booking' });
+  }
+});
+
+app.put('/bookings/:id/reject', async (req, res) => {
+  const { rejectionReason, contactNumber } = req.body;
+  try {
+    const booking = await Booking.findByIdAndUpdate(req.params.id, 
+      { 
+        status: 'rejected', 
+        rejectionReason, 
+        contactNumber 
+      }, 
+      { new: true }
+    );
+    if (!booking) {
+      return res.status(404).json({ error: 'Booking not found' });
+    }
+    res.json(booking);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to reject booking' });
+  }
+});
+
+// Endpoint to submit rating and comment
+app.post('/bookings/:id/rate', async (req, res) => {
+  const { rating, comment } = req.body;
+  try {
+    const booking = await Booking.findByIdAndUpdate(req.params.id, {
+      rating: rating,
+      comment: comment,
+    }, { new: true });
+    res.json(booking);
+  } catch (error) {
+    res.status(500).send('Server error');
+  }
+});
+///////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Serve uploaded images
 app.use('/uploads', express.static('uploads'));

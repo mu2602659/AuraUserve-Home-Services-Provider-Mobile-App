@@ -113,8 +113,9 @@ const NextScreen = ({ route }) => {
   const navigateFetchImages = () => {
     navigation.navigate("FetchImages");
   };
-    const navigateToIncomingRequests = () => {
-      navigation.navigate('IncomingRequestsScreen'); // Navigate to the new screen
+
+  const navigateToIncomingRequests = () => {
+      navigation.navigate('IncomingRequest'); // Navigate to the new screen
     };
   return (
     <View style={styles.container}>
@@ -236,8 +237,8 @@ const styles = StyleSheet.create({
   header: {
     position: "absolute",
     top: 0,
-    left: 0,
-    right: windowWidth - 218,
+    left: 10,
+    right: windowWidth - 235,
     zIndex: 1,
   },
   name: {
