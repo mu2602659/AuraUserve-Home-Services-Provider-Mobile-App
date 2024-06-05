@@ -28,13 +28,12 @@ const AcceptedBookings = () => {
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <View style={styles.bookingContainer}>
-            <Text>Service Name: {item.serviceName}</Text>
             <Text>Full Name: {item.fullName}</Text>
+            <Text>Service Name: {item.serviceName}</Text>
             <Text>Phone: {item.phone}</Text>
             <Text>Service Time: {new Date(item.serviceTime).toLocaleString()}</Text>
             <Text>Service Date: {new Date(item.serviceDate).toDateString()}</Text>
             <Text>Work Description: {item.workDescription}</Text>
-            <Text>Provider Name: {item.providerName}</Text>
             <Text>Contact Number: {item.contactNumber}</Text>
           </View>
         )}

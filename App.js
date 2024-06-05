@@ -117,7 +117,6 @@ export default function App() {
         <Stack.Screen name="Services"  component={ServicesStackNavigator} options={{ headerShown: false }} />
         <Stack.Screen name="myProfile" component={myProfileScreen} options={{ title: 'myProfile' }} />
         <Stack.Screen name="Chat" component={ChatScreen} options={{ title: 'Chat Conversation' }} />
-      
 
         {/* Add ProviderSignup screen */}
 
@@ -136,12 +135,8 @@ export default function App() {
         <Stack.Screen name="PostDetails" component={PostDetails} options={{ title: "Post Details" }} />
         <Stack.Screen name="AcceptedBookings" component={AcceptedBookings} options={{ title: "Accepted Bookings" }} />
         <Stack.Screen name="RejectedBookings" component={RejectedBookings} options={{ title: "Rejected Bookings" }}/>
-        <Stack.Screen name="Comment" component={Comment} options={{ title: "Revews" }}/>
-        <Stack.Screen name="Rating" component={RatingScreen} options={{ title: "Rate the Provider" }} />
-
-
-       
-        
+        <Stack.Screen name="Comment" component={Comment} options={{ title: "Reviews" }}/>
+        <Stack.Screen name="Rating" component={RatingScreen} options={{ title: "Rate the Provider" }} />        
 
       </Stack.Navigator>
     </NavigationContainer>

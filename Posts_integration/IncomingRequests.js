@@ -25,19 +25,19 @@ const IncomingRequests = () => {
   const handleAccept = async (id) => {
     try {
       await axios.put(`${IMG_URL}/bookings/${id}/accept`);
-      fetchRequests();
       Alert.alert('Success', 'Booking request accepted successfully.');
       navigation.navigate('AcceptedBookings');
+      setRequests(prevRequests => prevRequests.filter(request => request._id !== id));
     } catch (error) {
       console.error('Error accepting booking request:', error);
       Alert.alert('Error', 'Failed to accept booking request. Please try again later.');
     }
   };
-
+  
   const handleReject = (id) => {
     navigation.navigate('RejectedBookings', { bookingId: id });
   };
-
+  
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Incoming Booking Requests</Text>

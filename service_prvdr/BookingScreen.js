@@ -79,6 +79,8 @@ const Booking = () => {
       const response = await axios.post(`${IMG_URL}/bookings`, bookingData);
       console.log(response.data);
       Alert.alert('Success', 'Your booking is submitted!');
+      navigation.navigate('Home');
+
     } catch (error) {
       console.error('Error submitting booking:', error);
       Alert.alert('Error', 'Failed to submit booking. Please try again later.');

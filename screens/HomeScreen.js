@@ -8,6 +8,8 @@ import HeaderComponent from "./HeaderComponent";
 import FooterComponent from "./FooterComponent";
 import axios from 'axios';
 import { IMG_URL } from "../config/ip_address";
+import StarRating from 'react-native-star-rating';
+
 
 const HomeScreen = () => {
   const [userName, setUserName] = useState("");
@@ -17,6 +19,24 @@ const HomeScreen = () => {
   const [refreshing, setRefreshing] = useState(false); // State for refreshing
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
+
+
+  const [ratings, setRatings] = useState([]);
+
+  useEffect(() => {
+    fetchRatings();
+  }, []);
+
+  const fetchRatings = async () => {
+    try {
+      const response = await axios.get(`${IMG_URL}/bookings/ratings`);
+      setRatings(response.data);
+    } catch (error) {
+      console.error('Error fetching ratings:', error);
+      Alert.alert('Error', 'Failed to fetch ratings. Please try again later.');
+    }
+  };
+
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -112,18 +132,6 @@ const HomeScreen = () => {
   };
 
 
-  
-  const navigateToIncomingRequests = () => {
-    navigation.navigate('IncomingRequest'); 
-  };
-  const navigateToAcceptedBookings = () => {
-    navigation.navigate('AcceptedBookings'); 
-  };
-  const navigateToRating = () => {
-    navigation.navigate('Rating'); 
-  };
-  
-  
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
@@ -135,15 +143,6 @@ const HomeScreen = () => {
           handleProfileClick={handleProfileClick}
           navigation={navigation} 
         />
-        <TouchableOpacity style={{ backgroundColor: 'transparent', padding: 10, borderRadius: 5 }} onPress={navigateToIncomingRequests}>
-            <Text style={styles.requestsButtonText}>Incoming Requests</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={{ backgroundColor: 'transparent', padding: 10, borderRadius: 5 }} onPress={navigateToAcceptedBookings}>
-            <Text style={styles.requestsButtonText}>ToAcceptedBookings</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={{ backgroundColor: 'transparent', padding: 10, borderRadius: 5 }} onPress={navigateToRating}>
-            <Text style={styles.requestsButtonText}>Rating</Text>
-          </TouchableOpacity>
           <View style={styles.servicesHeader}>
             <Text style={styles.ourServicesText}>Our Services</Text>
 
@@ -215,19 +214,35 @@ const HomeScreen = () => {
           </View>
       
           {/* Customer Reviews Slider */}
-          <View style={styles.customerReviewsContainer}>
-            <Text style={styles.customerReviewsHeader}>Customer Reviews</Text>
-            <ScrollView horizontal>
-              {customerReviews.map((review) => (
-                <View key={review.id} style={styles.reviewBlock}>
-                  <Text style={styles.reviewText}>{review.review}</Text>
-                  <Text style={styles.reviewName}>- {review.name}</Text>
-                </View>
-              ))}
-            </ScrollView>
+      
+  <View style={styles.customerReviewsContainer}>
+  <Text style={styles.customerReviewsHeader}>Ratings and Comments</Text>
+  <ScrollView horizontal style={styles.content}>
+    <FlatList
+      data={ratings}
+      keyExtractor={(item) => item._id}
+      horizontal={true}
+      renderItem={({ item }) => (
+        <View style={styles.reviewBlock}>
+          <View style={styles.commentInfo}>
+            <Text style={styles.reviewText}>{item.comment}</Text>
           </View>
-        </ScrollView>
+          <StarRating
+            disabled={true}
+            maxStars={5}
+            rating={item.rating}
+            starSize={20}
+            fullStarColor={'#088F8F'}
+            emptyStarColor={'#B6D0E2'}
+          />
+          <Text style={styles.reviewName}> to {item.serviceName} service Provider {item.userName}</Text>
+        </View>
+      )}
+    />
+  </ScrollView>
+</View>
 
+        </ScrollView>
         </ScrollView>
         <FooterComponent Prov_Requirement={Prov_Requirement} handleLogout={handleLogout} />
 
@@ -351,14 +366,15 @@ const styles = StyleSheet.create({
   reviewBlock: {
     backgroundColor: "#FFD700",
     borderRadius: 10,
-    padding: 15,
+    width:200,
+    marginLeft: 15,
+    padding: 5,
     marginRight: 10,
     marginBottom: 10,
   },
   reviewText: {
     fontSize: 14,
     marginBottom: 5,
-    
   },
   reviewName: {
     fontSize: 12,

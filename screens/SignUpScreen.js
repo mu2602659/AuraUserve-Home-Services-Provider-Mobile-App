@@ -139,7 +139,7 @@ export default function SignUpScreen() {
                         <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 20 }}>
                             <Text style={{ color: 'gray', fontWeight: 'bold', fontSize: 15, }}>Already have an account?</Text>
                             <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-                                <Text style={{ fontWeight: 'bold', color: '#FFD700', fontSize: 20, }}> Login</Text>
+                                <Text style={{ fontWeight: 'bold', color: '#FFD700', fontSize: 18, }}> Login</Text>
                             </TouchableOpacity>
                         </View>
 

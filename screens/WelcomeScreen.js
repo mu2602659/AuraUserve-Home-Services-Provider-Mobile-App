@@ -48,7 +48,7 @@ export default function WelcomeScreen() {
                 Already have an account?
               </Text>
               <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-                <Text style={{ fontWeight: "bold", color: "#FFD700", fontSize: 25, }}>
+                <Text style={{ fontWeight: "bold", color: "#FFD700", fontSize: 20, }}>
                   {" "}
                   Log In
                 </Text>

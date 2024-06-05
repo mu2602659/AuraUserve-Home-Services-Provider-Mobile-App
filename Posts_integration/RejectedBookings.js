@@ -23,6 +23,7 @@ const RejectBooking = () => {
         contactNumber: contactNumber,
       });
       Alert.alert('Success', 'Booking request rejected successfully.');
+      navigation.goBack(); // Navigate back to the previous screen
     } catch (error) {
       console.error('Error rejecting booking request:', error);
       Alert.alert('Error', 'Failed to reject booking request. Please try again later.');

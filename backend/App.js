@@ -229,7 +229,6 @@ app.get('/latest-profile-image', async function(req, res) {
 });
 
 
-// Schema for booking
 const bookingSchema = new mongoose.Schema({
   serviceName: String,
   fullName: String,
@@ -246,38 +245,30 @@ const bookingSchema = new mongoose.Schema({
   providerName: String,
   status: { type: String, default: 'pending' },
   rejectionReason: String,
-  contactNumber: String
+  contactNumber: String,
+  rating: Number,
+  comment: String,
+  userName: String,
 });
 
 const Booking = mongoose.model('Booking', bookingSchema);
+
+
+// Fetch all bookings
 app.get('/bookings', async (req, res) => {
   try {
     const bookings = await Booking.find();
-    res.json(bookings);
+    res.status(200).json(bookings);
   } catch (error) {
+    console.error('Error fetching bookings:', error);
     res.status(500).send('Server error');
   }
 });
-///////////////////////////
-app.post('/bookings', async (req, res) => {
-  try {
-    const booking = new Booking(req.body);
-    await booking.save();
-    res.status(201).send(booking);
-  } catch (error) {
-    console.error('Error submitting booking:', error);
-    res.status(400).send({ message: 'Failed to submit booking. Please try again later.', error });
-  }
-});
-//modify this code that save my bookind data
 
-// Endpoint to handle booking submissions
+// Create a new booking
 app.post('/bookings', async (req, res) => {
   try {
-    const { serviceName, fullName, email, phone, serviceTime, serviceDate, location, workDescription } = req.body;
-    const user = await User.findOne({ fullName });
-    const provider = await Provider.findOne({ serviceName }); 
-    
+    const { serviceName, fullName, email, phone, serviceTime, serviceDate, location, workDescription, providerName, contactNumber } = req.body;
     const newBooking = new Booking({
       serviceName,
       fullName,
@@ -287,59 +278,54 @@ app.post('/bookings', async (req, res) => {
       serviceDate,
       location,
       workDescription,
-      userId: user._id,
-      providerId: provider._id,
+      providerName,
+      contactNumber,
     });
-
     await newBooking.save();
-    res.status(200).json({ message: 'Booking submitted successfully' });
+    console.log('Booking created:', newBooking);
+    res.status(201).send(newBooking);
   } catch (error) {
-    res.status(500).json({ message: 'Failed to submit booking' });
+    console.error('Error submitting booking:', error);
+    res.status(400).send({ message: 'Failed to submit booking. Please try again later.', error });
   }
 });
 
 
-// Endpoint to update booking status
+// Update booking status
 app.patch('/bookings/:id/status', async (req, res) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
-
     const booking = await Booking.findByIdAndUpdate(id, { status }, { new: true });
 
     if (!booking) {
       return res.status(404).json({ error: 'Booking not found' });
     }
 
+    console.log('Booking status updated:', booking);
     res.status(200).json(booking);
   } catch (error) {
+    console.error('Error updating booking status:', error);
     res.status(500).json({ error: 'Failed to update booking status' });
   }
 });
 
-
-app.get('/bookings', async (req, res) => {
-  try {
-    const bookings = await Booking.find();
-    res.status(200).json(bookings);
-  } catch (error) {
-    console.error('Error fetching booking requests:', error);
-    res.status(500).send({ status: 'error', message: 'Failed to fetch booking requests from database' });
-  }
-});
-
+// Accept a booking
 app.put('/bookings/:id/accept', async (req, res) => {
   try {
     const booking = await Booking.findByIdAndUpdate(req.params.id, { status: 'accepted' }, { new: true });
     if (!booking) {
       return res.status(404).json({ error: 'Booking not found' });
     }
+    console.log('Booking accepted:', booking);
     res.json(booking);
   } catch (err) {
+    console.error('Error accepting booking:', err);
     res.status(500).json({ error: 'Failed to accept booking' });
   }
 });
 
+// Reject a booking
 app.put('/bookings/:id/reject', async (req, res) => {
   const { rejectionReason, contactNumber } = req.body;
   try {
@@ -354,23 +340,40 @@ app.put('/bookings/:id/reject', async (req, res) => {
     if (!booking) {
       return res.status(404).json({ error: 'Booking not found' });
     }
+    console.log('Booking rejected:', booking);
     res.json(booking);
   } catch (err) {
+    console.error('Error rejecting booking:', err);
     res.status(500).json({ error: 'Failed to reject booking' });
   }
 });
-
-// Endpoint to submit rating and comment
-app.post('/bookings/:id/rate', async (req, res) => {
-  const { rating, comment } = req.body;
+// Submit rating and comment
+app.put('/bookings/:id/rate', async (req, res) => {
   try {
-    const booking = await Booking.findByIdAndUpdate(req.params.id, {
-      rating: rating,
-      comment: comment,
-    }, { new: true });
-    res.json(booking);
+    const { id } = req.params;
+    const { rating, comment, userName } = req.body;
+    const booking = await Booking.findByIdAndUpdate(id, { rating, comment, userName }, { new: true });
+
+    if (!booking) {
+      return res.status(404).json({ error: 'Booking not found' });
+    }
+
+    console.log('Rating submitted:', booking);
+    res.status(200).json(booking);
   } catch (error) {
-    res.status(500).send('Server error');
+    console.error('Error submitting rating:', error);
+    res.status(500).json({ error: 'Failed to submit rating' });
+  }
+});
+
+// Fetch ratings and comments
+app.get('/bookings/ratings', async (req, res) => {
+  try {
+    const ratings = await Booking.find({ rating: { $ne: null } });
+    res.status(200).json(ratings);
+  } catch (error) {
+    console.error('Error fetching ratings:', error);
+    res.status(500).json({ error: 'Failed to fetch ratings' });
   }
 });
 ///////////////////////////////
