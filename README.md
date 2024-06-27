@@ -7,7 +7,7 @@ This project aims to revolutionize the home maintenance services industry in Pak
 ## Key Features
 - **User-Friendly Interface**: Intuitive design for seamless booking.
 - **Secure and Reliable**: Vetted service providers and robust security measures.
-- **Real-Time Booking and Tracking**: Book services in real-time and track status.
+- **Real-Time Booking**: Book services in real-time.
 - **In-App Chat System**: Direct communication between users and service providers.
 - **Comprehensive Service Listings**: Wide range of services including plumbing, electrical, cleaning, and gardening.
 - **Feedback and Rating System**: Users can rate and review service providers.
@@ -180,8 +180,8 @@ The backend of the project is built using Node.js and Express.js, providing a ro
 
 1. **Clone the repository:**
     ```bash
-    git clone https://github.com/your-username/home-maintenance-services.git
-    cd home-maintenance-services
+    git clone https://github.com/mu2602659/AuraUserve-Mobile-App.git
+    cd AuraUserve-Mobile-App
     ```
 
 2. **Install node modules:**
