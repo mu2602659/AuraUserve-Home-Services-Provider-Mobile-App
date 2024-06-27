@@ -1,5 +1,5 @@
-## AuraUserve 
-# Home Maintenance Services Platform 
+# AuraUserve 
+## Home Maintenance Services Platform 
 
 ## Overview
 This project aims to revolutionize the home maintenance services industry in Pakistan by creating a user-friendly mobile and web application. The platform connects homeowners with a network of vetted, reliable service providers for various home maintenance needs such as plumbing, electrical work, cleaning, and gardening. Our solution leverages modern technology to provide transparency, efficiency, and convenience in the process of obtaining maintenance services.
@@ -15,7 +15,7 @@ This project aims to revolutionize the home maintenance services industry in Pak
 ## Technologies Used
 - **Frontend**: React Native
 - **Backend**: MERN stack (MongoDB, Express.js, React, Node.js)
-- **Database**: MongoDB
+- **Database**: MongoDB,Firebase
 - **File Storage**: Multer
 - **Hosting**: Cloud platform
 
@@ -184,17 +184,21 @@ The backend of the project is built using Node.js and Express.js, providing a ro
     cd home-maintenance-services
     ```
 
-2. **Install server dependencies:**
+2. **Install node modules:**
     ```bash
-    cd backend
     npm install
     ```
 
-3. **Install client dependencies:**
+3. **Install other dependencies:**
     ```bash
-    cd ../client
-    npm install
+    npm install expo
+    npm install -g
     ```
+4. **Start front-end server:**
+    ```bash
+   npx expo start
+    ```
+
 
 ### Configuration
 
@@ -215,16 +219,24 @@ The backend of the project is built using Node.js and Express.js, providing a ro
 
 ### Running the Application
 
-1. **Start the server:**
+1. **Replace ipaddress by cmd (ipconfig):**
     ```bash
-    cd backend
-    npm start
+    export const IMG_URL = 'http://192.168.100.17:5001';
     ```
-
-2. **Start the client:**
+2. **Install Nodemon:**
     ```bash
     cd ../client
-    npm start
+    npm install nodemon
+    ```
+3. **Install other backend dependencies:**
+    ```bash
+    by using
+    npm install _____
+    ```
+4. **Start the Back-end server:**
+    ```bash
+    cd backend
+    node App
     ```
 
 ### API Endpoints
@@ -291,7 +303,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 6. Open a pull request.
 
 ### Contact
-For any queries or support, please contact us at [your-email@example.com].
+For any queries or support, please contact us at [infoaurauserve@gmail.com].
 
 ### Conclusion
 By leveraging cutting-edge technology and a user-centric design approach, this project sets a new standard for home maintenance services in Pakistan. Our platform simplifies the process of finding and hiring trustworthy service providers, enhancing the overall user experience through real-time tracking and secure transactions. This project represents a significant step forward in modernizing the home services industry, providing homeowners with the confidence and convenience they need to maintain their homes effectively.
