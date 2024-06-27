@@ -135,7 +135,7 @@ const HomeScreen = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
-      <ImageBackground source={require("../assets/images/srvc9.jpg")} style={{ padding: 220, paddingTop:7,position: 'absolute' }}/>
+   {/*<ImageBackground source={require("../assets/images/srvc9.jpg")} style={{ padding: 220, paddingTop:7,position: 'absolute' }}/> */}
         <HeaderComponent 
           userName={userName} 
           userEmail={userEmail} 
