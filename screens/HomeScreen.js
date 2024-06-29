@@ -217,6 +217,9 @@ const HomeScreen = () => {
   <View style={styles.customerReviewsContainer}>
   <Text style={styles.customerReviewsHeader}>Ratings and Comments</Text>
   <ScrollView horizontal style={styles.content}>
+    {loading ? (
+              <ActivityIndicator />
+            ) : (
     <FlatList
       data={ratings}
       keyExtractor={(item) => item._id}
@@ -236,10 +239,11 @@ const HomeScreen = () => {
           />
           <Text style={styles.reviewName}> to {item.serviceName} service Provider {item.userName}</Text>
         </View>
-
       )}
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />} // Add RefreshControl
     />
+  )}
+  
   </ScrollView>
 </View>
 
