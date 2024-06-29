@@ -21,14 +21,11 @@ const RatingScreen = () => {
     'Poor customer service.',
     'Highly recommended!',
     'Good value for money.',
-    'Prompt and efficient service.',
-    'Professional and courteous staff.',
     'Very satisfied with the service.',
     'Could improve on communication.',
     'Fast response time.',
-    'Friendly and helpful staff.',
+    'Friendly and  staff.',
     'Would use this service again.',
-    'Below expectations.'
   ];
 
   const submitRating = async () => {

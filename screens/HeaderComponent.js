@@ -6,9 +6,13 @@ import { useNavigation } from '@react-navigation/native';
 import { signOut } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { getFirestore, collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
+import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 
 const HeaderComponent = ({ userName, userEmail, }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [user, setUser] = useState({});
+  const [imageUrl, setImageUrl] = useState('');
+
   const [latestData, setLatestData] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
@@ -31,7 +35,7 @@ const HeaderComponent = ({ userName, userEmail, }) => {
   };
 
   const navigateToMongotry = () => {
-    navigation.navigate('Mongotry');
+    navigation.navigate('UserEditProfile');
   };
 
   const navigateToAbout = () => {
@@ -49,22 +53,37 @@ const HeaderComponent = ({ userName, userEmail, }) => {
 
 //////////////////
 useEffect(() => {
-    const fetchLatestData = async () => {
-      try {
-        const db = getFirestore();
-        const q = query(collection(db, 'user_edit-profile'), orderBy('createdAt', 'desc'), limit(1));
-        const querySnapshot = await getDocs(q);
-        const latest = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))[0];
-        setLatestData(latest);
-      } catch (error) {
-        console.error("Error fetching latest data: ", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchUser = async () => {
+    try {
+      const db = getFirestore();
+      const storage = getStorage();
+      
+      // Fetch the latest user profile
+      const q = query(collection(db, 'user_edit-profile'), orderBy('createdAt', 'desc'), limit(1));
+      const querySnapshot = await getDocs(q);
 
-    fetchLatestData();
-  }, []);
+      if (!querySnapshot.empty) {
+        const userData = querySnapshot.docs[0].data();
+        setUser(userData);
+
+        if (userData.imageUrl) {
+          const imageRef = ref(storage, `user_edit-profile/${userData.imageUrl}`);
+          const url = await getDownloadURL(imageRef);
+          setImageUrl(url);
+        }
+      } else {
+        console.log('No user profile found.');
+      }
+    } catch (error) {
+      console.error('Error fetching user profile:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchUser();
+}, []);
+
 
   if (loading) {
     return (
@@ -74,20 +93,14 @@ useEffect(() => {
     );
   }
 
-  if (!latestData) {
-    return (
-      <View >
-        <Text>No data found.</Text>
-      </View>
-    );
-  }
+ 
 
   return (
     <View style={styles.header}>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
       <TouchableOpacity onPress={navigateToMongotry} style={styles.profileContainer}>
-          {latestData ? (
-            <Image source={{ uri: latestData.imageUrl }} style={styles.profileImage} />
+      {imageUrl ? (
+          <Image source={{ uri: imageUrl }}  style={styles.profileImage} />
           ) : (
             <View style={styles.profilePlaceholder}>
               <Text style={styles.profilePlaceholderText}>Image</Text>
@@ -116,20 +129,19 @@ useEffect(() => {
             <FontAwesome5 style={styles.editButton} name="edit" size={23} color="white"  />
             </TouchableOpacity>
           <TouchableOpacity onPress={pickImage} style={styles.profileContainer1}>
-          {latestData ? (
-            <Image source={{ uri: latestData.imageUrl }} style={styles.profileImage1} />
+          {imageUrl ? (
+          <Image source={{ uri: imageUrl }}  style={styles.profileImage1} />
                 ) : (
               <View style={styles.profilePlaceholder1}>
                 <Text style={styles.profilePlaceholderText1}>Profile Picture</Text>
               </View>
               )}
-              
           </TouchableOpacity>
-          <Text style={{ fontSize: 16, marginLeft: 8, color: 'white', fontWeight: "bold" }}>Name: {latestData.name}</Text>
+          <Text style={{ fontSize: 16, marginLeft: 8, color: 'white', fontWeight: "bold" }}>Name: {user.firstName} {user.lastName} </Text>
          {/* <Text style={{ fontSize: 16, marginLeft: 8, color: 'white', fontWeight: "bold" }}>{userName}</Text>*/}
          {/* <Text style={{ fontSize: 16, marginLeft: 8, color: 'white', fontWeight:"bold" }}>{latestData.email}</Text>*/}
           <Text style={{ fontSize: 16, marginLeft: 8, color: 'white', fontWeight:"bold" }}>{userEmail}</Text>
-          <Text style={{ fontSize: 16, marginLeft: 8, color: 'white', fontWeight: "bold" }}>{latestData.mobile}</Text>
+          <Text style={{ fontSize: 16, marginLeft: 8, color: 'white', fontWeight: "bold" }}>{user.mobile}</Text>
 
     
             </ImageBackground>

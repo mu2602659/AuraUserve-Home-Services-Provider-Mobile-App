@@ -213,7 +213,6 @@ const HomeScreen = () => {
             )}
           </View>
       
-          {/* Customer Reviews Slider */}
       
   <View style={styles.customerReviewsContainer}>
   <Text style={styles.customerReviewsHeader}>Ratings and Comments</Text>
@@ -237,7 +236,9 @@ const HomeScreen = () => {
           />
           <Text style={styles.reviewName}> to {item.serviceName} service Provider {item.userName}</Text>
         </View>
+
       )}
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />} // Add RefreshControl
     />
   </ScrollView>
 </View>
@@ -310,7 +311,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "bold",
     textAlign: "center",
-    color: "white",
+    color: "black",
   },
   adsScrollView: {
     paddingHorizontal: 17,

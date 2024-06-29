@@ -7,7 +7,7 @@ const FooterComponent = ({ Prov_Requirement, handleLogout }) => {
   const navigation = useNavigation();
 
   const navigateToProfile = () => {
-    navigation.navigate('Mongotry'); // Make sure 'EditScreen' is the name used in your navigator
+    navigation.navigate('UserProfileDisplay'); // Make sure 'EditScreen' is the name used in your navigator
   };
   const navigateToAppointments = () => {
     navigation.navigate('AppointmentsScreen'); // Make sure 'Appointments' is the name used in your navigator

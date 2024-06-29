@@ -12,6 +12,8 @@ import VerificationComponent from './screens/VerificationComponent';
 import SignUpScreen from './screens/SignUpScreen';
 import ServicesScreen from './screens/ServicesScreen';
 import myProfileScreen from './screens/myProfileScreen';
+import UserEditProfile from './screens/UserEditProfile';
+import UserProfileDisplay from './screens/UserProfileDisplay';
 import AppointmentsScreen from './screens/AppointmentsScreen';
 
 
@@ -25,7 +27,6 @@ import Prov_Requirement from './service_prvdr/Prov_Requirement';
 import ProviderForm from './service_prvdr/ProviderForm';
 import ChatScreen from './service_prvdr/Chat';
 import BookingScreen from './service_prvdr/BookingScreen';
-import Mongotry from './service_prvdr/Mongotry';
 import firebase_img from './service_prvdr/firebase_img';
 import List_images from './service_prvdr/List_images';
 import List_Users from './service_prvdr/List_Users';
@@ -116,11 +117,13 @@ export default function App() {
         <Stack.Screen name="ProviderForm"  component={ProviderForm} options={{ title: 'Fill the Form to become provider' }}/>
         <Stack.Screen name="Services"  component={ServicesStackNavigator} options={{ headerShown: false }} />
         <Stack.Screen name="myProfile" component={myProfileScreen} options={{ title: 'myProfile' }} />
+        <Stack.Screen name="UserProfileDisplay" component={UserProfileDisplay} />
+
         <Stack.Screen name="Chat" component={ChatScreen} options={{ title: 'Chat Conversation' }} />
 
         {/* Add ProviderSignup screen */}
 
-        <Stack.Screen name="Mongotry"     component={Mongotry} options={{ headerShown: false }} />
+        <Stack.Screen name="UserEditProfile"     component={UserEditProfile} options={{ headerShown: false }} />
         <Stack.Screen name="firebase_img" component={firebase_img} />
         <Stack.Screen name="FetchImages" component={FetchImages} />
 

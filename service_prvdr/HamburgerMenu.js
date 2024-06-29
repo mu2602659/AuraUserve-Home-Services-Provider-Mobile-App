@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image,ImageBackground, ActivityIndicator, RefreshControl,menuWidth,FlatList } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image, ActivityIndicator, FlatList, TouchableWithoutFeedback, Dimensions } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
 import { IMG_URL } from "../config/ip_address";
@@ -7,16 +7,19 @@ import axios from "axios";
 import { signOut } from "firebase/auth";
 import { auth } from "../config/firebase";
 
-const HamburgerMenu = ({ }) => {
+const HamburgerMenu = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [profileImages, setProfileImages] = useState([]);
   const [latestImages, setLatestImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
 
+  const menuWidth = Dimensions.get('window').width * 0.8; // 80% of screen width
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
   const handleLogout = async () => {
     try {
         await signOut(auth);
@@ -24,8 +27,7 @@ const HamburgerMenu = ({ }) => {
     } catch (error) {
         console.error('Sign-out error:', error.message);
     }
-};
-
+  };
 
   useEffect(() => {
     fetchProfileImages();
@@ -63,7 +65,6 @@ const HamburgerMenu = ({ }) => {
     closeMenu();
   };
 
-
   const navigateToAcceptedBookings = () => {
     navigation.navigate('AcceptedBookings'); 
   };
@@ -75,6 +76,7 @@ const HamburgerMenu = ({ }) => {
   const closeMenu = () => {
     setIsMenuOpen(false);
   };
+
   const renderItem = ({ item }) => (
     <View style={styles.item}>
       <Image source={{ uri: `data:image/jpeg;base64,${item.imageData}` }} style={styles.image} />
@@ -83,72 +85,77 @@ const HamburgerMenu = ({ }) => {
       </View>
     </View>
   );
-  
+
   return (
-    <View style={styles.header}>
-      <TouchableOpacity onPress={toggleMenu} style={styles.hamburgerMenu}>
-        <FontAwesome5 name="bars" size={24} color="black" />
-      </TouchableOpacity>
+    <TouchableWithoutFeedback onPress={() => isMenuOpen && closeMenu()}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={toggleMenu} style={styles.hamburgerMenu}>
+            <FontAwesome5 name="bars" size={24} color="black" />
+          </TouchableOpacity>
 
-      {isMenuOpen && (
-        <View style={styles.menu}>
-          {loading ? (
-            <ActivityIndicator />
-          ) : (
-            <FlatList
-          data={latestImages}
-          renderItem={renderItem}
-          keyExtractor={(item) => item._id}
-        />
+          {isMenuOpen && (
+            <View style={[styles.menu, { width: menuWidth }]}>
+              {loading ? (
+                <ActivityIndicator />
+              ) : (
+                <FlatList
+                  data={latestImages}
+                  renderItem={renderItem}
+                  keyExtractor={(item) => item._id}
+                />
+              )}
+              <TouchableOpacity style={styles.menuItem} onPress={navigateToEditProfile}>
+                <FontAwesome5 name="edit" size={20} color="black" style={styles.menuIcon} />
+                <Text style={styles.menuText}>Edit Profile</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.menuItem} onPress={navigateToAllPosts}>
+                <FontAwesome5 name="image" size={20} color="black" style={styles.menuIcon} />
+                <Text style={styles.menuText}>Posts</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.menuItem} onPress={navigateToAllUsers}>
+                <FontAwesome5 name="user" size={20} color="black" style={styles.menuIcon} />
+                <Text style={styles.menuText}>Profile pictures</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.menuItem} onPress={handleNavigatefirebase_img}>
+                <FontAwesome5 name="file-alt" size={20} color="black" style={styles.menuIcon} />
+                <Text style={styles.menuText}>Firebase store image</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.menuItem} onPress={navigateToAcceptedBookings}>
+                <FontAwesome5 name="check-circle" size={20} color="black" style={styles.menuIcon} />
+                <Text style={styles.menuText}>Accepted Bookings</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.menuItem} onPress={navigateTocomment}>
+                <FontAwesome5 name="comment" size={20} color="black" style={styles.menuIcon} />
+                <Text style={styles.menuText}>Review</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.menuItem} onPress={handleLogout}>
+                <FontAwesome5 name="sign-out-alt" size={20} color="black" style={styles.menuIcon} />
+                <Text style={styles.menuText}>Logout</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.menuItem} onPress={closeMenu}>
+                <FontAwesome5 name="times" size={20} color="black" style={styles.menuIcon} />
+                <Text style={styles.menuText}>Close</Text>
+              </TouchableOpacity>
+            </View>
           )}
-          <TouchableOpacity style={styles.menuItem} onPress={navigateToEditProfile}>
-            <FontAwesome5 name="edit" size={20} color="black" style={styles.menuIcon} />
-            <Text style={styles.menuText}>Edit Profile</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.menuItem} onPress={navigateToAllPosts}>
-            <FontAwesome5 name="image" size={20} color="black" style={styles.menuIcon} />
-            <Text style={styles.menuText}>Posts</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.menuItem} onPress={navigateToAllUsers}>
-            <FontAwesome5 name="user" size={20} color="black" style={styles.menuIcon} />
-            <Text style={styles.menuText}>Profile pictures</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.menuItem} onPress={handleNavigatefirebase_img}>
-            <FontAwesome5 name="file-alt" size={20} color="black" style={styles.menuIcon} />
-            <Text style={styles.menuText}>Firebase store image</Text>
-          </TouchableOpacity>
-
-
-          <TouchableOpacity style={styles.menuItem} onPress={navigateToAcceptedBookings}>
-          <FontAwesome5 name="file-alt" size={20} color="black" style={styles.menuIcon} />
-            <Text style={styles.requestsButtonText}>AcceptedBookings</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.menuItem} onPress={navigateTocomment}>
-          <FontAwesome5 name="file-alt" size={20} color="black" style={styles.menuIcon} />
-            <Text style={styles.requestsButtonText}>Review</Text>
-          </TouchableOpacity>
-
-
-          <TouchableOpacity style={styles.menuItem} onPress={handleLogout}>
-            <FontAwesome5 name="sign-out-alt" size={20} color="black" style={styles.menuIcon} />
-            <Text style={styles.menuText}>Logout</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.menuItem} onPress={closeMenu}>
-            <FontAwesome5 name="times" size={20} color="black" style={styles.menuIcon} />
-            <Text style={styles.menuText}>Close</Text>
-          </TouchableOpacity>
         </View>
-      )}
-    </View>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   header: {
     position: 'relative',
     zIndex: 1,
@@ -162,9 +169,9 @@ const styles = StyleSheet.create({
   menu: {
     position: 'absolute',
     top: 0,
-    right: 0,
+    right: -105,
     backgroundColor: 'white',
-    width: 280,
+    width: 200,
     height: 705,
     borderRadius: 10,
     shadowColor: '#000',
@@ -173,7 +180,6 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
     zIndex: 1,
-    width: menuWidth,
   },
   menuItem: {
     padding: 10,
@@ -182,7 +188,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#ccc",
     marginBottom: 20,
-    marginRight:20,
   },
   menuIcon: {
     marginRight: 4,
@@ -196,13 +201,13 @@ const styles = StyleSheet.create({
   item: {
     flexDirection: 'column',
     alignItems: 'center',
-    paddingHorizontal: 10, // Add horizontal padding to center the image
+    paddingHorizontal: 10,
   },
   image: {
     width: 100,
     height: 100,
-    borderRadius: 50, // Make the image round
-    marginRight: 20, // Add space between the image and the text
+    borderRadius: 50,
+    marginRight: 20,
   },
   textContainer: {
     flexDirection: 'column',
