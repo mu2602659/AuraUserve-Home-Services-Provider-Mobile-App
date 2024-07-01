@@ -1,6 +1,8 @@
 # AuraUserve 
 ## Home Maintenance Services Platform 
 
+![UI Design](./assets/images/UI.png)
+
 ## Overview
 This project aims to revolutionize the home maintenance services industry in Pakistan by creating a user-friendly mobile and web application. The platform connects homeowners with a network of vetted, reliable service providers for various home maintenance needs such as plumbing, electrical work, cleaning, and gardening. Our solution leverages modern technology to provide transparency, efficiency, and convenience in the process of obtaining maintenance services.
 
