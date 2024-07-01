@@ -1,6 +1,8 @@
 # AuraUserve 
 ## Home Maintenance Services Platform 
 
+![Cover Image](./assets/images/uii.png)
+
 ![UI Design](./assets/images/UI.png)
 
 ## Overview
